@@ -1,0 +1,17 @@
+.ui-button {
+    background-color: rgba(35, 35, 35, 0.71);
+    font-size: 42px;
+    color: rgb(206, 206, 206);
+}
+
+.ui-text {
+    color: rgb(255, 255, 255);
+    font-size: 24px;
+}
+
+.ui-button:hover {
+    background-color: rgba(33, 37, 37, 0.83);
+    font-size: 42px;
+    color: rgb(206, 206, 206);
+    -unity-font-style: bold;
+}

@@ -1,0 +1,14 @@
+<engine:UXML xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:engine="UnityEngine.UIElements" xmlns:editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
+    <Style src="project://database/Assets/Game/Scripts/UI/CommonStyleSheet.uss?fileID=7433441132597879392&amp;guid=28d2d91083528f66da1c8c560d4bfaeb&amp;type=3#CommonStyleSheet" />
+    <engine:VisualElement name="MenuContent" style="flex-grow: 1; align-items: stretch; justify-content: space-between; width: 30%; padding-left: 16px; padding-top: 16px; padding-right: 16px; padding-bottom: 16px; margin-top: 0; margin-right: 0; margin-bottom: 0; margin-left: 0; background-color: rgba(0, 0, 0, 0.71); align-self: flex-start; left: 2%; align-content: flex-start;">
+        <engine:Label text="CIRCUITOS" name="Title" enabled="true" enable-rich-text="true" emoji-fallback-support="true" style="width: 100%; color: rgb(255, 255, 255); -unity-font-definition: resource(&apos;FlatSkin/Font/Roboto-BlackItalic&apos;); font-size: 100px; -unity-text-align: middle-center;" />
+        <engine:VisualElement name="Buttons" style="flex-grow: 1; width: 100%; height: 702%; margin-top: 0; margin-right: 0; margin-bottom: 0; margin-left: 0; padding-top: 128px; padding-right: 0; padding-bottom: 0; padding-left: 0;">
+            <engine:Button text="Tutorial" name="ButtonTutorial" selectable="false" focusable="false" class="ui-button" />
+            <engine:Button text="Jogar" name="ButtonPlay" class="ui-button" />
+            <engine:Button text="Configurações" name="ButtonSettings" class="ui-button" />
+            <engine:Button text="Créditos" name="ButtonCredits" class="ui-button" />
+            <engine:Button text="Sair" name="ButtonExit" class="ui-button" />
+        </engine:VisualElement>
+        <engine:Label text="Versão 0.1.0" name="VersionText" class="ui-text" style="-unity-text-align: middle-center; white-space: nowrap; justify-content: flex-start; align-self: center;" />
+    </engine:VisualElement>
+</engine:UXML>

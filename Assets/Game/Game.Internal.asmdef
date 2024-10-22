@@ -1,0 +1,16 @@
+{
+    "name": "Game.Internal",
+    "rootNamespace": "",
+    "references": [
+        "GUID:cc12b9fd04eb22750ac6e554906ffda5"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

@@ -6,7 +6,7 @@ namespace Circuits.Utility
     {
         public static T Instance { get; private set; }
 
-        protected virtual void Awake()
+        public virtual void Awake()
         {
             if (Instance != null && Instance != this)
             {

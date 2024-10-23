@@ -12,14 +12,15 @@ namespace Circuits
         public UIControllerGameManager UI;
         
         private readonly Logger _logger = new Logger("GameManager");
-        public void Awake()
+        public override void Awake()
         {
+            base.Awake();
             StartCoroutine(ILoadScreen(IFirstSetup()));
         }
 
         public IEnumerator IFirstSetup()
         {
-            yield return new WaitForSeconds(5f);
+            yield return new WaitForSeconds(.1f);
         }
 
         public void SaveData()

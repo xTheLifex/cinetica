@@ -28,8 +28,13 @@ namespace Circuits.UI
             _loadingIcon.transform.rotation = Quaternion.Euler(0f, 0f, _loadingIcon.transform.rotation.eulerAngles.z +
                                                                        (Time.deltaTime * 100f));
         }
-
+        
         public IEnumerator IToggleBlockers(bool state, bool instant = false)
+        {
+            yield return IToggleBlockers(state, 1f, instant);
+        }
+        
+        public IEnumerator IToggleBlockers(bool state, float time = 1f, bool instant = false)
         {
             Debug.Log("Toggling Blockers to: " + state);
             var completed = false;
@@ -42,7 +47,7 @@ namespace Circuits.UI
             }
             Set(from);
             
-            LeanTween.value(gameObject, from, to, 1f)
+            LeanTween.value(gameObject, from, to, time)
                 .setOnUpdate(Set)
                 .setOnComplete(() => completed = true);
 
@@ -60,13 +65,21 @@ namespace Circuits.UI
 
         public IEnumerator IToggleLoadingScreen(bool state, bool instant = false)
         {
+            yield return IToggleLoadingScreen(state, 0.25f, instant);
+        }
+        
+        public IEnumerator IToggleLoadingScreen(bool state, float time, bool instant)
+        {
+            Color og = _loadingOverlay.style.backgroundColor.value;
             Debug.Log("Toggling Loading Screen to: " + state);
             if (!state)
                 _loadingIcon.visible = false;
+            else
+                _loadingOverlay.pickingMode = PickingMode.Position;
             var completed = false;
-            // Value here is transparency, when turning on it goes from 100 to 0.
-            var from = state ? 0f : 1f;
-            var to = state ? 1f : 0f;
+            // Value here is transparency
+            var from = state ? 0f : .6f;
+            var to = state ? .6f : 0f;
             if (instant)
             {
                 Set(to);
@@ -74,20 +87,22 @@ namespace Circuits.UI
             }
             Set(from);
             
-            LeanTween.value(gameObject, from, to, 1f)
+            LeanTween.value(gameObject, from, to, time)
                 .setOnUpdate(Set)
                 .setOnComplete(() => completed = true);
 
             yield return new WaitUntil(() => completed);
             if (state)
                 _loadingIcon.visible = true;
+            else
+                _loadingOverlay.pickingMode = PickingMode.Ignore;
             Debug.Log("Loading Screen set to: " + state);
             Set(to);
             yield break;
             
             void Set(float a)
             {
-                _loadingOverlay.style.backgroundColor = new StyleColor(new Color(0f, 0f, 0f, a));
+                _loadingOverlay.style.backgroundColor = new StyleColor(new Color(og.r, og.g, og.b, a));
             }
         }
     }

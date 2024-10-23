@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using UnityEngine;
 using UnityEngine.UIElements;
 using Logger = Circuits.Utility.Logger;
@@ -31,9 +32,20 @@ namespace Circuits.UI
         }
         
         private void TutorialButton() {}
-        private void PlayButton() {}
+
+        private void PlayButton()
+        {
+            StartCoroutine(Test());
+        }
         private void SettingsButton() {}
         private void CreditsButton() {}
         private void QuitButton() {}
+
+        private IEnumerator Test()
+        {
+            yield return GameManager.Instance.UI.IToggleLoadingScreen(true);
+            yield return new WaitForSeconds(2.5f);
+            yield return GameManager.Instance.UI.IToggleLoadingScreen(false);
+        }
     }
 }

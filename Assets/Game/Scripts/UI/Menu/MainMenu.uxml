@@ -7,7 +7,7 @@
             <engine:Button text="Jogar" name="ButtonPlay" class="ui-button" />
             <engine:Button text="Configurações" name="ButtonSettings" class="ui-button" />
             <engine:Button text="Créditos" name="ButtonCredits" class="ui-button" />
-            <engine:Button text="Sair" name="ButtonExit" class="ui-button" />
+            <engine:Button text="Sair" name="ButtonQuit" class="ui-button" />
         </engine:VisualElement>
         <engine:Label text="Versão 0.1.0" name="VersionText" class="ui-text" style="-unity-text-align: middle-center; white-space: nowrap; justify-content: flex-start; align-self: center;" />
     </engine:VisualElement>

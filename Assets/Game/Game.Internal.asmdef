@@ -2,7 +2,8 @@
     "name": "Game.Internal",
     "rootNamespace": "",
     "references": [
-        "GUID:cc12b9fd04eb22750ac6e554906ffda5"
+        "GUID:cc12b9fd04eb22750ac6e554906ffda5",
+        "GUID:75469ad4d38634e559750d17036d5f7c"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],

@@ -9,6 +9,12 @@ namespace Circuits
 {
     public partial class GameManager : Singleton<GameManager>
     {
+        public enum SceneID
+        {
+            Menu = 0,
+            Game = 1
+        }
+        
         /// <summary>
         /// Fades the screen to a black overlay with loading icon showing up.
         /// </summary>
@@ -74,7 +80,7 @@ namespace Circuits
             yield return IShowScreen();
             if (obstruct) yield return IClearView();
         }
-
+        
         /// <summary>
         /// Calls necessary methods to load a new scene.
         /// </summary>

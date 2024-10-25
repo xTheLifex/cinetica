@@ -5,6 +5,7 @@
         <engine:VisualElement name="Buttons" style="flex-grow: 1; width: 100%; height: 702%; margin-top: 0; margin-right: 0; margin-bottom: 0; margin-left: 0; padding-top: 128px; padding-right: 0; padding-bottom: 0; padding-left: 0;">
             <engine:Button text="Tutorial" name="ButtonTutorial" selectable="false" focusable="false" class="ui-button" />
             <engine:Button text="Jogar" name="ButtonPlay" class="ui-button" />
+            <engine:Button text="Modo Livre" name="ButtonSandbox" class="ui-button" />
             <engine:Button text="Configurações" name="ButtonSettings" class="ui-button" />
             <engine:Button text="Créditos" name="ButtonCredits" class="ui-button" />
             <engine:Button text="Sair" name="ButtonQuit" class="ui-button" />

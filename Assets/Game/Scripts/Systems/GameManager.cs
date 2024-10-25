@@ -3,29 +3,43 @@ using System.Collections;
 using Circuits.UI;
 using Circuits.Utility;
 using UnityEngine;
+using UnityEngine.Events;
 using Logger = Circuits.Utility.Logger;
 
 namespace Circuits
 {
     public partial class GameManager : Singleton<GameManager>
     {
+        [Header("Misc")]
         public UIControllerGameManager UI;
-        
         private readonly Logger _logger = new Logger("GameManager");
         public override void Awake()
         {
             base.Awake();
+            InitializeInput();
+            LoadPlayerData();
             StartCoroutine(ILoadScreen(IFirstSetup()));
         }
 
+        public virtual void Update()
+        {
+            UpdateInput();
+            #if UNITY_EDITOR
+                UpdateDebug();
+            #endif
+        }
+        
         public IEnumerator IFirstSetup()
         {
+            //TODO: Move to GameManager.Quality?
+            Application.targetFrameRate = 60;
+            QualitySettings.vSyncCount = 1; 
             yield return new WaitForSeconds(.1f);
         }
 
         public void SaveData()
         {
-            // TODO: Save data here.
+            SavePlayerData();
         }
         
         public void Quit()

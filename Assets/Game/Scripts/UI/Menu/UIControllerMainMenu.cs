@@ -8,11 +8,12 @@ namespace Circuits.UI
 {
     public class UIControllerMainMenu : UIController
     {
-        private Button _buttonTutorial;
-        private Button _buttonPlay;
-        private Button _buttonSettings;
-        private Button _buttonCredits;
-        private Button _buttonQuit;
+        private Button _buttonTutorial, 
+            _buttonPlay, 
+            _buttonSandbox,
+            _buttonSettings, 
+            _buttonCredits, 
+            _buttonQuit;
 
         public override void Awake()
         {
@@ -20,32 +21,33 @@ namespace Circuits.UI
 
             _buttonTutorial = _document.rootVisualElement.Q<Button>("ButtonTutorial");
             _buttonPlay = _document.rootVisualElement.Q<Button>("ButtonPlay");
+            _buttonSandbox = _document.rootVisualElement.Q<Button>("ButtonSandbox");
             _buttonSettings = _document.rootVisualElement.Q<Button>("ButtonSettings");
             _buttonCredits = _document.rootVisualElement.Q<Button>("ButtonCredits");
             _buttonQuit = _document.rootVisualElement.Q<Button>("ButtonQuit");
 
             _buttonTutorial.clicked += TutorialButton;
             _buttonPlay.clicked += PlayButton;
+            _buttonSandbox.clicked += SandboxButton;
             _buttonSettings.clicked += SettingsButton;
             _buttonCredits.clicked += CreditsButton;
             _buttonQuit.clicked += QuitButton;
+
+            GameManager.OnPlayerDataChanged.AddListener(SetupButtons);
+            SetupButtons();
+        }
+
+        private void SetupButtons()
+        {
+            _buttonPlay.SetEnabled(GameManager.playerData.tutorialComplete);
+            _buttonSandbox.SetEnabled(GameManager.playerData.tutorialComplete);
         }
         
         private void TutorialButton() {}
-
-        private void PlayButton()
-        {
-            StartCoroutine(Test());
-        }
+        private void PlayButton() {}
+        private void SandboxButton() {}
         private void SettingsButton() {}
         private void CreditsButton() {}
         private void QuitButton() {}
-
-        private IEnumerator Test()
-        {
-            yield return GameManager.Instance.UI.IToggleLoadingScreen(true);
-            yield return new WaitForSeconds(2.5f);
-            yield return GameManager.Instance.UI.IToggleLoadingScreen(false);
-        }
     }
 }

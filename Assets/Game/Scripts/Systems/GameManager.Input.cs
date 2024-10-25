@@ -42,22 +42,27 @@ namespace Circuits
 
         }
 
+        private Vector3 ComposeFingerPosVector(Vector2 fingerPos)
+        {
+            return new Vector3(fingerPos.x, fingerPos.y, Camera.main!.farClipPlane);
+        }
+
         private void FingerMove(Finger finger)
         {
             if (!Camera.main) return;
-            OnTouch?.Invoke(Camera.main.ScreenToWorldPoint(finger.currentTouch.screenPosition));
+            OnTouch?.Invoke(Camera.main.ScreenToWorldPoint(ComposeFingerPosVector(finger.screenPosition)));
         }
 
         private void FingerUp(Finger finger)
         {
             if (!Camera.main) return;
-            OnTouchEnd?.Invoke(Camera.main.ScreenToWorldPoint(finger.currentTouch.screenPosition));
+            OnTouchEnd?.Invoke(Camera.main.ScreenToWorldPoint(ComposeFingerPosVector(finger.screenPosition)));
         }
 
         private void FingerDown(Finger finger)
         {
             if (!Camera.main) return;
-            OnTouchStart?.Invoke(Camera.main.ScreenToWorldPoint(finger.currentTouch.screenPosition));
+            OnTouchStart?.Invoke(Camera.main.ScreenToWorldPoint(ComposeFingerPosVector(finger.screenPosition)));
         }
         
         private void UpdateInput()

@@ -3,6 +3,8 @@ using UnityEngine;
 
 namespace Circuits
 {
+    // TODO: Make movement independent on world positon, move entirely using screen delta.
+    
     public class PlayerControl : MonoBehaviour
     {
         public void OnEnable()
@@ -30,23 +32,27 @@ namespace Circuits
         private void Touch(Vector3 pos)
         {
             #if UNITY_EDITOR
-            Debug.DrawRay(pos, pos + Vector3.up * 10f, Color.magenta);
+            //if (Physics.Raycast(transform.position, dir - transform.position, out RaycastHit hit))
+            var camPos = Camera.main!.transform.position;
+            Debug.DrawRay(camPos, (pos - camPos).normalized * 64f, Color.magenta);
             #endif
         }
         
         private void TouchStart(Vector3 pos)
         {
             #if UNITY_EDITOR
-            Debug.Log("Touch Start on  " + pos);
-            Debug.DrawRay(pos, pos + Vector3.up * 10f, Color.green, 1f);
+            //if (Physics.Raycast(transform.position, dir - transform.position, out RaycastHit hit))
+            var camPos = Camera.main!.transform.position;
+            Debug.DrawRay(camPos, (pos - camPos).normalized * 64f, Color.green);
             #endif
         }
 
         private void TouchEnd(Vector3 pos)
         {
             #if UNITY_EDITOR
-            Debug.Log("Touch End on  " + pos);
-            Debug.DrawRay(pos, pos + Vector3.up * 10f, Color.red, 1f);
+            //if (Physics.Raycast(transform.position, dir - transform.position, out RaycastHit hit))
+            var camPos = Camera.main!.transform.position;
+            Debug.DrawRay(camPos, (pos - camPos).normalized * 64f, Color.red);
             #endif
         }
     }

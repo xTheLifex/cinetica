@@ -2,7 +2,8 @@ using Circuits.Utility;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.InputSystem;
-using UnityEngine.InputSystem.Controls;
+using UnityEngine.InputSystem.EnhancedTouch;
+using EnhancedTouch = UnityEngine.InputSystem.EnhancedTouch;
 
 namespace Circuits
 {
@@ -30,31 +31,38 @@ namespace Circuits
             _playerInput = GetComponent<PlayerInput>();
             _touchPosition = _playerInput.actions["TouchPosition"];
             _touchPress = _playerInput.actions["TouchPress"];
+            
+            EnhancedTouchSupport.Enable();
+            TouchSimulation.Enable();
 
-            _touchPress.performed += Touch;
+            EnhancedTouch.Touch.onFingerDown += FingerDown;
+            EnhancedTouch.Touch.onFingerUp += FingerUp;
+            EnhancedTouch.Touch.onFingerMove += FingerMove;
+            
+
         }
-        
+
+        private void FingerMove(Finger finger)
+        {
+            if (!Camera.main) return;
+            OnTouch?.Invoke(Camera.main.ScreenToWorldPoint(finger.currentTouch.screenPosition));
+        }
+
+        private void FingerUp(Finger finger)
+        {
+            if (!Camera.main) return;
+            OnTouchEnd?.Invoke(Camera.main.ScreenToWorldPoint(finger.currentTouch.screenPosition));
+        }
+
+        private void FingerDown(Finger finger)
+        {
+            if (!Camera.main) return;
+            OnTouchStart?.Invoke(Camera.main.ScreenToWorldPoint(finger.currentTouch.screenPosition));
+        }
         
         private void UpdateInput()
         {
             
-        }
-
-        private void Touch(InputAction.CallbackContext context)
-        {
-            if (!inputEnabled) return;
-            var cam = Camera.main;
-            if (!cam) return;
-            Vector3 position = cam.ScreenToWorldPoint(_touchPosition.ReadValue<Vector2>());
-            position.y = 0f;
-            
-            if (_touchPress.WasCompletedThisFrame())
-                OnTouchStart.Invoke(position);
-            if (_touchPress.WasReleasedThisFrame())
-                OnTouchEnd.Invoke(position);
-            OnTouch.Invoke(position);
-        
-            _lastTouchPos = position;
         }
     }
 }

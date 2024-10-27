@@ -1,4 +1,5 @@
 using UnityEngine;
+using EnhancedTouch = UnityEngine.InputSystem.EnhancedTouch;
 
 namespace Circuits
 {
@@ -12,6 +13,7 @@ namespace Circuits
         public float returnSpeed = 0.5f;
         private Vector3 _originPoint;
         private Vector3 _targetPosition;
+        private Vector3 _startPosition;
         private Vector3 _velocity = Vector3.zero;
 
         private void Start()
@@ -19,9 +21,16 @@ namespace Circuits
             _mainCamera = Camera.main;
             _originPoint = _mainCamera.transform.position;
             _targetPosition = _originPoint;
+            
+            EnhancedTouch.Touch.onFingerDown += FingerDown;
 
             GameManager.OnPan.AddListener(PanCamera);
             GameManager.OnZoom.AddListener(ZoomCamera);
+        }
+
+        private void FingerDown(EnhancedTouch.Finger obj)
+        {
+            _startPosition = _mainCamera.transform.position;
         }
 
         private void PanCamera(Vector2 delta)
@@ -29,7 +38,7 @@ namespace Circuits
             if (!_mainCamera) return;
 
             Vector3 movement = new Vector3(-delta.x * panSpeed, 0, -delta.y * panSpeed);
-            _targetPosition = _mainCamera.transform.position + movement;
+            _targetPosition = _startPosition + movement;
 
             // Calculate distance from origin and adjust pan speed
             float distanceFromOrigin = Vector3.Distance(_targetPosition, _originPoint);
@@ -46,15 +55,7 @@ namespace Circuits
             if (!_mainCamera) return;
 
             // Move smoothly towards target position
-            _mainCamera.transform.position = Vector3.SmoothDamp(_mainCamera.transform.position, _targetPosition, ref _velocity, 0.1f);
-
-            // Automatically return to origin if too far
-            float currentDistance = Vector3.Distance(_mainCamera.transform.position, _originPoint);
-            if (currentDistance > maxDistance)
-            {
-                Vector3 returnDirection = (_originPoint - _mainCamera.transform.position).normalized;
-                _mainCamera.transform.position = Vector3.SmoothDamp(_mainCamera.transform.position, _originPoint, ref _velocity, returnSpeed);
-            }
+            _mainCamera.transform.position = Vector3.Lerp(_mainCamera.transform.position, _targetPosition, 0.1f);
         }
 
         private void ZoomCamera(float zoomAmount)

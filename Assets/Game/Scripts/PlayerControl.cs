@@ -29,7 +29,7 @@ namespace Circuits
         }
         #endif
 
-        private void Touch(Vector3 pos)
+        private void Touch(Vector3 screenPos, Vector3 pos)
         {
             #if UNITY_EDITOR
             //if (Physics.Raycast(transform.position, dir - transform.position, out RaycastHit hit))
@@ -38,7 +38,7 @@ namespace Circuits
             #endif
         }
         
-        private void TouchStart(Vector3 pos)
+        private void TouchStart(Vector3 screenPos, Vector3 pos)
         {
             #if UNITY_EDITOR
             //if (Physics.Raycast(transform.position, dir - transform.position, out RaycastHit hit))
@@ -47,7 +47,7 @@ namespace Circuits
             #endif
         }
 
-        private void TouchEnd(Vector3 pos)
+        private void TouchEnd(Vector3 screenPos, Vector3 pos)
         {
             #if UNITY_EDITOR
             //if (Physics.Raycast(transform.position, dir - transform.position, out RaycastHit hit))

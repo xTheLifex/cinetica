@@ -7,7 +7,6 @@ using EnhancedTouch = UnityEngine.InputSystem.EnhancedTouch;
 
 namespace Circuits
 {
-    [RequireComponent(typeof(PlayerInput))]
     public partial class GameManager : Singleton<GameManager>
     {
         [Header("Input")]
@@ -15,12 +14,10 @@ namespace Circuits
         public bool movementEnabled = true;
         public bool interactionEnabled = true;
         
+        public static UnityEvent<Vector3, Vector3> OnTouch = new UnityEvent<Vector3, Vector3>();
+        public static UnityEvent<Vector3, Vector3> OnTouchStart = new UnityEvent<Vector3, Vector3>();
+        public static UnityEvent<Vector3, Vector3> OnTouchEnd = new UnityEvent<Vector3, Vector3>();
         
-        public static UnityEvent<Vector3> OnTouch = new UnityEvent<Vector3>();
-        public static UnityEvent<Vector3> OnTouchStart = new UnityEvent<Vector3>();
-        public static UnityEvent<Vector3> OnTouchEnd = new UnityEvent<Vector3>();
-
-        private PlayerInput _playerInput;
         private InputAction _touchPosition;
         private InputAction _touchPress;
         
@@ -28,18 +25,12 @@ namespace Circuits
         private Vector3 _lastTouchPos = Vector3.zero;
         private void InitializeInput()
         {
-            _playerInput = GetComponent<PlayerInput>();
-            _touchPosition = _playerInput.actions["TouchPosition"];
-            _touchPress = _playerInput.actions["TouchPress"];
-            
             EnhancedTouchSupport.Enable();
             TouchSimulation.Enable();
 
             EnhancedTouch.Touch.onFingerDown += FingerDown;
             EnhancedTouch.Touch.onFingerUp += FingerUp;
             EnhancedTouch.Touch.onFingerMove += FingerMove;
-            
-
         }
 
         private Vector3 ComposeFingerPosVector(Vector2 fingerPos)
@@ -50,19 +41,19 @@ namespace Circuits
         private void FingerMove(Finger finger)
         {
             if (!Camera.main) return;
-            OnTouch?.Invoke(Camera.main.ScreenToWorldPoint(ComposeFingerPosVector(finger.screenPosition)));
+            OnTouch?.Invoke(finger.screenPosition, Camera.main.ScreenToWorldPoint(ComposeFingerPosVector(finger.screenPosition)));
         }
 
         private void FingerUp(Finger finger)
         {
             if (!Camera.main) return;
-            OnTouchEnd?.Invoke(Camera.main.ScreenToWorldPoint(ComposeFingerPosVector(finger.screenPosition)));
+            OnTouchEnd?.Invoke(finger.screenPosition, Camera.main.ScreenToWorldPoint(ComposeFingerPosVector(finger.screenPosition)));
         }
 
         private void FingerDown(Finger finger)
         {
             if (!Camera.main) return;
-            OnTouchStart?.Invoke(Camera.main.ScreenToWorldPoint(ComposeFingerPosVector(finger.screenPosition)));
+            OnTouchStart?.Invoke(finger.screenPosition, Camera.main.ScreenToWorldPoint(ComposeFingerPosVector(finger.screenPosition)));
         }
         
         private void UpdateInput()

@@ -7,6 +7,14 @@ namespace Circuits
     
     public class PlayerControl : MonoBehaviour
     {
+        private Plane _movementPlane;
+        private bool _moving = false;
+
+        private void Start()
+        {
+            _movementPlane = new Plane(Vector3.up, 0f);
+        }
+
         public void OnEnable()
         {
             GameManager.OnTouch.AddListener(Touch);
@@ -34,26 +42,45 @@ namespace Circuits
             #if UNITY_EDITOR
             //if (Physics.Raycast(transform.position, dir - transform.position, out RaycastHit hit))
             var camPos = Camera.main!.transform.position;
-            Debug.DrawRay(camPos, (pos - camPos).normalized * 64f, Color.magenta);
+            Debug.DrawRay(camPos, (pos - camPos).normalized * 8f, Color.magenta);
             #endif
+            
+            Vector3 dir = (pos - camPos).normalized;
+            Ray ray = new Ray(camPos, dir);
+            if (_movementPlane.Raycast(ray, out float enter))
+            {
+                Vector3 hitPoint = ray.GetPoint(enter);
+                Debug.DrawLine(hitPoint, hitPoint + Vector3.up * 8f, Color.green);
+            }
         }
         
         private void TouchStart(Vector3 screenPos, Vector3 pos)
         {
-            #if UNITY_EDITOR
-            //if (Physics.Raycast(transform.position, dir - transform.position, out RaycastHit hit))
             var camPos = Camera.main!.transform.position;
-            Debug.DrawRay(camPos, (pos - camPos).normalized * 64f, Color.green);
+            #if UNITY_EDITOR
+            Debug.DrawRay(camPos, (pos - camPos).normalized * 8f, Color.green);
             #endif
+            
+            Vector3 dir = (pos - camPos).normalized;
+            Ray ray = new Ray(camPos, dir);
+            if (_movementPlane.Raycast(ray, out float enter))
+            {
+                // Hit point in the movement plane.
+                Vector3 hitPoint = ray.GetPoint(enter);
+                Debug.DrawLine(hitPoint, hitPoint + Vector3.up * 8f, Color.green);
+                
+                _moving = true;
+            }
         }
 
         private void TouchEnd(Vector3 screenPos, Vector3 pos)
         {
-            #if UNITY_EDITOR
-            //if (Physics.Raycast(transform.position, dir - transform.position, out RaycastHit hit))
-            var camPos = Camera.main!.transform.position;
-            Debug.DrawRay(camPos, (pos - camPos).normalized * 64f, Color.red);
-            #endif
+            _moving = false;
+        }
+
+        private void OnTap(Vector3 screenPos, Vector3 pos)
+        {
+            
         }
     }
 }

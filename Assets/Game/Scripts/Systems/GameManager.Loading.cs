@@ -94,6 +94,7 @@ namespace Circuits
             yield return IObstructView();
             yield return IFadeScreen();
             _logger.Log("Loading a new scene...");
+            //SceneManager.LoadScene(index, LoadSceneMode.Single);
             var loading = SceneManager.LoadSceneAsync(index, LoadSceneMode.Single);
             loading.allowSceneActivation = false;
             while (!loading.isDone)
@@ -102,11 +103,9 @@ namespace Circuits
                 {
                     _logger.Log("Scene appears to be loaded. Enabling scene activation and continuing.");
                     loading.allowSceneActivation = true;
-                    break;
                 }
                 yield return null;
             }
-
             _logger.Log("Waiting additional task...");
             if (additionalTask != null) yield return additionalTask;
             _logger.Log("Level loaded!");
@@ -117,6 +116,16 @@ namespace Circuits
         public IEnumerator ILoadLevel(int index)
         {
             yield return ILoadLevel(index, null);
+        }
+
+        public void LoadLevel(int index)
+        {
+            StartCoroutine(ILoadLevel(index));
+        }
+
+        public void LoadLevel(int index, IEnumerator additionalTask)
+        {
+            StartCoroutine(ILoadLevel(index, additionalTask));
         }
     }
 }

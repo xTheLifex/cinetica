@@ -54,7 +54,8 @@ namespace Circuits.UI
 
         private void PlayButton()
         {
-            StartCoroutine(GameManager.Instance.ILoadLevel(1));
+            GameManager.Instance.LoadLevel(1);
+            _buttonPlay.SetEnabled(false);
         }
         private void SettingsButton() {}
         private void CreditsButton() {}

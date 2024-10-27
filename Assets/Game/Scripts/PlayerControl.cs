@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 using EnhancedTouch = UnityEngine.InputSystem.EnhancedTouch;
 
@@ -15,13 +16,13 @@ namespace Circuits
         private Vector3 _targetPosition;
         private Vector3 _startPosition;
         private Vector3 _velocity = Vector3.zero;
-
+        private Bounds _bounds;
         private void Start()
         {
             _mainCamera = Camera.main;
             _originPoint = _mainCamera.transform.position;
             _targetPosition = _originPoint;
-            
+            _bounds = new Bounds(_originPoint, new Vector3(maxDistance, maxDistance, maxDistance));
             EnhancedTouch.Touch.onFingerDown += FingerDown;
 
             GameManager.OnPan.AddListener(PanCamera);
@@ -38,16 +39,21 @@ namespace Circuits
             if (!_mainCamera) return;
 
             Vector3 movement = new Vector3(-delta.x * panSpeed, 0, -delta.y * panSpeed);
-            _targetPosition = _startPosition + movement;
+            var newPos = _startPosition + movement;
 
             // Calculate distance from origin and adjust pan speed
-            float distanceFromOrigin = Vector3.Distance(_targetPosition, _originPoint);
+            float distanceFromOrigin = Vector3.Distance(newPos, _originPoint);
             if (distanceFromOrigin > maxDistance)
             {
                 // Scale down movement speed based on distance
-                float speedScale = Mathf.Clamp(1 - (distanceFromOrigin - maxDistance) / maxDistance, 0.1f, 1f);
-                _targetPosition = Vector3.Lerp(_originPoint, _targetPosition, speedScale);
+                float speedScale = Mathf.Clamp(1 - (distanceFromOrigin - maxDistance) / maxDistance, 0f, 1f);
+                newPos = Vector3.Lerp(_originPoint, newPos, speedScale);
             }
+
+            if (!_bounds.Contains(newPos))
+                return;
+
+            _targetPosition = newPos;
         }
 
         private void Update()
@@ -71,6 +77,12 @@ namespace Circuits
         {
             GameManager.OnPan.RemoveListener(PanCamera);
             GameManager.OnZoom.RemoveListener(ZoomCamera);
+        }
+
+        private void OnDrawGizmos()
+        {
+            Gizmos.color = new Color(0.25f, 1f, 0.25f, 0.25f);
+            Gizmos.DrawCube(Application.isPlaying ? _originPoint : Camera.main!.transform.position, _bounds.size);
         }
     }
 }

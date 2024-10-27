@@ -31,10 +31,10 @@ namespace Circuits.UI
         
         public IEnumerator IToggleBlockers(bool state, bool instant = false)
         {
-            yield return IToggleBlockers(state, 1f, instant);
+            yield return IToggleBlockers(state, 0.5f, instant);
         }
         
-        public IEnumerator IToggleBlockers(bool state, float time = 1f, bool instant = false)
+        public IEnumerator IToggleBlockers(bool state, float time = 0.5f, bool instant = false)
         {
             Debug.Log("Toggling Blockers to: " + state);
             var completed = false;

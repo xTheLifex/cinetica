@@ -9,11 +9,6 @@ namespace Circuits
 {
     public partial class GameManager : Singleton<GameManager>
     {
-        [Header("Input")]
-        public bool inputEnabled = true;
-        public bool movementEnabled = true;
-        public bool interactionEnabled = true;
-
         public static UnityEvent<Vector2> OnPan = new UnityEvent<Vector2>();
         public static UnityEvent<float> OnZoom = new UnityEvent<float>();
 

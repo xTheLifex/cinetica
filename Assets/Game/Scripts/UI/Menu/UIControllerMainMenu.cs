@@ -1,5 +1,6 @@
 using System;
 using System.Collections;
+using UnityEditor.Overlays;
 using UnityEngine;
 using UnityEngine.UIElements;
 using Logger = Circuits.Utility.Logger;
@@ -15,6 +16,8 @@ namespace Circuits.UI
             _buttonQuit,
             _buttonTutorialConfirm;
 
+        private VisualElement _tutorialWindow;
+
         public override void Awake()
         {
             base.Awake();
@@ -26,6 +29,8 @@ namespace Circuits.UI
             _buttonQuit = _document.rootVisualElement.Q<Button>("ButtonQuit");
             _buttonTutorialConfirm = _document.rootVisualElement.Q<Button>("ButtonTutorialConfirm");
 
+            _tutorialWindow = _document.rootVisualElement.Q<VisualElement>("BasicTutorial");
+            _tutorialWindow.style.top = new StyleLength(new Length(105f, LengthUnit.Percent));
             _buttonTutorial.clicked += TutorialButton;
             _buttonPlay.clicked += PlayButton;
             _buttonSettings.clicked += SettingsButton;
@@ -41,15 +46,39 @@ namespace Circuits.UI
         {
             _buttonPlay.SetEnabled(GameManager.playerData.tutorialComplete);
         }
-        
-        private void TutorialButton() {}
-        private void PlayButton() {}
+
+        private void TutorialButton()
+        {
+            SetTutorialWindow(true);
+        }
+
+        private void PlayButton()
+        {
+            StartCoroutine(GameManager.Instance.ILoadLevel(1));
+        }
         private void SettingsButton() {}
         private void CreditsButton() {}
         private void QuitButton() {}
         private void TutorialButtonConfirm()
         { 
-            
+            SetTutorialWindow(false);
+            GameManager.playerData.tutorialComplete = true;
+            GameManager.SavePlayerData();
+        }
+
+        private void SetTutorialWindow(bool state, float time = 1f)
+        {
+            var from = state ? 105f : 5f;
+            var to = state ? 5f : 105f;
+
+            LeanTween.value(gameObject, from, to, time)
+                .setOnUpdate(Set)
+                .setEaseSpring();
+
+            void Set(float x)
+            {
+                _tutorialWindow.style.top = new StyleLength(new Length(x, LengthUnit.Percent));
+            }
         }
     }
 }

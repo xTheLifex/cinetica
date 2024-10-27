@@ -6,8 +6,6 @@ namespace Circuits
 {
     public class PlayerControl : MonoBehaviour
     {
-        private Camera _mainCamera;
-
         [Header("Pan Settings")]
         public float panSpeed = 0.01f;
         public float maxDistance = 20f;
@@ -19,8 +17,7 @@ namespace Circuits
         private Bounds _bounds;
         private void Start()
         {
-            _mainCamera = Camera.main;
-            _originPoint = _mainCamera.transform.position;
+            _originPoint = Camera.main!.transform.position;
             _targetPosition = _originPoint;
             _bounds = new Bounds(_originPoint, new Vector3(maxDistance, maxDistance, maxDistance));
             EnhancedTouch.Touch.onFingerDown += FingerDown;
@@ -31,12 +28,12 @@ namespace Circuits
 
         private void FingerDown(EnhancedTouch.Finger obj)
         {
-            _startPosition = _mainCamera.transform.position;
+            _startPosition = Camera.main!.transform.position;
         }
 
         private void PanCamera(Vector2 delta)
         {
-            if (!_mainCamera) return;
+            if (!Camera.main) return;
 
             Vector3 movement = new Vector3(-delta.x * panSpeed, 0, -delta.y * panSpeed);
             var newPos = _startPosition + movement;
@@ -58,19 +55,19 @@ namespace Circuits
 
         private void Update()
         {
-            if (!_mainCamera) return;
+            if (!Camera.main) return;
 
             // Move smoothly towards target position
-            _mainCamera.transform.position = Vector3.Lerp(_mainCamera.transform.position, _targetPosition, 0.1f);
+            Camera.main.transform.position = Vector3.Lerp(Camera.main.transform.position, _targetPosition, 0.1f);
         }
 
         private void ZoomCamera(float zoomAmount)
         {
-            if (!_mainCamera) return;
+            if (!Camera.main) return;
 
             // Optional zoom feature; modify or comment out as needed
-            float newZoom = Mathf.Clamp(_mainCamera.orthographicSize - zoomAmount, 5f, 20f);
-            _mainCamera.orthographicSize = newZoom;
+            float newZoom = Mathf.Clamp(Camera.main.orthographicSize - zoomAmount, 5f, 20f);
+            Camera.main.orthographicSize = newZoom;
         }
 
         private void OnDisable()

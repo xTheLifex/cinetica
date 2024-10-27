@@ -1,5 +1,6 @@
 using System;
 using System.Collections;
+using System.Collections.Generic;
 using Circuits.Utility;
 using JetBrains.Annotations;
 using UnityEngine;
@@ -88,14 +89,34 @@ namespace Circuits
         /// <param name="additionalTask">An additional task to execute and await after the scene is loaded.</param>
         public IEnumerator ILoadLevel(int index, [CanBeNull] IEnumerator additionalTask)
         {
+            _logger.Log("Preparing to load a new scene.");
             UI.gameObject.SetActive(true);
             yield return IObstructView();
             yield return IFadeScreen();
-            yield return SceneManager.LoadSceneAsync(index, LoadSceneMode.Single);
-            if (additionalTask != null)
-                yield return additionalTask;
+            _logger.Log("Loading a new scene...");
+            var loading = SceneManager.LoadSceneAsync(index, LoadSceneMode.Single);
+            loading.allowSceneActivation = false;
+            while (!loading.isDone)
+            {
+                if (loading.progress >= 0.9f)
+                {
+                    _logger.Log("Scene appears to be loaded. Enabling scene activation and continuing.");
+                    loading.allowSceneActivation = true;
+                    break;
+                }
+                yield return null;
+            }
+
+            _logger.Log("Waiting additional task...");
+            if (additionalTask != null) yield return additionalTask;
+            _logger.Log("Level loaded!");
             yield return IShowScreen();
             yield return IClearView();
+        }
+
+        public IEnumerator ILoadLevel(int index)
+        {
+            yield return ILoadLevel(index, null);
         }
     }
 }

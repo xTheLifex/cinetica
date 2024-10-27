@@ -16,6 +16,7 @@ namespace Circuits
         public override void Awake()
         {
             base.Awake();
+            if (Instance != this) return;
             InitializeInput();
             LoadPlayerData();
             StartCoroutine(ILoadScreen(IFirstSetup()));

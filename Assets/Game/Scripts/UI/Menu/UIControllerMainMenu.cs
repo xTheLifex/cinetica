@@ -12,7 +12,8 @@ namespace Circuits.UI
             _buttonPlay, 
             _buttonSettings, 
             _buttonCredits, 
-            _buttonQuit;
+            _buttonQuit,
+            _buttonTutorialConfirm;
 
         public override void Awake()
         {
@@ -23,17 +24,19 @@ namespace Circuits.UI
             _buttonSettings = _document.rootVisualElement.Q<Button>("ButtonSettings");
             _buttonCredits = _document.rootVisualElement.Q<Button>("ButtonCredits");
             _buttonQuit = _document.rootVisualElement.Q<Button>("ButtonQuit");
+            _buttonTutorialConfirm = _document.rootVisualElement.Q<Button>("ButtonTutorialConfirm");
 
             _buttonTutorial.clicked += TutorialButton;
             _buttonPlay.clicked += PlayButton;
             _buttonSettings.clicked += SettingsButton;
             _buttonCredits.clicked += CreditsButton;
             _buttonQuit.clicked += QuitButton;
+            _buttonTutorialConfirm.clicked += TutorialButtonConfirm;
 
             GameManager.OnPlayerDataChanged.AddListener(SetupButtons);
             SetupButtons();
         }
-
+        
         private void SetupButtons()
         {
             _buttonPlay.SetEnabled(GameManager.playerData.tutorialComplete);
@@ -44,5 +47,9 @@ namespace Circuits.UI
         private void SettingsButton() {}
         private void CreditsButton() {}
         private void QuitButton() {}
+        private void TutorialButtonConfirm()
+        { 
+            
+        }
     }
 }

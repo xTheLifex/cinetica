@@ -15,3 +15,22 @@
     color: rgb(206, 206, 206);
     -unity-font-style: bold;
 }
+
+.panel {
+    flex-grow: 1;
+    align-items: stretch;
+    justify-content: space-between;
+    width: 30%;
+    padding-left: 16px;
+    padding-top: 16px;
+    padding-right: 16px;
+    padding-bottom: 16px;
+    margin-top: 0;
+    margin-right: 0;
+    margin-bottom: 0;
+    margin-left: 0;
+    background-color: rgba(0, 0, 0, 0.71);
+    align-self: flex-start;
+    left: 2%;
+    align-content: flex-start;
+}

@@ -23,6 +23,8 @@ namespace Circuits
 
         private void InitializeInput()
         {
+            OnPan.RemoveAllListeners();
+            OnZoom.RemoveAllListeners();
             EnhancedTouchSupport.Enable();
             TouchSimulation.Enable();
 

@@ -13,16 +13,14 @@ namespace Circuits
         public bool inputEnabled = true;
         public bool movementEnabled = true;
         public bool interactionEnabled = true;
-        
-        public static UnityEvent<Vector3, Vector3> OnTouch = new UnityEvent<Vector3, Vector3>();
-        public static UnityEvent<Vector3, Vector3> OnTouchStart = new UnityEvent<Vector3, Vector3>();
-        public static UnityEvent<Vector3, Vector3> OnTouchEnd = new UnityEvent<Vector3, Vector3>();
-        
-        private InputAction _touchPosition;
-        private InputAction _touchPress;
-        
-        private bool _touching = false;
-        private Vector3 _lastTouchPos = Vector3.zero;
+
+        public static UnityEvent<Vector2> OnPan = new UnityEvent<Vector2>();
+        public static UnityEvent<float> OnZoom = new UnityEvent<float>();
+
+        private float _initialDistance;
+        private float _lastZoomFactor;
+        private Vector2 _startScreenPosition;
+
         private void InitializeInput()
         {
             EnhancedTouchSupport.Enable();
@@ -33,32 +31,50 @@ namespace Circuits
             EnhancedTouch.Touch.onFingerMove += FingerMove;
         }
 
-        private Vector3 ComposeFingerPosVector(Vector2 fingerPos)
+        private void FingerMove(Finger obj)
         {
-            return new Vector3(fingerPos.x, fingerPos.y, Camera.main!.farClipPlane);
+            
         }
 
-        private void FingerMove(Finger finger)
+        private void UpdateInput()
         {
+            if (EnhancedTouch.Touch.activeTouches.Count <= 0)
+                return;
+
+            EnhancedTouch.Touch finger = EnhancedTouch.Touch.activeTouches[0];
             if (!Camera.main) return;
-            OnTouch?.Invoke(finger.screenPosition, Camera.main.ScreenToWorldPoint(ComposeFingerPosVector(finger.screenPosition)));
+
+            Vector2 delta = finger.screenPosition - _startScreenPosition;
+            OnPan.Invoke(delta);
+
+            // Pinch-to-zoom handling
+            if (EnhancedTouch.Touch.activeTouches.Count == 2)
+            {
+                EnhancedTouch.Touch secondFinger = EnhancedTouch.Touch.activeTouches[1];
+                float currentDistance = Vector2.Distance(finger.screenPosition, secondFinger.screenPosition);
+
+                if (_initialDistance == 0)
+                    _initialDistance = currentDistance;
+
+                float zoomFactor = currentDistance / _initialDistance;
+                if (Mathf.Abs(zoomFactor - _lastZoomFactor) > 0.01f)
+                {
+                    OnZoom.Invoke(zoomFactor - _lastZoomFactor);
+                    _lastZoomFactor = zoomFactor;
+                }
+            }
         }
 
         private void FingerUp(Finger finger)
         {
-            if (!Camera.main) return;
-            OnTouchEnd?.Invoke(finger.screenPosition, Camera.main.ScreenToWorldPoint(ComposeFingerPosVector(finger.screenPosition)));
+            _initialDistance = 0;
+            _lastZoomFactor = 0;
         }
 
         private void FingerDown(Finger finger)
         {
-            if (!Camera.main) return;
-            OnTouchStart?.Invoke(finger.screenPosition, Camera.main.ScreenToWorldPoint(ComposeFingerPosVector(finger.screenPosition)));
-        }
-        
-        private void UpdateInput()
-        {
-            
+            _initialDistance = 0;
+            _startScreenPosition = finger.screenPosition;
         }
     }
 }

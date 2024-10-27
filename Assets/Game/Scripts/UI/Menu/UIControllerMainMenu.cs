@@ -49,6 +49,7 @@ namespace Circuits.UI
 
         private void TutorialButton()
         {
+            SetAllWindows(false);
             SetTutorialWindow(true);
         }
 
@@ -57,24 +58,42 @@ namespace Circuits.UI
             GameManager.Instance.LoadLevel(1);
             _buttonPlay.SetEnabled(false);
         }
-        private void SettingsButton() {}
-        private void CreditsButton() {}
-        private void QuitButton() {}
+
+        private void SettingsButton()
+        {
+            SetAllWindows(false);
+        }
+
+        private void CreditsButton()
+        {
+            SetAllWindows(false);
+        }
+
+        private void QuitButton()
+        {
+            SetAllWindows(false);
+        }
         private void TutorialButtonConfirm()
         { 
-            SetTutorialWindow(false);
+            SetAllWindows(false);
             GameManager.playerData.tutorialComplete = true;
             GameManager.SavePlayerData();
         }
 
+        private void SetAllWindows(bool state)
+        {
+            SetTutorialWindow(state);
+        }
+        
         private void SetTutorialWindow(bool state, float time = 1f)
         {
-            var from = state ? 105f : 5f;
+            var from = _tutorialWindow.style.top.value.value;
             var to = state ? 5f : 105f;
-
+            
             LeanTween.value(gameObject, from, to, time)
                 .setOnUpdate(Set)
                 .setEaseSpring();
+
 
             void Set(float x)
             {

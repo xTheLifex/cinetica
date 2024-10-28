@@ -1,12 +1,7 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
-using log4net.Core;
-using UnityEditor.Overlays;
 using UnityEngine;
-using UnityEngine.Serialization;
 using UnityEngine.UIElements;
-using Logger = Circuits.Utility.Logger;
 using static Circuits.Utility.Utils; 
 namespace Circuits.UI
 {
@@ -153,12 +148,12 @@ namespace Circuits.UI
         private void CloseAllWindows()
         {
             SetWindowState(_tutorialWindow, false);
+            SetWindowState(_levelSelectWindow, false);
         }
         
         private void SetActiveWindow(VisualElement window)
         {
-            if (window != _tutorialWindow) SetWindowState(_tutorialWindow, false);
-            if (window != _levelSelectWindow) SetWindowState(_levelSelectWindow, false);
+            CloseAllWindows();
             SetWindowState(window, true);
         }
 
@@ -166,6 +161,12 @@ namespace Circuits.UI
         {
             var from = window.style.top.value.value;
             var to = state ? 5f : 105f;
+
+            if (time <= 0f)
+            {
+                Set(to);
+                return;
+            }
             
             LeanTween.value(gameObject, from, to, time)
                 .setOnUpdate(Set)

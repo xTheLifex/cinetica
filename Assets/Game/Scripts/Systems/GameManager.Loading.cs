@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using Circuits.Utility;
+using static Circuits.Utility.Utils;
 using JetBrains.Annotations;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -10,11 +11,7 @@ namespace Circuits
 {
     public partial class GameManager : Singleton<GameManager>
     {
-        public enum SceneID
-        {
-            Menu = 0,
-            Game = 1
-        }
+        public bool IsLoadingLevel { get; private set; }
         
         /// <summary>
         /// Fades the screen to a black overlay with loading icon showing up.
@@ -81,15 +78,16 @@ namespace Circuits
             yield return IShowScreen();
             if (obstruct) yield return IClearView();
         }
-        
+
         /// <summary>
         /// Calls necessary methods to load a new scene.
         /// </summary>
         /// <param name="index">The build index of the level to load.</param>
         /// <param name="additionalTask">An additional task to execute and await after the scene is loaded.</param>
-        public IEnumerator ILoadLevel(int index, [CanBeNull] IEnumerator additionalTask)
+        private IEnumerator ILoadLevel(string index, [CanBeNull] IEnumerator additionalTask)
         {
             _logger.Log("Preparing to load a new scene.");
+            IsLoadingLevel = true;
             UI.gameObject.SetActive(true);
             yield return IObstructView();
             yield return IFadeScreen();
@@ -109,22 +107,33 @@ namespace Circuits
             _logger.Log("Waiting additional task...");
             if (additionalTask != null) yield return additionalTask;
             _logger.Log("Level loaded!");
+            IsLoadingLevel = false;
             yield return IShowScreen();
             yield return IClearView();
         }
 
-        public IEnumerator ILoadLevel(int index)
+        private IEnumerator ILoadLevel(string index)
         {
             yield return ILoadLevel(index, null);
         }
 
-        public void LoadLevel(int index)
+        public void LoadLevel(string index)
         {
+            if (!SceneExists(index))
+            {
+                _logger.LogError($"Trying to load invalid scene: {index}");
+                return;
+            }
             StartCoroutine(ILoadLevel(index));
         }
 
-        public void LoadLevel(int index, IEnumerator additionalTask)
+        public void LoadLevel(string index, IEnumerator additionalTask)
         {
+            if (!SceneExists(index))
+            {
+                _logger.LogError($"Trying to load invalid scene: {index}");
+                return;
+            }
             StartCoroutine(ILoadLevel(index, additionalTask));
         }
     }

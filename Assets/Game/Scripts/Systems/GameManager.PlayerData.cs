@@ -24,8 +24,10 @@ namespace Circuits
     public class PlayerData
     {
         public bool tutorialComplete = false;
-        
 
+        public bool IsLevelComplete(string levelName) => PlayerPrefs.GetInt($"LevelCompletion-{levelName}", 0) == 1;
+        public void SetLevelComplete(string levelname) { PlayerPrefs.SetInt($"LevelCompletion-{levelname}", 1); }
+        
         public static PlayerData Full()
         {
             var data = new PlayerData

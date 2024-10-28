@@ -1,4 +1,3 @@
-using System;
 using UnityEngine;
 using EnhancedTouch = UnityEngine.InputSystem.EnhancedTouch;
 
@@ -13,7 +12,6 @@ namespace Circuits
         private Vector3 _originPoint;
         private Vector3 _targetPosition;
         private Vector3 _startPosition;
-        private Vector3 _velocity = Vector3.zero;
         private Bounds _bounds;
         private void Start()
         {

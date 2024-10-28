@@ -77,7 +77,7 @@ namespace Circuits
         private void OnDrawGizmos()
         {
             Gizmos.color = new Color(0.25f, 1f, 0.25f, 0.25f);
-            Gizmos.DrawCube(Application.isPlaying ? _originPoint : Camera.main!.transform.position, _bounds.size);
+            Gizmos.DrawCube(Application.isPlaying ? _originPoint : Camera.main!.transform.position, new Vector3(maxDistance, maxDistance, maxDistance));
         }
     }
 }

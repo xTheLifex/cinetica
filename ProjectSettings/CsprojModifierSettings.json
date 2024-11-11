@@ -1,1 +1,1 @@
-{"AdditionalImports":[],"AdditionalImportsAdditionalProjects":[],"EnableAddAnalyzerReferences":false,"AddAnalyzerReferencesAdditionalProjects":[]}
+{"AdditionalImports":[{"Path":"LangVersion.props","Position":0}],"AdditionalImportsAdditionalProjects":["Game.External.csproj","Game.Internal.csproj"],"EnableAddAnalyzerReferences":false,"AddAnalyzerReferencesAdditionalProjects":[]}

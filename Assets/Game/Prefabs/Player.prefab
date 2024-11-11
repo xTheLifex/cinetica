@@ -45,8 +45,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a859e7fc1cb54dd9ac3c01273b03250b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  panSpeed: 0.01
-  maxDistance: 20
+  panSpeed: 0.05
+  maxDistance: 40
   returnSpeed: 0.5
 --- !u!1 &7772882505757785489
 GameObject:
@@ -115,7 +115,7 @@ Camera:
     height: 1
   near clip plane: 0.3
   far clip plane: 1000
-  field of view: 60
+  field of view: 80
   orthographic: 0
   orthographic size: 5
   m_Depth: -1

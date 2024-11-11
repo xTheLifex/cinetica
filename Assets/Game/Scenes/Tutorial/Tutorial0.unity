@@ -1229,6 +1229,51 @@ MonoBehaviour:
   m_LightCookieSize: {x: 1, y: 1}
   m_LightCookieOffset: {x: 0, y: 0}
   m_SoftShadowQuality: 0
+--- !u!1 &768053325
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 768053327}
+  - component: {fileID: 768053326}
+  m_Layer: 0
+  m_Name: Circuit Controller
+  m_TagString: Untagged
+  m_Icon: {fileID: -5397416234189338067, guid: 0000000000000000d000000000000000, type: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &768053326
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 768053325}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dbbc9d4f1a315a5a99a34ad18f9f28d0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  generator: {fileID: 2065286510985097894}
+--- !u!4 &768053327
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 768053325}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 4, z: 0}
+  m_LocalScale: {x: 2, y: 2, z: 2}
+  m_ConstrainProportionsScale: 1
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &836326514
 GameObject:
   m_ObjectHideFlags: 0
@@ -3574,37 +3619,22 @@ PrefabInstance:
       propertyPath: m_Name
       value: Core
       objectReference: {fileID: 0}
-    - target: {fileID: 6545047206524992397, guid: 1eceba62c8e90209e96cf94a0c97da31, type: 3}
-      propertyPath: generator
-      value: 
-      objectReference: {fileID: 2065286510985097894}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents:
-    - targetCorrespondingSourceObject: {fileID: 5674198467059745294, guid: 1eceba62c8e90209e96cf94a0c97da31, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 2065286510985097894}
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 1eceba62c8e90209e96cf94a0c97da31, type: 3}
---- !u!1 &2065286510985097893 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 5674198467059745294, guid: 1eceba62c8e90209e96cf94a0c97da31, type: 3}
+--- !u!114 &2065286510985097894 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 7494722040779387822, guid: 1eceba62c8e90209e96cf94a0c97da31, type: 3}
   m_PrefabInstance: {fileID: 2065286510985097892}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &2065286510985097894
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2065286510985097893}
+  m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 9913111980c544ca9ac78f3e1b45b633, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  positiveTerminal: GEN OUT
-  negativeTerminal: GEN IN
 --- !u!1001 &2555739037600202101
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -3794,7 +3824,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 446907777310213324, guid: e931c97be1da17fc28105731457e73c2, type: 3}
       propertyPath: positiveTerminal
-      value: REP OUT
+      value: REPSWITCH OUT
       objectReference: {fileID: 0}
     - target: {fileID: 2115065090036266779, guid: e931c97be1da17fc28105731457e73c2, type: 3}
       propertyPath: m_LocalPosition.x
@@ -3859,11 +3889,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 795704684743111699, guid: b06ea333d733f76e6b9a16825f0df4d9, type: 3}
       propertyPath: negativeTerminal
-      value: REP OUT
+      value: REPSWITCH OUT
       objectReference: {fileID: 0}
     - target: {fileID: 795704684743111699, guid: b06ea333d733f76e6b9a16825f0df4d9, type: 3}
       propertyPath: positiveTerminal
-      value: GEN IN
+      value: GET IN
       objectReference: {fileID: 0}
     - target: {fileID: 6815030990159836331, guid: b06ea333d733f76e6b9a16825f0df4d9, type: 3}
       propertyPath: m_LocalPosition.x
@@ -4302,8 +4332,8 @@ SceneRoots:
   - {fileID: 2555739037600202101}
   - {fileID: 1373120538}
   - {fileID: 203844589}
-  - {fileID: 9014531136880005834}
   - {fileID: 2065286510985097892}
+  - {fileID: 9014531136880005834}
   - {fileID: 1574981686}
   - {fileID: 87183364}
   - {fileID: 4663396716293522850}
@@ -4319,3 +4349,4 @@ SceneRoots:
   - {fileID: 722740441}
   - {fileID: 1680544249}
   - {fileID: 957251197}
+  - {fileID: 768053327}

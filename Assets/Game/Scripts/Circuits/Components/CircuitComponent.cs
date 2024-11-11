@@ -12,5 +12,10 @@ namespace Circuits.Components
         public string GetStringID() => gameObject.GetInstanceID().ToString();
 
         public virtual IEntity GetCircuitEntity() => new Resistor(GetStringID(), positiveTerminal, negativeTerminal, 1000.0);
+
+        public int GetPotency()
+        {
+            return 0;
+        }
     }
 }

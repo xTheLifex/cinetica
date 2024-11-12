@@ -255,6 +255,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4032c27ab9b04de89b775a44c98f9314, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  connections: []
+  resistance: 500
 --- !u!65 &2098219363676521950
 BoxCollider:
   m_ObjectHideFlags: 0

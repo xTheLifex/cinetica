@@ -4,6 +4,14 @@ namespace Circuits.Components
 {
     public class Switch : CircuitComponent
     {
+        [Header("Switch")]
+        public bool open = false;
+        public override bool IsSwitch() => true;
 
+        public override bool HasConnectionTo(CircuitComponent comp)
+        {
+            if (open) return false;
+            return base.HasConnectionTo(comp);
+        }
     }
 }

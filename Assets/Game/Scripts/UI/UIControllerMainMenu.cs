@@ -24,10 +24,8 @@ namespace Circuits.UI
 
         private readonly List<LevelEntry> _levelEntries = new List<LevelEntry>()
         {
-            new LevelEntry("Tutorial0", "Tutorial - O básico"),
-            new LevelEntry("Tutorial1", "Tutorial - Interruptores", new string[] {"Tutorial0"}),
-            new LevelEntry("Tutorial2", "Tutorial - Capacitores", new string[] {"Tutorial1"}),
-            new LevelEntry("Main1", "Um pequeno desafio...", new string[] {"Tutorial2"}),
+            new LevelEntry("Tutorial0", "Tutorial"),
+            new LevelEntry("Main1", "Um pequeno desafio...", new string[] {"Tutorial0"}),
         };
         
         public override void Awake()

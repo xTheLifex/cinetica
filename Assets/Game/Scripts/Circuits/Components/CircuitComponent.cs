@@ -13,13 +13,14 @@ namespace Circuits.Components
         [FormerlySerializedAs("resistance")] [InspectorName("Resistance")] public float r = 0f;
         [FormerlySerializedAs("voltage")] [InspectorName("Voltage")] public float v = 0f;
         [FormerlySerializedAs("current")] [InspectorName("Current")] public float i = 0f;
-        public bool merging = false;
+        
         [FormerlySerializedAs("EquivalentResitance")] public float EquivalentResistance = 0f;
         public CircuitComponent[] FindPrevious() => CircuitController.AllComponents().Where(x => x.connections.Contains(this)).ToArray();
         
         public virtual bool IsGenerator() => false;
         public virtual bool IsSwitch() => false;
         public virtual bool IsNode() => false;
+        public bool IsMerging() => FindPrevious().Length > 1;
 
         public virtual bool HasConnectionTo(CircuitComponent comp) => connections.Contains(comp);
         
@@ -36,35 +37,6 @@ namespace Circuits.Components
         public virtual bool HasDirectPathTo(CircuitComponent comp) => (comp.connections.Count <= 1) && HasPathTo(comp);
         public virtual float GetCurrent() => i;
         public virtual float GetVoltage() => v;
-        
-        public void SetCurrent(float newCurrent)
-        {
-            i = newCurrent;
-            v = IsNode() ? EquivalentResistance * i : r * i;
-            foreach (var con in connections)
-            {
-                if (con.IsGenerator()) continue;
-                if (connections.Count <= 1)
-                    con.SetCurrent(i);
-                 else
-                    con.SetVoltage(v);
-            }
-        }
-
-        public void SetVoltage(float newVoltage)
-        {
-            v = newVoltage;
-            i = v / (IsNode() ? EquivalentResistance : r);
-            foreach (var con in connections)
-            {
-                if (con.IsGenerator()) continue;
-                if (connections.Count <= 1)
-                    con.SetCurrent(i);
-                else
-                    con.SetVoltage(v);
-            }            
-        }
-        
         public virtual void Awake() {}
 
         // Calculates equivalent resistance for this component.
@@ -75,7 +47,7 @@ namespace Circuits.Components
             {
                 // Skip generators and components not connected to the active generator
                 if (con.IsGenerator()) continue;
-                if (!IsNode() && con.merging) continue;
+                if (!IsNode() && con.IsMerging()) continue;
                 if (!con.HasPathTo(CircuitController.ActiveGenerator)) continue;
 
                 float r = con.GetEquivalentResistance();
@@ -115,5 +87,33 @@ namespace Circuits.Components
             }
         }
 #endif
+
+        public void SetCurrent(float newCurrent)
+        {
+            i = newCurrent;
+            v = (IsNode() ? EquivalentResistance : r) * i;
+            if (connections.Count > 1)
+            {
+                foreach (var con in connections)
+                {
+                    if (con.IsGenerator()) continue;
+                    con.SetOrAddVoltage(v);
+                }
+            }
+        }
+
+        public void SetOrAddVoltage(float newVoltage, bool add = false)
+        {
+            if (!add) v = newVoltage; else v += newVoltage;
+            i = v / (IsNode() ? EquivalentResistance : r);
+            if (connections.Count > 1)
+            {
+                foreach (var con in connections)
+                {
+                    if (con.IsGenerator()) continue;
+                    con.SetOrAddVoltage(v);
+                }
+            }
+        }
     }
 }

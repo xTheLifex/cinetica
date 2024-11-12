@@ -33,7 +33,7 @@ namespace Circuits
             ActiveGenerator.i = ActiveGenerator.GetCurrent();
             foreach (var con in ActiveGenerator.connections)
             {
-                con.SetCurrent(ActiveGenerator.GetCurrent());
+                con.SetCurrent(ActiveGenerator.i);
             }
         }
     }

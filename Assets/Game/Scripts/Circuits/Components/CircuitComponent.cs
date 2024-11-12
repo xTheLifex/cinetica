@@ -1,6 +1,8 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 namespace Circuits.Components
 {
@@ -10,6 +12,8 @@ namespace Circuits.Components
         public List<CircuitComponent> connections = new List<CircuitComponent>();
         public float resistance = 0f;
 
+        [FormerlySerializedAs("EquivalentResitance")] public float EquivalentResistance = 0f;
+        
         public virtual bool IsGenerator() => false;
         public virtual bool IsSwitch() => false;
         public virtual bool IsNode() => false;
@@ -25,14 +29,14 @@ namespace Circuits.Components
         }
 
         // Calculates equivalent resistance for this component.
-        public virtual float GetEquivalentResistance()
+        public float GetEquivalentResistance()
         {
             float sumInv = 0f;
             foreach (var con in connections)
             {
                 // Skip generators and components not connected to the active generator
                 if (con.IsGenerator()) continue;
-                if (con.IsNode()) continue;
+                if (!IsNode())
                 if (!con.HasConnectionTo(CircuitController.ActiveGenerator)) continue;
 
                 float r = con.GetEquivalentResistance();
@@ -44,6 +48,7 @@ namespace Circuits.Components
             float req = sumInv > 0f ? 1 / sumInv : 0f;
 
             // Return total resistance including the base component's resistance
+            EquivalentResistance = resistance + req; // Debug, TODO: Delete
             return resistance + req;
         }
 
@@ -59,7 +64,6 @@ namespace Circuits.Components
 
         public virtual void OnDrawGizmosSelected()
         {
-            
             foreach(var con in connections)
             {
                 Gizmos.color = Color.blue;

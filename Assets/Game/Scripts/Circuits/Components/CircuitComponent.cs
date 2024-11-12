@@ -27,6 +27,7 @@ namespace Circuits.Components
         // Checks if there’s a path to the given component
         public virtual bool HasPathTo(CircuitComponent comp)
         {
+            if (!comp) return false;
             if (comp == this) return true;
             if (comp.IsSwitch() && ((Switch)comp).open) return false;
             foreach (var con in connections)
@@ -88,10 +89,12 @@ namespace Circuits.Components
         }
 #endif
 
-        public void SetCurrent(float newCurrent)
+        public void SetOrAddCurrent(float newCurrent, bool add = false)
         {
-            i = newCurrent;
+            if (!add) i = newCurrent;
+            else i += newCurrent;
             v = (IsNode() ? EquivalentResistance : r) * i;
+            if (connections.Count <= 0) return;
             if (connections.Count > 1)
             {
                 foreach (var con in connections)
@@ -100,18 +103,36 @@ namespace Circuits.Components
                     con.SetOrAddVoltage(v);
                 }
             }
+            else
+            {
+                foreach (var con in connections)
+                {
+                    if (con.IsGenerator()) continue;
+                    con.SetOrAddCurrent(i);
+                }
+            }
         }
 
         public void SetOrAddVoltage(float newVoltage, bool add = false)
         {
-            if (!add) v = newVoltage; else v += newVoltage;
+            if (!add) v = newVoltage; 
+            else v += newVoltage;
             i = v / (IsNode() ? EquivalentResistance : r);
+            if (connections.Count <= 0) return;
             if (connections.Count > 1)
             {
                 foreach (var con in connections)
                 {
                     if (con.IsGenerator()) continue;
                     con.SetOrAddVoltage(v);
+                }
+            }
+            else
+            {
+                foreach (var con in connections)
+                {
+                    if (con.IsGenerator()) continue;
+                    con.SetOrAddCurrent(i);
                 }
             }
         }

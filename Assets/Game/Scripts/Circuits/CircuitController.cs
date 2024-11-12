@@ -27,13 +27,18 @@ namespace Circuits
         public void UpdateCircuit()
         {
             var all = AllComponents();
-            foreach (var c in all) if (!c.IsGenerator()) c.v = 0f;
+            foreach (var c in all)
+                if (!c.IsGenerator())
+                {
+                    c.v = 0f;
+                    c.i = 0f;
+                }
             
             ActiveGenerator.EquivalentResistance = ActiveGenerator.GetEquivalentResistance();
             ActiveGenerator.i = ActiveGenerator.GetCurrent();
             foreach (var con in ActiveGenerator.connections)
             {
-                con.SetCurrent(ActiveGenerator.i);
+                con.SetOrAddCurrent(ActiveGenerator.i);
             }
         }
     }

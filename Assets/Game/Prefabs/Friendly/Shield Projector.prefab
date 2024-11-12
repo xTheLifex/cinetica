@@ -217,7 +217,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3125665147053608839}
-  - component: {fileID: 1682421954657930422}
   - component: {fileID: 2098219363676521950}
   m_Layer: 0
   m_Name: Shield Projector
@@ -243,20 +242,6 @@ Transform:
   - {fileID: 662037180836089801}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1682421954657930422
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4956854684992049160}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4032c27ab9b04de89b775a44c98f9314, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  connections: []
-  resistance: 500
 --- !u!65 &2098219363676521950
 BoxCollider:
   m_ObjectHideFlags: 0

@@ -5,6 +5,12 @@ namespace Circuits.Components
     public class Node : CircuitComponent
     {
         public override bool IsNode() => true;
+        public bool primary = false;
+
+        public override void Awake()
+        {
+            EquivalentResistance = GetEquivalentResistance();
+        }
         
         #if UNITY_EDITOR
         public override void OnDrawGizmos()

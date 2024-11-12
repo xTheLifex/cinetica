@@ -11,7 +11,7 @@ namespace Circuits.Components
         [Header("Circuit Component")]
         public List<CircuitComponent> connections = new List<CircuitComponent>();
         public float resistance = 0f;
-
+        public bool merging = false;
         [FormerlySerializedAs("EquivalentResitance")] public float EquivalentResistance = 0f;
         
         public virtual bool IsGenerator() => false;
@@ -28,15 +28,22 @@ namespace Circuits.Components
             return false;
         }
 
+        public virtual bool HasDirectPathTo(CircuitComponent comp) => (comp.connections.Count <= 1) && HasConnectionTo(comp);
+
+        public virtual void Awake()
+        {
+            
+        }
+
         // Calculates equivalent resistance for this component.
-        public float GetEquivalentResistance()
+        public virtual float GetEquivalentResistance()
         {
             float sumInv = 0f;
             foreach (var con in connections)
             {
                 // Skip generators and components not connected to the active generator
                 if (con.IsGenerator()) continue;
-                if (!IsNode())
+                if (!IsNode() && con.merging) continue;
                 if (!con.HasConnectionTo(CircuitController.ActiveGenerator)) continue;
 
                 float r = con.GetEquivalentResistance();

@@ -18,15 +18,8 @@ namespace Circuits
                 _logger.LogError("Failed to find generator.");
                 return;
             }
-
-            string s = "";
-            foreach (var c in GameObject.FindObjectsByType<CircuitComponent>(FindObjectsSortMode.None))
-            {
-                s += $"{c.gameObject.name}: {c.GetEquivalentResistance()}\n";
-            }
-
-            _logger.Log(s);
-            _logger.Log($"GENERATOR: {ActiveGenerator.GetEquivalentResistance()}");
+            
+            _logger.Log($"REQ: {ActiveGenerator.GetEquivalentResistance()}");
         }
     }
 }

@@ -12,20 +12,19 @@ namespace Circuits.Components
 
         public virtual bool IsGenerator() => false;
         public virtual bool IsSwitch() => false;
+        public virtual bool IsNode() => false;
 
         // Checks if there’s a path to the given component
         public virtual bool HasConnectionTo(CircuitComponent comp)
         {
             if (comp == this) return true;
-            
+            if (comp.IsSwitch() && ((Switch)comp).open) return false;
             foreach (var con in connections)
-            {
                 if (con.HasConnectionTo(comp)) return true;
-            }
             return false;
         }
 
-        // Calculates equivalent resistance for the connected components
+        // Calculates equivalent resistance for this component.
         public virtual float GetEquivalentResistance()
         {
             float sumInv = 0f;
@@ -33,10 +32,8 @@ namespace Circuits.Components
             {
                 // Skip generators and components not connected to the active generator
                 if (con.IsGenerator()) continue;
+                if (con.IsNode()) continue;
                 if (!con.HasConnectionTo(CircuitController.ActiveGenerator)) continue;
-
-                // Skip open switches by treating them as disconnected
-                if (con.IsSwitch() && ((Switch) con).open) continue;
 
                 float r = con.GetEquivalentResistance();
                 if (r > 0f)
@@ -60,7 +57,7 @@ namespace Circuits.Components
             }
         }
 
-        public void OnDrawGizmosSelected()
+        public virtual void OnDrawGizmosSelected()
         {
             
             foreach(var con in connections)

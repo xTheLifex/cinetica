@@ -8,10 +8,10 @@ namespace Circuits.Components
         public bool open = false;
         public override bool IsSwitch() => true;
 
-        public override bool HasConnectionTo(CircuitComponent comp)
+        public override bool HasPathTo(CircuitComponent comp)
         {
             if (open) return false;
-            return base.HasConnectionTo(comp);
+            return base.HasPathTo(comp);
         }
     }
 }

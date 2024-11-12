@@ -8,7 +8,7 @@ namespace Circuits
     {
         public static Generator ActiveGenerator { get; private set; }
         private Utility.Logger _logger = new Utility.Logger("Circuit Controller");
-
+        public static CircuitComponent[] AllComponents() => GameObject.FindObjectsByType<CircuitComponent>(FindObjectsSortMode.None);
         public override void Awake()
         {
             base.Awake();
@@ -18,8 +18,23 @@ namespace Circuits
                 _logger.LogError("Failed to find generator.");
                 return;
             }
+        }
+
+        public void Update()
+        {
+            UpdateCircuit();
+        }
+        public void UpdateCircuit()
+        {
+            var all = AllComponents();
+            foreach (var c in all) if (!c.IsGenerator()) c.v = 0f;
             
-            _logger.Log($"REQ: {ActiveGenerator.GetEquivalentResistance()}");
+            ActiveGenerator.EquivalentResistance = ActiveGenerator.GetEquivalentResistance();
+            ActiveGenerator.i = ActiveGenerator.GetCurrent();
+            foreach (var con in ActiveGenerator.connections)
+            {
+                con.SetCurrent(ActiveGenerator.GetCurrent());
+            }
         }
     }
 }

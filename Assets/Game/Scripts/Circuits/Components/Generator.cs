@@ -6,10 +6,8 @@ namespace Circuits.Components
 {
     public class Generator : CircuitComponent
     {
-        [Header("Generator")]
-        public float voltage = 220;//Volts
         public override bool IsGenerator() => true;
-
+        public override float GetCurrent() => v / GetEquivalentResistance();
         public override float GetEquivalentResistance()
         {
             var comps = GameObject.FindObjectsByType<Node>(FindObjectsSortMode.None).Where(x => x.primary == true).ToList();

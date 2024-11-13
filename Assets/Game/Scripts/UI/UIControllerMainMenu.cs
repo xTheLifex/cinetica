@@ -2,8 +2,8 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UIElements;
-using static Circuits.Utility.Utils; 
-namespace Circuits.UI
+using static Cinetica.Utility.Utils; 
+namespace Cinetica.UI
 {
     public class UIControllerMainMenu : UIController
     {

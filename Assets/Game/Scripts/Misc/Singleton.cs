@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace Circuits.Utility
+namespace Cinetica.Utility
 {
     public class Singleton<T> : MonoBehaviour where T : MonoBehaviour
     {

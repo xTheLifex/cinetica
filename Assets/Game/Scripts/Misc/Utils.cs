@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-namespace Circuits.Utility
+namespace Cinetica.Utility
 {
     public static class Utils
     {

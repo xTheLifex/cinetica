@@ -1,10 +1,10 @@
 #if UNITY_EDITOR || DEVEL
 using System;
-using Circuits.Utility;
+using Cinetica.Utility;
 using UnityEngine;
 using UnityEngine.InputSystem.EnhancedTouch;
 
-namespace Circuits
+namespace Cinetica
 {
     public partial class GameManager : Singleton<GameManager>
     {

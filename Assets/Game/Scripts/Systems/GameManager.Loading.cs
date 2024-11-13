@@ -1,13 +1,13 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using Circuits.Utility;
-using static Circuits.Utility.Utils;
+using Cinetica.Utility;
+using static Cinetica.Utility.Utils;
 using JetBrains.Annotations;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-namespace Circuits
+namespace Cinetica
 {
     public partial class GameManager : Singleton<GameManager>
     {

@@ -3,9 +3,9 @@ using System.Collections;
 using UnityEngine;
 using UnityEngine.UIElements;
 using static LeanTween;
-using Logger = Circuits.Utility.Logger;
+using Logger = Cinetica.Utility.Logger;
 
-namespace Circuits.UI
+namespace Cinetica.UI
 {
     public class UIControllerGameManager : UIController
     {

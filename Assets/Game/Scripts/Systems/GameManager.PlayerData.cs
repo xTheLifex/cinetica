@@ -1,8 +1,8 @@
-using Circuits.Utility;
+using Cinetica.Utility;
 using UnityEngine;
 using UnityEngine.Events;
 
-namespace Circuits
+namespace Cinetica
 {
     public partial class GameManager : Singleton<GameManager>
     {

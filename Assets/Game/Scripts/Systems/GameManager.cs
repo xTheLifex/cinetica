@@ -1,12 +1,12 @@
 using System;
 using System.Collections;
-using Circuits.UI;
-using Circuits.Utility;
+using Cinetica.UI;
+using Cinetica.Utility;
 using UnityEngine;
 using UnityEngine.Events;
-using Logger = Circuits.Utility.Logger;
+using Logger = Cinetica.Utility.Logger;
 
-namespace Circuits
+namespace Cinetica
 {
     public partial class GameManager : Singleton<GameManager>
     {
@@ -24,7 +24,6 @@ namespace Circuits
 
         public virtual void Update()
         {
-            UpdateInput();
             #if UNITY_EDITOR
                 UpdateDebug();
             #endif

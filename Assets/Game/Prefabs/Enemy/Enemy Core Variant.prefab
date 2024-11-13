@@ -11,7 +11,7 @@ PrefabInstance:
     - target: {fileID: 1694217117943624031, guid: 1eceba62c8e90209e96cf94a0c97da31, type: 3}
       propertyPath: 'm_Materials.Array.data[0]'
       value: 
-      objectReference: {fileID: 2100000, guid: 85fb1a9ff66dc584d9f6679cfdb7cd28, type: 2}
+      objectReference: {fileID: 2100000, guid: a365735c01626885f899b9443e74a763, type: 2}
     - target: {fileID: 1742783859870250012, guid: 1eceba62c8e90209e96cf94a0c97da31, type: 3}
       propertyPath: m_LocalPosition.x
       value: -11.82
@@ -52,6 +52,18 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 2238484086456959777, guid: 1eceba62c8e90209e96cf94a0c97da31, type: 3}
+      propertyPath: 'm_Materials.Array.data[0]'
+      value: 
+      objectReference: {fileID: 2100000, guid: 85fb1a9ff66dc584d9f6679cfdb7cd28, type: 2}
+    - target: {fileID: 2435158398772850193, guid: 1eceba62c8e90209e96cf94a0c97da31, type: 3}
+      propertyPath: 'm_Materials.Array.data[0]'
+      value: 
+      objectReference: {fileID: 2100000, guid: 85fb1a9ff66dc584d9f6679cfdb7cd28, type: 2}
+    - target: {fileID: 2563492548905292621, guid: 1eceba62c8e90209e96cf94a0c97da31, type: 3}
+      propertyPath: 'm_Materials.Array.data[0]'
+      value: 
+      objectReference: {fileID: 2100000, guid: a365735c01626885f899b9443e74a763, type: 2}
     - target: {fileID: 5674198467059745294, guid: 1eceba62c8e90209e96cf94a0c97da31, type: 3}
       propertyPath: m_Name
       value: Enemy Core Variant
@@ -59,7 +71,7 @@ PrefabInstance:
     - target: {fileID: 7392124296278948339, guid: 1eceba62c8e90209e96cf94a0c97da31, type: 3}
       propertyPath: 'm_Materials.Array.data[0]'
       value: 
-      objectReference: {fileID: 2100000, guid: 85fb1a9ff66dc584d9f6679cfdb7cd28, type: 2}
+      objectReference: {fileID: 2100000, guid: a365735c01626885f899b9443e74a763, type: 2}
     - target: {fileID: 7478927392470198323, guid: 1eceba62c8e90209e96cf94a0c97da31, type: 3}
       propertyPath: 'm_Materials.Array.data[0]'
       value: 

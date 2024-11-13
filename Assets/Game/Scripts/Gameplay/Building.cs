@@ -26,7 +26,7 @@ namespace Cinetica.Gameplay
 
         public static Building[] GetAllWeapons(Side side) => GetAllBuildings().Where(x => x.side == side &&
             (x.buildingType == BuildingType.Railgun || x.buildingType == BuildingType.Turret)).ToArray();
-        public static List<Building> GetAliveBuildings(Side side) => GetAllBuildings().Where(x => x.side == side && x.damageableComponent.health > 0f).ToList();
+        public static List<Building> GetAliveBuildings(Side side) => GetAllBuildings().Where(x => x.side == side && x.damageableComponent?.health > 0f).ToList();
         
         public IEnumerator IDisplayEffects()
         {

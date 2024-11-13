@@ -3,20 +3,24 @@ using System.Collections;
 using Cinetica.Utility;
 using UnityEngine;
 using UnityEngine.Events;
+using UnityEngine.Serialization;
 
 namespace Cinetica.Gameplay
 {
     public class RoundManager : Singleton<RoundManager>
     {
-        private Turn _turn = Turn.Player;
-
-        private Building selectedBuilding;
-        private Building targetBuilding;
-        private float _angle = 0f;
-        private float _force = 500f;
+        private static Building selectedBuilding;
+        private static Building targetBuilding;
+        private static float _angle = 0f;
+        private static float _force = 500f;
         
-        private const int MOVES_PER_TURN = 1;
-        private int _moves = 1;
+        private static int _movesPerTurn = 1;
+        private static int _moves = 1;
+        
+        public static Turn turn = Turn.Player;
+
+        public static RoundState roundState;
+        public static TurnState turnState;
         
         public static UnityEvent OnPlayerTurn = new UnityEvent();
         public static UnityEvent OnEnemyTurn = new UnityEvent();
@@ -24,8 +28,8 @@ namespace Cinetica.Gameplay
         public static UnityEvent OnTurnStart = new UnityEvent();
         public static UnityEvent OnTurnEnd = new UnityEvent();
 
-        public bool IsPlayerTurn() => _turn == Turn.Player;
-        public bool IsEnemyTurn() => _turn == Turn.Enemy;
+        public static bool IsPlayerTurn() => turn == Turn.Player;
+        public static bool IsEnemyTurn() => turn == Turn.Enemy;
         
         private void Awake()
         {

@@ -10,6 +10,8 @@
         <engine:Label text="&lt;b&gt;Torreta&lt;/b&gt;:" name="Info" style="-unity-font-definition: url(&quot;project://database/Assets/UI%20Toolkit/UnityThemes/UnityDefaultRuntimeTheme.tss?fileID=2230732570650464555&amp;guid=86c9baed7e4800d058352f4f63788efc&amp;type=3#NotInter-Regular&quot;); -unity-text-align: upper-left; color: rgb(255, 255, 255); -unity-font-style: normal; font-size: 24px; background-size: 100% 100%; flex-grow: 1;" />
         <engine:VisualElement name="Buttons" style="flex-grow: 0; flex-direction: column; align-items: stretch; justify-content: space-between; align-self: center; background-size: 100% 100%; max-height: none; width: 100%; bottom: auto; top: auto; flex-shrink: 1; height: 24%; min-height: auto;">
             <engine:Button text="Disparar" name="FireWeapon" class="ui-button" style="white-space: nowrap; font-size: 24px; flex-grow: 1; flex-shrink: 1;" />
+            <engine:Button text="Cancelar" name="CancelTarget" class="ui-button" style="white-space: nowrap; font-size: 24px; flex-grow: 1; flex-shrink: 1;" />
         </engine:VisualElement>
     </engine:VisualElement>
+    <engine:Label text="Seu Turno" name="TurnText" class="ui-text" style="align-items: center; align-self: center; font-size: 72px; top: 5%; -unity-text-align: middle-center; background-color: rgba(0, 0, 0, 0.45); border-top-width: 12px; border-right-width: 12px; border-bottom-width: 12px; border-left-width: 12px; border-top-left-radius: 24px; border-top-right-radius: 24px; border-bottom-right-radius: 24px; border-bottom-left-radius: 24px;" />
 </engine:UXML>

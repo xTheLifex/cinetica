@@ -1,14 +1,28 @@
 using System;
+using System.Linq;
 using UnityEngine;
+using UnityEngine.Serialization;
 using UnityEngine.UIElements;
 
 namespace Cinetica.Gameplay
 {
     public class PlayerController : MonoBehaviour
     {
-        // UI --------------------------------------------------------
+        
+        // ==================== MISC ===========================================================
+        [NonSerialized] public Camera cam;
+        public float cameraSpeed = 5f;
+        public bool hardFollow = false;
+        
+        public Transform cameraTarget; // Camera will focus around this target.
+        public Transform cameraTransformOverride; // Camera will lock to this transform exactly.
+        public Transform stageTransform; // Will set camera to this position instead, looking at target.
+        
+        
+        // ==================== UI ===========================================================
         private UIDocument _document;
-        private Building[] buildings;
+        private Building[] friendlyBuildings;
+        private Building[] enemyBuildings;
 
         private Building selectedBuilding;
         private Building targetedBuilding;
@@ -19,16 +33,12 @@ namespace Cinetica.Gameplay
             _fireWeapon,
             _cancelTarget;
 
+        private TextElement _turnText, _subText;
+
         private VisualElement _controls, 
             _infoPanel;
         
-        // MISC ------------------------------------------------------
-        [NonSerialized] public Camera cam;
-        public float cameraSpeed = 5f;
-        public bool hardFollow = false;
-        public Transform cameraTarget; // Camera will focus around this target.
-        public Transform cameraTransformOverride; // Camera will lock to this transform exactly.
-        
+
         public void Awake()
         {
             cam = Camera.main;
@@ -42,30 +52,129 @@ namespace Cinetica.Gameplay
             _fireWeapon = _document.rootVisualElement.Q<Button>("FireWeapon");
             _cancelTarget = _document.rootVisualElement.Q<Button>("CancelTarget");
 
-            buildings = GameObject.FindObjectsByType<Building>(FindObjectsSortMode.None);
+            _turnText = _document.rootVisualElement.Q<TextElement>("TurnText");
+            _subText = _document.rootVisualElement.Q<TextElement>("SubText");
+
+            var buildings = GameObject.FindObjectsByType<Building>(FindObjectsSortMode.None);
+            friendlyBuildings = buildings.Where(x => x.side == Side.Player).ToArray();
+            enemyBuildings = buildings.Where(x => x.side == Side.Enemy).ToArray();
         }
 
-        public void SelectNext() {}
-        public void SelectPrevius() {}
-        public void SelectConfirm() {}
-        public void FireWeapon() {}
-        public void CancelTarget() {}
-        
-        
         public void Update()
+        {
+            UpdateUI();
+            UpdateCamera();
+        }
+        
+        // ==================== METHODS ===========================================================
+        
+        public void SelectNext()
+        {
+            if (!RoundManager.IsPlayerTurn()) return;
+        }
+
+        public void SelectPrevius()
+        {
+            if (!RoundManager.IsPlayerTurn()) return;
+        }
+
+        public void SelectConfirm()
+        {
+            if (!RoundManager.IsPlayerTurn()) return;
+        }
+
+        public void FireWeapon()
+        {
+            if (!RoundManager.IsPlayerTurn()) return;
+        }
+
+        public void CancelTarget()
+        {
+            if (!RoundManager.IsPlayerTurn()) return;
+        }
+
+        public void UpdateUI()
+        {
+            if (RoundManager.roundState != RoundState.Playing)
+            {
+                _subText.visible = false;
+                _infoPanel.visible = false;
+                _controls.visible = false;
+                _turnText.visible = true;
+                _turnText.text = (RoundManager.roundState == RoundState.Victory ? "Vitória" : "Derrota");
+                return;
+            }
+            
+            if (RoundManager.IsPlayerTurn())
+            {
+                _turnText.text = "Seu Turno";
+                _subText.text = RoundManager.turnState == TurnState.SelectTarget
+                    ? "Selecionar Torreta"
+                    : "Selecionar Arma";
+            }
+            else
+            {
+                _turnText.text = "Turno do Oponente";
+                _infoPanel.visible = false;
+                _controls.visible = false;
+            }
+            
+            _subText.visible = RoundManager.turnState != TurnState.WaitForResult;
+            _turnText.visible = RoundManager.turnState != TurnState.WaitForResult;
+        }
+
+        // ==================== CAMERA ===========================================================
+        public void UpdateCamera()
         {
             if (cameraTransformOverride)
                 SnapCameraTo(cameraTransformOverride);
             else
-                MoveCameraTowards(cameraTarget);
+            {
+                if (stageTransform)
+                    MoveCameraToStagePosition(stageTransform);
+                else
+                    MoveCameraTowards(cameraTarget);
+            }
         }
 
-        public void MoveCameraTowards(Transform t)
+        public void SetStageCamera(Transform lookAt, Transform stage)
+        {
+            ResetCamera();
+            stageTransform = stage;
+            cameraTarget = lookAt;
+        }
+
+        public void SetTrackingObject(Transform t)
+        {
+            ResetCamera();
+            cameraTarget = t;
+        }
+
+        public void SetStaticTransform(Transform t)
+        {
+            ResetCamera();
+            cameraTransformOverride = t;
+        }
+        
+        public void ResetCamera()
+        {
+            cameraTransformOverride = null;
+            cameraTarget = null;
+            stageTransform = null;
+        }
+        
+        public void MoveCameraToStagePosition(Transform t)
+        {
+            transform.position = Vector3.Lerp(transform.position, stageTransform.position, Time.deltaTime * cameraSpeed);   
+            transform.LookAt(cameraTarget.position + (Vector3.up * 1f));
+        }
+        
+        public void MoveCameraTowards(Transform target)
         {
             if (!cam) return;
 
             // Find the "CameraTarget" within the target object
-            Transform camTarget = cameraTarget.Find("CameraTarget");
+            Transform camTarget = target.Find("CameraTarget");
             if (camTarget != null)
             {
                 // If "CameraTarget" exists, find "CameraPosition" within it
@@ -89,7 +198,7 @@ namespace Cinetica.Gameplay
             else
             {
                 // Default behavior if "CameraTarget" is not found
-                Vector3 targetPos = cameraTarget.position + (Vector3.up * 2f) + (Vector3.forward * 2f);
+                Vector3 targetPos = target.position + (Vector3.up * 2f) + (Vector3.forward * 2f);
         
                 if (hardFollow)
                 {
@@ -100,7 +209,7 @@ namespace Cinetica.Gameplay
                     transform.position = Vector3.Lerp(transform.position, targetPos, Time.deltaTime * cameraSpeed);
                 }
 
-                transform.LookAt(cameraTarget.position + (Vector3.up * 2f));
+                transform.LookAt(target.position + (Vector3.up * 2f));
             }
         }
 
@@ -108,9 +217,9 @@ namespace Cinetica.Gameplay
         public void SnapCameraTo(Transform t)
         {
             if (!cam) return;
-            transform.position = Vector3.Lerp(transform.position, cameraTransformOverride.position,
+            transform.position = Vector3.Lerp(transform.position, t.position,
                 Time.deltaTime * cameraSpeed);
-            transform.rotation = Quaternion.Lerp(transform.rotation, cameraTransformOverride.rotation,
+            transform.rotation = Quaternion.Lerp(transform.rotation, t.rotation,
                 Time.deltaTime * cameraSpeed);
         }
     }

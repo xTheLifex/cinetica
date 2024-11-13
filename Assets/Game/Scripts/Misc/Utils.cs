@@ -1,11 +1,31 @@
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using System.Linq;
 
 namespace Cinetica.Utility
 {
     public static class Utils
     {
         public static bool SceneExists(string name) => SceneUtility.GetBuildIndexByScenePath(name) >= 0;
+        
+        public static T NextOf<T>(this List<T> list, T obj)
+        {
+	        int index = list.IndexOf(obj);
+	        if (index == -1 || index == list.Count - 1)
+		        return list.FirstOrDefault(); // If not found or last element, return first element (circular behavior)
+        
+	        return list[index + 1];
+        }
+
+        public static T PreviousOf<T>(this List<T> list, T obj)
+        {
+	        int index = list.IndexOf(obj);
+	        if (index == -1 || index == 0)
+		        return list.LastOrDefault(); // If not found or first element, return last element (circular behavior)
+        
+	        return list[index - 1];
+        }
     }
     
 #if UNITY_EDITOR

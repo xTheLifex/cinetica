@@ -6,4 +6,5 @@ namespace Cinetica
     
     public enum RoundState { Playing, Victory, Defeat }
     public enum TurnState { PreTurn, SelectWeapon, SelectTarget, WaitForResult }
+    public enum Difficulty { Easy, Medium, Hard }
 }

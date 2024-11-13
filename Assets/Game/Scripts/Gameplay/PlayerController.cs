@@ -1,5 +1,7 @@
 using System;
+using System.Collections.Generic;
 using System.Linq;
+using Cinetica.Utility;
 using UnityEngine;
 using UnityEngine.Serialization;
 using UnityEngine.UIElements;
@@ -18,11 +20,10 @@ namespace Cinetica.Gameplay
         public Transform cameraTransformOverride; // Camera will lock to this transform exactly.
         public Transform stageTransform; // Will set camera to this position instead, looking at target.
         
-        
         // ==================== UI ===========================================================
         private UIDocument _document;
-        private Building[] friendlyBuildings;
-        private Building[] enemyBuildings;
+        private List<Building> friendlyBuildings = new List<Building>();
+        private List<Building> enemyBuildings = new List<Building>();
 
         private Building selectedBuilding;
         private Building targetedBuilding;
@@ -55,9 +56,11 @@ namespace Cinetica.Gameplay
             _turnText = _document.rootVisualElement.Q<TextElement>("TurnText");
             _subText = _document.rootVisualElement.Q<TextElement>("SubText");
 
-            var buildings = GameObject.FindObjectsByType<Building>(FindObjectsSortMode.None);
-            friendlyBuildings = buildings.Where(x => x.side == Side.Player).ToArray();
-            enemyBuildings = buildings.Where(x => x.side == Side.Enemy).ToArray();
+            friendlyBuildings = Building.GetSelectable(Side.Player);
+            enemyBuildings = Building.GetSelectable(Side.Enemy);
+            
+            RoundManager.OnTurnStart.AddListener(OnTurnStart);
+            RoundManager.OnTurnEnd.AddListener(OnTurnEnd);;
         }
 
         public void Update()
@@ -65,17 +68,46 @@ namespace Cinetica.Gameplay
             UpdateUI();
             UpdateCamera();
         }
-        
+
+        public void OnDestroy()
+        {
+            RoundManager.OnTurnStart.RemoveListener(OnTurnStart);
+            RoundManager.OnTurnEnd.RemoveListener(OnTurnEnd);
+        }
+
         // ==================== METHODS ===========================================================
+        
+        public void OnTurnStart()
+        {
+            // Update the selectables
+            friendlyBuildings = Building.GetSelectable(Side.Player);
+            enemyBuildings = Building.GetSelectable(Side.Enemy);
+
+            selectedBuilding = friendlyBuildings[1];
+            targetedBuilding = enemyBuildings[1];
+        }
+        
+        public void OnTurnEnd()
+        {
+            
+        }
         
         public void SelectNext()
         {
             if (!RoundManager.IsPlayerTurn()) return;
+            if (RoundManager.turnState == TurnState.SelectWeapon)
+                selectedBuilding = friendlyBuildings.NextOf(selectedBuilding);
+            else if(RoundManager.turnState == TurnState.SelectTarget)
+                targetedBuilding = enemyBuildings.NextOf(targetedBuilding);
         }
 
-        public void SelectPrevius()
+        public void SelectPrevious()
         {
             if (!RoundManager.IsPlayerTurn()) return;
+            if (RoundManager.turnState == TurnState.SelectWeapon)
+                selectedBuilding = friendlyBuildings.PreviousOf(selectedBuilding);
+            else if(RoundManager.turnState == TurnState.SelectTarget)
+                targetedBuilding = enemyBuildings.PreviousOf(targetedBuilding);
         }
 
         public void SelectConfirm()

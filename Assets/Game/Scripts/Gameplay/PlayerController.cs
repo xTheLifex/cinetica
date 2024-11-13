@@ -15,7 +15,9 @@ namespace Cinetica.Gameplay
         [NonSerialized] public Camera cam;
         public float cameraSpeed = 5f;
         public bool hardFollow = false;
-        
+        public string subTextOverride;
+        public float force = 0f;
+        public float angle = 0f;
         public Transform cameraTarget; // Camera will focus around this target.
         public Transform cameraTransformOverride; // Camera will lock to this transform exactly.
         public Transform stageTransform; // Will set camera to this position instead, looking at target.
@@ -56,11 +58,15 @@ namespace Cinetica.Gameplay
             _turnText = _document.rootVisualElement.Q<TextElement>("TurnText");
             _subText = _document.rootVisualElement.Q<TextElement>("SubText");
 
-            friendlyBuildings = Building.GetSelectable(Side.Player);
-            enemyBuildings = Building.GetSelectable(Side.Enemy);
+            friendlyBuildings = Building.GetAliveBuildings(Side.Player);
+            enemyBuildings = Building.GetAliveBuildings(Side.Enemy);
             
             RoundManager.OnTurnStart.AddListener(OnTurnStart);
             RoundManager.OnTurnEnd.AddListener(OnTurnEnd);;
+
+            _selectNext.clicked += SelectNext;
+            _selectPrevious.clicked += SelectPrevious;
+            _selectConfirm.clicked += SelectConfirm;
         }
 
         public void Update()
@@ -80,11 +86,13 @@ namespace Cinetica.Gameplay
         public void OnTurnStart()
         {
             // Update the selectables
-            friendlyBuildings = Building.GetSelectable(Side.Player);
-            enemyBuildings = Building.GetSelectable(Side.Enemy);
+            friendlyBuildings = Building.GetAliveBuildings(Side.Player);
+            enemyBuildings = Building.GetAliveBuildings(Side.Enemy);
 
             selectedBuilding = friendlyBuildings[1];
             targetedBuilding = enemyBuildings[1];
+
+            cameraTarget = selectedBuilding.transform;
         }
         
         public void OnTurnEnd()
@@ -94,25 +102,54 @@ namespace Cinetica.Gameplay
         
         public void SelectNext()
         {
+            Debug.Log("Select Next");
             if (!RoundManager.IsPlayerTurn()) return;
-            if (RoundManager.turnState == TurnState.SelectWeapon)
+            if (RoundManager.turnState == TurnState.SelectBuilding)
+            {
                 selectedBuilding = friendlyBuildings.NextOf(selectedBuilding);
-            else if(RoundManager.turnState == TurnState.SelectTarget)
+                cameraTarget = selectedBuilding.transform;
+            }
+            else if (RoundManager.turnState == TurnState.SelectTarget)
+            {
                 targetedBuilding = enemyBuildings.NextOf(targetedBuilding);
+                cameraTarget = targetedBuilding.transform;
+            }
         }
-
+        
         public void SelectPrevious()
         {
+            Debug.Log("Select Previous");
             if (!RoundManager.IsPlayerTurn()) return;
-            if (RoundManager.turnState == TurnState.SelectWeapon)
+            if (RoundManager.turnState == TurnState.SelectBuilding)
+            {
                 selectedBuilding = friendlyBuildings.PreviousOf(selectedBuilding);
-            else if(RoundManager.turnState == TurnState.SelectTarget)
+                cameraTarget = selectedBuilding.transform;
+            }
+            else if (RoundManager.turnState == TurnState.SelectTarget)
+            {
                 targetedBuilding = enemyBuildings.PreviousOf(targetedBuilding);
+                cameraTarget = targetedBuilding.transform;
+            }
         }
 
         public void SelectConfirm()
         {
             if (!RoundManager.IsPlayerTurn()) return;
+            if (RoundManager.turnState == TurnState.SelectBuilding)
+            {
+                RoundManager.force = force;
+                RoundManager.angle = angle;
+                RoundManager.turnState = TurnState.SelectTarget;
+                return;
+            }
+            
+            
+            if (RoundManager.turnState == TurnState.SelectTarget)
+            {
+                RoundManager.selectedBuilding = selectedBuilding;
+                RoundManager.targetBuilding = targetedBuilding;
+                return;
+            }
         }
 
         public void FireWeapon()
@@ -136,13 +173,19 @@ namespace Cinetica.Gameplay
                 _turnText.text = (RoundManager.roundState == RoundState.Victory ? "Vitória" : "Derrota");
                 return;
             }
+
+            if (RoundManager.turnState != TurnState.SelectBuilding)
+            {
+                _infoPanel.visible = false;
+            }
             
             if (RoundManager.IsPlayerTurn())
             {
+                _controls.visible = true;
                 _turnText.text = "Seu Turno";
                 _subText.text = RoundManager.turnState == TurnState.SelectTarget
-                    ? "Selecionar Torreta"
-                    : "Selecionar Arma";
+                    ? "Selecione uma Torreta..."
+                    : "Selecione um Alvo...";
             }
             else
             {
@@ -151,8 +194,19 @@ namespace Cinetica.Gameplay
                 _controls.visible = false;
             }
             
-            _subText.visible = RoundManager.turnState != TurnState.WaitForResult;
-            _turnText.visible = RoundManager.turnState != TurnState.WaitForResult;
+            _subText.visible = RoundManager.turnState is not (TurnState.WaitForResult or TurnState.PreTurn);
+            _turnText.visible = RoundManager.turnState is not (TurnState.WaitForResult or TurnState.PreTurn);
+
+            if (subTextOverride != null)
+            {
+                _subText.visible = true;
+                _subText.text = subTextOverride;
+            }
+
+            if (selectedBuilding)
+            {
+                _selectConfirm.SetEnabled(selectedBuilding.buildingType is BuildingType.Railgun or BuildingType.Turret);
+            }
         }
 
         // ==================== CAMERA ===========================================================
@@ -164,7 +218,7 @@ namespace Cinetica.Gameplay
             {
                 if (stageTransform)
                     MoveCameraToStagePosition(stageTransform);
-                else
+                else if(cameraTarget)
                     MoveCameraTowards(cameraTarget);
             }
         }
@@ -176,7 +230,7 @@ namespace Cinetica.Gameplay
             cameraTarget = lookAt;
         }
 
-        public void SetTrackingObject(Transform t)
+        public void SetTrackingTransform(Transform t)
         {
             ResetCamera();
             cameraTarget = t;

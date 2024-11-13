@@ -1,5 +1,7 @@
 using System;
+using System.Linq;
 using UnityEngine;
+using static Cinetica.Utility.Utils;
 
 namespace Cinetica.Gameplay
 {
@@ -34,6 +36,7 @@ namespace Cinetica.Gameplay
 
         public void TurnStart()
         {
+            if (RoundManager.IsPlayerTurn()) return;
             RoundManager.selectedBuilding = GetSelectedBuilding();
             RoundManager.targetBuilding = GetTargetBuilding();
             RoundManager.force = GetForce();
@@ -47,13 +50,31 @@ namespace Cinetica.Gameplay
 
         public Building GetSelectedBuilding()
         {
-            // TODO Select weapons.
-            return null;
+            var weapons = Building.GetAllWeapons(Side.Enemy);
+            
+            if (difficulty == Difficulty.Hard)
+            {
+                // Try selecting railguns first
+                var railgun = weapons.First(x => x.buildingType == BuildingType.Railgun);
+                if (railgun) return railgun;
+            }
+
+            return Pick(weapons);
         }
 
         public Building GetTargetBuilding()
         {
-            // TODO: Select target
+            var plyWeapons = Building.GetAllWeapons(Side.Player);
+            var plyBuildings = Building.GetAliveBuildings(Side.Player);
+            
+            if (difficulty == Difficulty.Hard)
+            {
+                var playerRailgun = plyWeapons.First(x => x.buildingType == BuildingType.Railgun);
+                if (playerRailgun) return playerRailgun;
+            }
+            
+            
+            
             return null;
         }
 

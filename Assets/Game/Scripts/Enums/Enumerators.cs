@@ -5,6 +5,8 @@ namespace Cinetica
     
     
     public enum RoundState { Playing, Victory, Defeat }
-    public enum TurnState { PreTurn, SelectWeapon, SelectTarget, WaitForResult }
+    public enum TurnState { PreTurn, SelectBuilding, SelectTarget, WaitForResult }
     public enum Difficulty { Easy, Medium, Hard }
+    
+    public enum BuildingType { Dummy, Core, Turret, Railgun, ShieldGenerator }
 }

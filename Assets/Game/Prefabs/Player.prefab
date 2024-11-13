@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 2588379234623498272}
   m_Layer: 0
   m_Name: Player
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: -5397416234189338067, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -67,8 +67,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   cameraSpeed: 5
   hardFollow: 0
+  subTextOverride: 
+  force: 0
+  angle: 0
   cameraTarget: {fileID: 0}
   cameraTransformOverride: {fileID: 0}
+  stageTransform: {fileID: 0}
 --- !u!1 &8618197455536288751
 GameObject:
   m_ObjectHideFlags: 0

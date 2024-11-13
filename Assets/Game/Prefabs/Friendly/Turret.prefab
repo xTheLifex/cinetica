@@ -646,6 +646,8 @@ GameObject:
   m_Component:
   - component: {fileID: 3542371310967511013}
   - component: {fileID: 1737979483108635174}
+  - component: {fileID: 4083923103581466112}
+  - component: {fileID: 4953934262363638157}
   m_Layer: 0
   m_Name: Turret
   m_TagString: Untagged
@@ -691,6 +693,39 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 1, y: 2, z: 1}
   m_Center: {x: 0, y: 0.5, z: 0}
+--- !u!114 &4083923103581466112
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3029158755361090159}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2c3feaf8f0ce4db8a39e154128beaecc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  maxHealth: 100
+  health: 100
+  godmode: 0
+--- !u!114 &4953934262363638157
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3029158755361090159}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b2da4e681ecd4aa2b66c47a811ec5287, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  side: 0
+  damageableComponent: {fileID: 0}
+  buildingType: 2
+  maxForce: 100
+  maxAngle: 45
+  minAngle: 0
 --- !u!1 &3558881310430672518
 GameObject:
   m_ObjectHideFlags: 0

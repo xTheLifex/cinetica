@@ -718,6 +718,8 @@ GameObject:
   - component: {fileID: 1742783859870250012}
   - component: {fileID: 8049127511815092441}
   - component: {fileID: 3200575729609959885}
+  - component: {fileID: 3627862670145908939}
+  - component: {fileID: 2040404747333295405}
   m_Layer: 0
   m_Name: Core
   m_TagString: Untagged
@@ -785,6 +787,39 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!114 &3627862670145908939
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5674198467059745294}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2c3feaf8f0ce4db8a39e154128beaecc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  maxHealth: 100
+  health: 100
+  godmode: 0
+--- !u!114 &2040404747333295405
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5674198467059745294}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b2da4e681ecd4aa2b66c47a811ec5287, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  side: 0
+  damageableComponent: {fileID: 0}
+  buildingType: 1
+  maxForce: 100
+  maxAngle: 45
+  minAngle: 0
 --- !u!1 &7351653154934792948
 GameObject:
   m_ObjectHideFlags: 0

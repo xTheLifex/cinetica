@@ -26,6 +26,18 @@ namespace Cinetica.Utility
         
 	        return list[index - 1];
         }
+        
+        public static T Pick<T>(T[] elements)
+        {
+	        int index = Random.Range(0, elements.Length);
+	        return elements[index];
+        }
+        
+        public static T PickRandom<T>(this T[] elements)
+        {
+	        int index = Random.Range(0, elements.Length);
+	        return elements[index];
+        }
     }
     
 #if UNITY_EDITOR

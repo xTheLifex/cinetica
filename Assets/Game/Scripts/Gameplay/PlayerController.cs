@@ -162,6 +162,8 @@ namespace Cinetica.Gameplay
             if (!RoundManager.IsPlayerTurn()) return;
         }
 
+        // ==================== USER INTERFACE ===========================================================
+        
         public void UpdateUI()
         {
             if (RoundManager.roundState != RoundState.Playing)
@@ -183,9 +185,12 @@ namespace Cinetica.Gameplay
             {
                 _controls.visible = true;
                 _turnText.text = "Seu Turno";
-                _subText.text = RoundManager.turnState == TurnState.SelectTarget
-                    ? "Selecione uma Torreta..."
-                    : "Selecione um Alvo...";
+                if (RoundManager.turnState == TurnState.SelectBuilding)
+                    _subText.text = "Selecione uma Torreta...";
+                else if (RoundManager.turnState == TurnState.SelectTarget)
+                    _subText.text = "Selecione um Alvo...";
+                else
+                    _subText.visible = false;
             }
             else
             {
@@ -196,7 +201,7 @@ namespace Cinetica.Gameplay
             
             _subText.visible = RoundManager.turnState is not (TurnState.WaitForResult or TurnState.PreTurn);
             _turnText.visible = RoundManager.turnState is not (TurnState.WaitForResult or TurnState.PreTurn);
-
+            _controls.visible = RoundManager.turnState is not (TurnState.PreTurn or TurnState.WaitForResult);
             if (subTextOverride != null)
             {
                 _subText.visible = true;

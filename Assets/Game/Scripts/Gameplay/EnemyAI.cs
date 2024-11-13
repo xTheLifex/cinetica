@@ -47,22 +47,26 @@ namespace Cinetica.Gameplay
 
         public Building GetSelectedBuilding()
         {
-            // Select weapons.
+            // TODO Select weapons.
+            return null;
         }
 
         public Building GetTargetBuilding()
         {
-            
+            // TODO: Select target
+            return null;
         }
 
         public float GetForce()
         {
-            
+            // TODO: Select force based on selections above
+            return 100f;
         }
 
         public float GetAngle()
         {
-            
+            // TODO: Get angle based on selections above
+            return 0;
         }
     }
 }

@@ -67,7 +67,6 @@ namespace Cinetica.Gameplay
 
         private IEnumerator IFireWeapon()
         {
-            Debug.Log()
             yield return null;
         }
         

@@ -52,7 +52,6 @@ namespace Cinetica.Gameplay
             _selectPrevious = _document.rootVisualElement.Q<Button>("Previous");
             _selectNext = _document.rootVisualElement.Q<Button>("Next");
             _selectConfirm = _document.rootVisualElement.Q<Button>("Select");
-            _fireWeapon = _document.rootVisualElement.Q<Button>("FireWeapon");
             _cancelTarget = _document.rootVisualElement.Q<Button>("CancelTarget");
 
             _turnText = _document.rootVisualElement.Q<TextElement>("TurnText");
@@ -67,6 +66,7 @@ namespace Cinetica.Gameplay
             _selectNext.clicked += SelectNext;
             _selectPrevious.clicked += SelectPrevious;
             _selectConfirm.clicked += SelectConfirm;
+            _cancelTarget.clicked += CancelTarget;
         }
 
         public void Update()
@@ -92,6 +92,7 @@ namespace Cinetica.Gameplay
             selectedBuilding = friendlyBuildings[1];
             targetedBuilding = enemyBuildings[1];
 
+            ResetCamera();
             cameraTarget = selectedBuilding.transform;
         }
         
@@ -135,32 +136,32 @@ namespace Cinetica.Gameplay
         public void SelectConfirm()
         {
             if (!RoundManager.IsPlayerTurn()) return;
-            if (RoundManager.turnState == TurnState.SelectBuilding)
+            switch (RoundManager.turnState)
             {
-                RoundManager.force = force;
-                RoundManager.angle = angle;
-                RoundManager.turnState = TurnState.SelectTarget;
-                return;
+                case TurnState.SelectBuilding:
+                    // Building is selected. Go into Target mode.
+                    RoundManager.turnState = TurnState.SelectTarget;
+                    return;
+                case TurnState.SelectTarget:
+                    // Target is selected. Go into parameter mode.
+                    RoundManager.turnState = TurnState.InputParameters;
+                    ResetCamera();
+                    return;
+                case TurnState.InputParameters:
+                    // Fire weapon
+                    //TODO: Set parameters and go.
+                    RoundManager.selectedBuilding = selectedBuilding;
+                    RoundManager.targetBuilding = targetedBuilding;
+                    return;
             }
-            
-            
-            if (RoundManager.turnState == TurnState.SelectTarget)
-            {
-                RoundManager.selectedBuilding = selectedBuilding;
-                RoundManager.targetBuilding = targetedBuilding;
-                ResetCamera();
-                return;
-            }
-        }
-
-        public void FireWeapon()
-        {
-            if (!RoundManager.IsPlayerTurn()) return;
         }
 
         public void CancelTarget()
         {
             if (!RoundManager.IsPlayerTurn()) return;
+
+            RoundManager.turnState = TurnState.SelectBuilding;
+            cameraTarget = selectedBuilding.transform;
         }
 
         // ==================== USER INTERFACE ===========================================================
@@ -177,36 +178,67 @@ namespace Cinetica.Gameplay
                 return;
             }
 
-            if (RoundManager.turnState == TurnState.SelectBuilding)
+            switch (RoundManager.turnState)
             {
-                if (selectedBuilding)
-                    SetTrackingTransform(selectedBuilding.transform);
+                case TurnState.PreTurn:
+                    _infoPanel.visible = false;
+                    _controls.visible = false;
+                    _subText.visible = false;
+                    _turnText.visible = false;
+                    break;
+                case TurnState.SelectBuilding:
+                    _infoPanel.visible = false;
+                    _controls.visible = true;
+                    break;
+                case TurnState.SelectTarget:
+                    _infoPanel.visible = false;
+                    _controls.visible = true;
+                    if (targetedBuilding && RoundManager.IsPlayerTurn())
+                        SetTrackingTransform(targetedBuilding.transform);
+                    break;
+                case TurnState.InputParameters:
+                    _infoPanel.visible = true;
+                    _controls.visible = true;
+                    if (selectedBuilding && RoundManager.IsPlayerTurn())
+                        SetTrackingTransform(selectedBuilding.transform);
+                    break;
+                case TurnState.WaitForResult:
+                    _infoPanel.visible = false;
+                    _controls.visible = false;
+                    _subText.visible = false;
+                    _turnText.visible = false;
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException();
             }
-            else
-            {
-                _infoPanel.visible = false;
-            }
-
-            if (RoundManager.turnState == TurnState.SelectTarget)
-            {
-                if (targetedBuilding)
-                    SetTrackingTransform(targetedBuilding.transform);
-            }
+            
 
             if (RoundManager.IsPlayerTurn())
             {
                 _controls.visible = true;
-                _turnText.text = "Seu Turno";
-                if (RoundManager.turnState == TurnState.SelectBuilding)
-                    _subText.text = "Selecione uma Torreta...";
-                else if (RoundManager.turnState == TurnState.SelectTarget)
-                    _subText.text = "Selecione um Alvo...";
-                else
-                    _subText.visible = false;
+                _turnText.text = "<b>Seu Turno</b>";
+                switch (RoundManager.turnState)
+                {
+                    case TurnState.SelectBuilding:
+                        _subText.text = "Selecione uma Torreta...";
+                        _selectConfirm.text = "Selecionar Torreta";
+                        break;
+                    case TurnState.SelectTarget:
+                        _subText.text = "Selecione um Alvo...";
+                        _selectConfirm.text = "Selecionar Alvo";
+                        break;
+                    case TurnState.InputParameters:
+                        _subText.text = "Defina os Parâmetros de Lançamento";
+                        _selectConfirm.text = "Confirmar Lançamento";
+                        break;
+                    default:
+                        _subText.visible = false;
+                        break;
+                }
             }
             else
             {
-                _turnText.text = "Turno do Oponente";
+                _turnText.text = "<color=red>Turno do Oponente</color>";
                 _infoPanel.visible = false;
                 _controls.visible = false;
             }
@@ -219,10 +251,26 @@ namespace Cinetica.Gameplay
                 _subText.visible = true;
                 _subText.text = subTextOverride;
             }
+            
 
-            if (selectedBuilding)
+
+            if (selectedBuilding && RoundManager.turnState is TurnState.SelectBuilding)
             {
+                _selectNext.SetEnabled(true);
+                _selectPrevious.SetEnabled(true);
                 _selectConfirm.SetEnabled(selectedBuilding.buildingType is BuildingType.Railgun or BuildingType.Turret);
+            }
+            else if (targetedBuilding && RoundManager.turnState is TurnState.SelectTarget)
+            {
+                _selectNext.SetEnabled(true);
+                _selectPrevious.SetEnabled(true);
+                _selectConfirm.SetEnabled(targetedBuilding.damageableComponent.health > 0f);
+            }
+            else
+            {
+                _selectConfirm.SetEnabled(RoundManager.turnState is TurnState.InputParameters);
+                _selectNext.SetEnabled(false);
+                _selectPrevious.SetEnabled(false);
             }
         }
 
@@ -264,6 +312,14 @@ namespace Cinetica.Gameplay
             cameraTransformOverride = null;
             cameraTarget = null;
             stageTransform = null;
+        }
+
+        public void SetCameraToStaticPosition()
+        {
+            if (RoundManager.Instance.playerCamStaticPos && RoundManager.IsPlayerTurn())
+                SetStaticTransform(RoundManager.Instance.playerCamStaticPos);
+            else if (RoundManager.Instance.enemyCamStaticPos && !RoundManager.IsPlayerTurn())
+                SetStaticTransform(RoundManager.Instance.enemyCamStaticPos);
         }
         
         public void MoveCameraToStagePosition(Transform t)

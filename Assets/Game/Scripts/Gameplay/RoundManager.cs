@@ -37,9 +37,14 @@ namespace Cinetica.Gameplay
         private Logger _logger = new Logger("Round Manager");
 
         public Transform stageTransforms;
+
+        public Transform playerCamStaticPos, enemyCamStaticPos;
+
+        public static RoundManager Instance;
         
         private void Awake()
         {
+            Instance = this;
             OnTurnStart.RemoveAllListeners();
             OnTurnEnd.RemoveAllListeners();
             OnSelection.RemoveAllListeners();
@@ -49,7 +54,7 @@ namespace Cinetica.Gameplay
         private IEnumerator IExecuteRound()
         {
             _logger.Log("Starting Round...");
-            yield return new WaitForSeconds(1f);
+            yield return null;
             while (true)
             {
                 _logger.Log("Starting Turn...");
@@ -60,10 +65,10 @@ namespace Cinetica.Gameplay
                 // START
                 _logger.Log("Start Move.");
                 
-                // ====== SELECT TARGET & WEAPON
-                _logger.Log("Waiting for target & weapon selection...");
+                // ====== SELECT TARGET & WEAPON & PARAMETERS
+                _logger.Log("Waiting for target & weapon & parameters...");
+                turnState = TurnState.SelectBuilding;
                 yield return IWaitForSelection();
-                
                 OnSelection?.Invoke();
                 
                 // ====== WAIT FOR FIRING
@@ -106,10 +111,10 @@ namespace Cinetica.Gameplay
             if (!IsPlayerTurn())
                 yield return GetEnemy().ISelect();
             
-            turnState = TurnState.SelectBuilding;
+            //turnState = TurnState.SelectBuilding;
             while (!selectedBuilding) yield return null;
             
-            turnState = TurnState.SelectTarget;
+            //turnState = TurnState.SelectTarget;
             while (!targetBuilding) yield return null;
             
             _logger.Log("Selection ended with angle of " + angle  + " and force of "  + force);

@@ -56,22 +56,27 @@ namespace Cinetica.Gameplay
 
             if (!building) _logger.LogError("No suitable building for selecting found!");
             if (!target) _logger.LogError("No suitable target found!");
-                
-            
+
+            RoundManager.turnState = TurnState.SelectBuilding;
             player.SetTrackingTransform(building.transform);
             player.subTextOverride = "Inimigo selecionou " + building.name;
             yield return new WaitForSeconds(1.5f);
+            RoundManager.turnState = TurnState.SelectTarget;
             player.SetTrackingTransform(target.transform);
             player.subTextOverride = "O inimigo irá atacar o " + target.name;
             yield return new WaitForSeconds(1.5f);
-            player.subTextOverride = null;
-            
+            RoundManager.turnState = TurnState.InputParameters;
+            player.SetCameraToStaticPosition();
             RoundManager.force = GetForce();
             RoundManager.angle = GetAngle();
+            player.subTextOverride = "O inimigo está decidindo os parâmetros...";
+            yield return new WaitForSeconds(1.5f);
+            player.subTextOverride = null;
+            player.ResetCamera();
             
             RoundManager.selectedBuilding = building;
             RoundManager.targetBuilding = target;
-            _logger.Log("AI made it's choice.");
+            _logger.Log($"AI made it's choice: F:{RoundManager.force}, A:{RoundManager.angle}");
         }
 
         public Building GetSelectedBuilding()

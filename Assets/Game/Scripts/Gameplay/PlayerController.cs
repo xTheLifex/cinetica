@@ -97,6 +97,12 @@ namespace Cinetica.Gameplay
             selectedBuilding = friendlyBuildings[1];
             targetedBuilding = enemyBuildings[1];
 
+            angle = selectedBuilding.angle;
+            force = selectedBuilding.force;
+
+            _angleSlider.value = (int)angle;
+            _forceSlider.value = (int)force;
+            
             ResetCamera();
             cameraTarget = selectedBuilding.transform;
         }

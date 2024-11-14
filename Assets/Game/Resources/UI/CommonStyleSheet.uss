@@ -35,3 +35,23 @@
     left: 2%;
     align-content: flex-start;
 }
+
+.ui-slider {
+    color: rgb(0, 0, 0);
+    flex-grow: 0;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    justify-content: center;
+    align-self: auto;
+    align-content: auto;
+    background-color: rgba(159, 159, 159, 0.51);
+    border-top-left-radius: 12px;
+    border-top-right-radius: 12px;
+    border-bottom-right-radius: 12px;
+    border-bottom-left-radius: 12px;
+    border-top-width: 8px;
+    border-right-width: 8px;
+    border-bottom-width: 8px;
+    border-left-width: 8px;
+    font-size: 24px;
+}

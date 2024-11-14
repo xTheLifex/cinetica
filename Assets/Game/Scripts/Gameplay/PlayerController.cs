@@ -40,8 +40,10 @@ namespace Cinetica.Gameplay
 
         private VisualElement _controls, 
             _infoPanel;
-        
 
+        private SliderInt _forceSlider, 
+            _angleSlider;
+        
         public void Awake()
         {
             cam = Camera.main;
@@ -57,10 +59,13 @@ namespace Cinetica.Gameplay
             _turnText = _document.rootVisualElement.Q<TextElement>("TurnText");
             _subText = _document.rootVisualElement.Q<TextElement>("SubText");
 
+            _forceSlider = _document.rootVisualElement.Q<SliderInt>("ForceSlider");
+            _angleSlider = _document.rootVisualElement.Q<SliderInt>("AngleSlider");
+
             friendlyBuildings = Building.GetAliveBuildings(Side.Player);
             enemyBuildings = Building.GetAliveBuildings(Side.Enemy);
             
-            RoundManager.OnTurnStart.AddListener(OnTurnStart);
+            RoundManager.OnMoveStart.AddListener(OnMoveStart);
             RoundManager.OnTurnEnd.AddListener(OnTurnEnd);;
 
             _selectNext.clicked += SelectNext;
@@ -77,13 +82,13 @@ namespace Cinetica.Gameplay
 
         public void OnDestroy()
         {
-            RoundManager.OnTurnStart.RemoveListener(OnTurnStart);
+            RoundManager.OnMoveStart.RemoveListener(OnMoveStart);
             RoundManager.OnTurnEnd.RemoveListener(OnTurnEnd);
         }
 
         // ==================== METHODS ===========================================================
         
-        public void OnTurnStart()
+        public void OnMoveStart()
         {
             // Update the selectables
             friendlyBuildings = Building.GetAliveBuildings(Side.Player);
@@ -140,18 +145,20 @@ namespace Cinetica.Gameplay
             {
                 case TurnState.SelectBuilding:
                     // Building is selected. Go into Target mode.
+                    RoundManager.selectedBuilding = selectedBuilding;
                     RoundManager.turnState = TurnState.SelectTarget;
                     return;
                 case TurnState.SelectTarget:
                     // Target is selected. Go into parameter mode.
+                    RoundManager.targetBuilding = targetedBuilding;
                     RoundManager.turnState = TurnState.InputParameters;
                     ResetCamera();
                     return;
                 case TurnState.InputParameters:
                     // Fire weapon
-                    //TODO: Set parameters and go.
-                    RoundManager.selectedBuilding = selectedBuilding;
-                    RoundManager.targetBuilding = targetedBuilding;
+                    RoundManager.angle = angle;
+                    RoundManager.force = force;
+                    RoundManager.selectionsMade = true;
                     return;
             }
         }
@@ -230,6 +237,12 @@ namespace Cinetica.Gameplay
                     case TurnState.InputParameters:
                         _subText.text = "Defina os Parâmetros de Lançamento";
                         _selectConfirm.text = "Confirmar Lançamento";
+                        // TODO: Any restrictions to be passed to UI here and validated after too.
+                        force = _forceSlider.value;
+                        angle = _angleSlider.value;
+                        
+                        RoundManager.angle = angle;
+                        RoundManager.force = force;
                         break;
                     default:
                         _subText.visible = false;

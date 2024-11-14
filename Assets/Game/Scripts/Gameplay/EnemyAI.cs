@@ -14,7 +14,7 @@ namespace Cinetica.Gameplay
         private Logger _logger = new Logger("Enemy AI");
         public void Awake()
         {
-            RoundManager.OnTurnStart.AddListener(TurnStart);
+            RoundManager.OnMoveStart.AddListener(MoveStart);
             RoundManager.OnTurnEnd.AddListener(TurnEnd);
             switch (difficulty)
             {
@@ -32,11 +32,11 @@ namespace Cinetica.Gameplay
 
         public void OnDestroy()
         {
-            RoundManager.OnTurnStart.RemoveListener(TurnStart);
+            RoundManager.OnMoveStart.RemoveListener(MoveStart);
             RoundManager.OnTurnEnd.RemoveListener(TurnEnd);
         }
 
-        public void TurnStart()
+        public void MoveStart()
         {   
 
         }
@@ -48,6 +48,7 @@ namespace Cinetica.Gameplay
 
         public IEnumerator ISelect()
         {
+            // START
             _logger.Log("AI thinking start.");
             if (RoundManager.IsPlayerTurn()) yield break;
             var player = RoundManager.GetPlayer();
@@ -57,25 +58,32 @@ namespace Cinetica.Gameplay
             if (!building) _logger.LogError("No suitable building for selecting found!");
             if (!target) _logger.LogError("No suitable target found!");
 
+            // BUILDING
             RoundManager.turnState = TurnState.SelectBuilding;
             player.SetTrackingTransform(building.transform);
             player.subTextOverride = "Inimigo selecionou " + building.name;
+            RoundManager.selectedBuilding = building;
             yield return new WaitForSeconds(1.5f);
+            
+            // TARGET
             RoundManager.turnState = TurnState.SelectTarget;
             player.SetTrackingTransform(target.transform);
             player.subTextOverride = "O inimigo irá atacar o " + target.name;
+            RoundManager.targetBuilding = target;
             yield return new WaitForSeconds(1.5f);
+            
+            // PARAMETERS
             RoundManager.turnState = TurnState.InputParameters;
             player.SetCameraToStaticPosition();
             RoundManager.force = GetForce();
             RoundManager.angle = GetAngle();
             player.subTextOverride = "O inimigo está decidindo os parâmetros...";
-            yield return new WaitForSeconds(1.5f);
+            yield return new WaitForSeconds(2f);
+            
+            // FINISH
+            RoundManager.selectionsMade = true;
             player.subTextOverride = null;
             player.ResetCamera();
-            
-            RoundManager.selectedBuilding = building;
-            RoundManager.targetBuilding = target;
             _logger.Log($"AI made it's choice: F:{RoundManager.force}, A:{RoundManager.angle}");
         }
 

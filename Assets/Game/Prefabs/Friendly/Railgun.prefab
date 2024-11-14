@@ -626,7 +626,7 @@ GameObject:
   - component: {fileID: 8428165252896668616}
   - component: {fileID: 7880691730131320943}
   m_Layer: 0
-  m_Name: Cube (05)
+  m_Name: Cube (05) (FirePoint)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1132,6 +1132,11 @@ MonoBehaviour:
   maxForce: 100
   maxAngle: 45
   minAngle: 0
+  angle: 0
+  force: 0
+  horizontalAxis: {fileID: 3775497929532863235}
+  verticalAxis: {fileID: 7129345283581713760}
+  firePosition: {fileID: 1137367453031355073}
 --- !u!1 &9157576092512216409
 GameObject:
   m_ObjectHideFlags: 0

@@ -726,6 +726,42 @@ MonoBehaviour:
   maxForce: 100
   maxAngle: 45
   minAngle: 0
+  angle: 0
+  force: 0
+  horizontalAxis: {fileID: 4330156261624620793}
+  verticalAxis: {fileID: 696057513502106833}
+  firePosition: {fileID: 4717356706353332762}
+--- !u!1 &3346302714643134995
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 4717356706353332762}
+  m_Layer: 0
+  m_Name: FirePoint
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &4717356706353332762
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3346302714643134995}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0.003, y: -0.011999957, z: -0.658}
+  m_LocalScale: {x: 0.08589218, y: 0.24369718, z: 0.06603384}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 696057513502106833}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &3558881310430672518
 GameObject:
   m_ObjectHideFlags: 0
@@ -921,6 +957,7 @@ Transform:
   - {fileID: 2467006435549390737}
   - {fileID: 6283111139186570117}
   - {fileID: 8469238689390870855}
+  - {fileID: 4717356706353332762}
   - {fileID: 4201700421851510776}
   - {fileID: 2633499341252518911}
   - {fileID: 7717365968582349761}

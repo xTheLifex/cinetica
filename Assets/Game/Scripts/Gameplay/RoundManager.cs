@@ -11,21 +11,18 @@ namespace Cinetica.Gameplay
 {
     public class RoundManager : MonoBehaviour
     {
-        private static int _movesPerTurn = 1;
-        private static int _moves = 1;
-        
         public static float angle = 0f;
         public static float force = 500f;
         
         public static Building selectedBuilding;
         public static Building targetBuilding;
-        
+        public static bool selectionsMade = false;
         public static Turn turn = Turn.Player;
 
         public static RoundState roundState = RoundState.Playing;
         public static TurnState turnState = TurnState.PreTurn;
 
-        public static UnityEvent OnTurnStart = new UnityEvent();
+        public static UnityEvent OnMoveStart = new UnityEvent();
         public static UnityEvent OnTurnEnd = new UnityEvent();
 
         public static UnityEvent OnSelection = new UnityEvent();
@@ -45,7 +42,7 @@ namespace Cinetica.Gameplay
         private void Awake()
         {
             Instance = this;
-            OnTurnStart.RemoveAllListeners();
+            OnMoveStart.RemoveAllListeners();
             OnTurnEnd.RemoveAllListeners();
             OnSelection.RemoveAllListeners();
             StartCoroutine(IExecuteRound());
@@ -57,44 +54,44 @@ namespace Cinetica.Gameplay
             yield return null;
             while (true)
             {
-                _logger.Log("Starting Turn...");
+                // START
+                _logger.Log($"Start {(IsPlayerTurn() ? "Player" : "Enemy")}'s turn");
                 turnState = TurnState.PreTurn;
                 yield return new WaitForSeconds(1f);
-                OnTurnStart?.Invoke();
+                OnMoveStart?.Invoke();
 
-                // START
-                _logger.Log("Start Move.");
-                
                 // ====== SELECT TARGET & WEAPON & PARAMETERS
                 _logger.Log("Waiting for target & weapon & parameters...");
                 turnState = TurnState.SelectBuilding;
                 yield return IWaitForSelection();
                 OnSelection?.Invoke();
-                
+
                 // ====== WAIT FOR FIRING
                 turnState = TurnState.WaitForResult;
+                selectionsMade = false;
                 _logger.Log("Waiting for weapon to fire...");
                 yield return IFireWeapon();
-                
+
                 var stage = GetClosestStageTransform(selectedBuilding.transform.position);
                 if (stage)
                 {
                     // TODO: Replace with projectile.
                     GetPlayer().SetStageCamera(selectedBuilding.transform, stage);
                 }
-                
+
                 // ====== WAIT FOR HIT
                 _logger.Log("Waiting for effects...");
                 yield return IWaitForEffects();
                 
+                // ====== END TURN
                 OnTurnEnd?.Invoke();
                 _logger.Log("End of turn. Starting new turn soon.");
-                
-                _moves = _movesPerTurn;
+
                 selectedBuilding = null;
                 targetBuilding = null;
                 angle = 0f;
                 force = 0f;
+                selectionsMade = false;
                 
                 turn = (turn == Turn.Enemy) ? Turn.Player : Turn.Enemy;
                 yield return null;
@@ -116,6 +113,8 @@ namespace Cinetica.Gameplay
             
             //turnState = TurnState.SelectTarget;
             while (!targetBuilding) yield return null;
+            
+            while (!selectionsMade) yield return null;
             
             _logger.Log("Selection ended with angle of " + angle  + " and force of "  + force);
         }

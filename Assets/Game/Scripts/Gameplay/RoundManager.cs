@@ -32,6 +32,7 @@ namespace Cinetica.Gameplay
 
         public static bool IsPlayerTurn() => turn == Turn.Player;
         public static PlayerController GetPlayer() => FindFirstObjectByType<PlayerController>();
+        public static EnemyAI GetEnemy() => FindFirstObjectByType<EnemyAI>();
 
         private Logger _logger = new Logger("Round Manager");
 
@@ -39,48 +40,48 @@ namespace Cinetica.Gameplay
         
         private void Awake()
         {
+            OnTurnStart.RemoveAllListeners();
+            OnTurnEnd.RemoveAllListeners();
+            OnSelection.RemoveAllListeners();
             StartCoroutine(IExecuteRound());
         }
 
         private IEnumerator IExecuteRound()
         {
             _logger.Log("Starting Round...");
-            yield return new WaitForSeconds(2f);
+            yield return new WaitForSeconds(1f);
             while (true)
             {
                 _logger.Log("Starting Turn...");
                 turnState = TurnState.PreTurn;
                 yield return new WaitForSeconds(1f);
                 OnTurnStart?.Invoke();
-                while (_moves > 0)
-                {
-                    // START
-                    _logger.Log("Start Move. Moves left: " + _moves);
-                    
-                    // ====== SELECT TARGET & WEAPON
-                    _logger.Log("Waiting for target & weapon selection...");
-                    yield return IWaitForSelection();
-                    OnSelection?.Invoke();
 
-                    var stage = GetClosestStageTransform(selectedBuilding.transform.position);
-                    if (stage)
-                    {
-                        // TODO: Replace with projectile.
-                        GetPlayer().SetStageCamera(selectedBuilding.transform, stage);
-                    }
-                    
-                    // ====== WAIT FOR HIT
-                    _logger.Log("Waiting for weapon to fire...");
-                    yield return IFireWeapon();
-                    
-                    // ====== WAIT FOR EFFECTS
-                    _logger.Log("Waiting for effects...");
-                    turnState = TurnState.WaitForResult;
-                    yield return IWaitForEffects();
-                    
-                    // END
-                    _moves -= 1;
+                // START
+                _logger.Log("Start Move.");
+                
+                // ====== SELECT TARGET & WEAPON
+                _logger.Log("Waiting for target & weapon selection...");
+                yield return IWaitForSelection();
+                
+                OnSelection?.Invoke();
+                
+                // ====== WAIT FOR FIRING
+                turnState = TurnState.WaitForResult;
+                _logger.Log("Waiting for weapon to fire...");
+                yield return IFireWeapon();
+                
+                var stage = GetClosestStageTransform(selectedBuilding.transform.position);
+                if (stage)
+                {
+                    // TODO: Replace with projectile.
+                    GetPlayer().SetStageCamera(selectedBuilding.transform, stage);
                 }
+                
+                // ====== WAIT FOR HIT
+                _logger.Log("Waiting for effects...");
+                yield return IWaitForEffects();
+                
                 OnTurnEnd?.Invoke();
                 _logger.Log("End of turn. Starting new turn soon.");
                 
@@ -102,11 +103,16 @@ namespace Cinetica.Gameplay
         
         private IEnumerator IWaitForSelection()
         {
+            if (!IsPlayerTurn())
+                yield return GetEnemy().ISelect();
+            
             turnState = TurnState.SelectBuilding;
             while (!selectedBuilding) yield return null;
             
             turnState = TurnState.SelectTarget;
             while (!targetBuilding) yield return null;
+            
+            _logger.Log("Selection ended with angle of " + angle  + " and force of "  + force);
         }
 
         private IEnumerator IFireWeapon()

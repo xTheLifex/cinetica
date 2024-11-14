@@ -36,7 +36,6 @@ namespace Cinetica.UI
         
         public IEnumerator IToggleBlockers(bool state, float time = 0.5f, bool instant = false)
         {
-            Debug.Log("Toggling Blockers to: " + state);
             var completed = false;
             var from = state ? -100f : 0f;
             var to = state ? 0f : -100f;
@@ -52,7 +51,6 @@ namespace Cinetica.UI
                 .setOnComplete(() => completed = true);
 
             yield return new WaitUntil(() => completed);
-            Debug.Log("Blockers set to: " + state);
             Set(to);
             yield break;
 
@@ -71,7 +69,6 @@ namespace Cinetica.UI
         public IEnumerator IToggleLoadingScreen(bool state, float time, bool instant)
         {
             Color og = _loadingOverlay.style.backgroundColor.value;
-            Debug.Log("Toggling Loading Screen to: " + state);
             if (!state)
                 _loadingIcon.visible = false;
             else
@@ -96,7 +93,6 @@ namespace Cinetica.UI
                 _loadingIcon.visible = true;
             else
                 _loadingOverlay.pickingMode = PickingMode.Ignore;
-            Debug.Log("Loading Screen set to: " + state);
             Set(to);
             yield break;
             

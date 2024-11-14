@@ -24,8 +24,8 @@ namespace Cinetica.UI
 
         private readonly List<LevelEntry> _levelEntries = new List<LevelEntry>()
         {
-            new LevelEntry("Tutorial0", "Tutorial"),
-            new LevelEntry("Main1", "Um pequeno desafio...", new string[] {"Tutorial0"}),
+            new LevelEntry("Testing", "Armazém - Introdução 1"),
+            new LevelEntry("Main1", "Sala Circular - Avançado 1", new string[] {"Testing"}),
         };
         
         public override void Awake()
@@ -145,8 +145,8 @@ namespace Cinetica.UI
         
         private void CloseAllWindows()
         {
-            SetWindowState(_tutorialWindow, false);
-            SetWindowState(_levelSelectWindow, false);
+            SetWindowState(_tutorialWindow, false, 0f);
+            SetWindowState(_levelSelectWindow, false, 0f);
         }
         
         private void SetActiveWindow(VisualElement window)
@@ -159,7 +159,8 @@ namespace Cinetica.UI
         {
             var from = window.style.top.value.value;
             var to = state ? 5f : 105f;
-
+            Debug.Log(from);
+            
             if (time <= 0f)
             {
                 Set(to);

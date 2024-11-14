@@ -148,6 +148,7 @@ namespace Cinetica.Gameplay
             {
                 RoundManager.selectedBuilding = selectedBuilding;
                 RoundManager.targetBuilding = targetedBuilding;
+                ResetCamera();
                 return;
             }
         }
@@ -176,11 +177,22 @@ namespace Cinetica.Gameplay
                 return;
             }
 
-            if (RoundManager.turnState != TurnState.SelectBuilding)
+            if (RoundManager.turnState == TurnState.SelectBuilding)
+            {
+                if (selectedBuilding)
+                    SetTrackingTransform(selectedBuilding.transform);
+            }
+            else
             {
                 _infoPanel.visible = false;
             }
-            
+
+            if (RoundManager.turnState == TurnState.SelectTarget)
+            {
+                if (targetedBuilding)
+                    SetTrackingTransform(targetedBuilding.transform);
+            }
+
             if (RoundManager.IsPlayerTurn())
             {
                 _controls.visible = true;
@@ -200,7 +212,7 @@ namespace Cinetica.Gameplay
             }
             
             _subText.visible = RoundManager.turnState is not (TurnState.WaitForResult or TurnState.PreTurn);
-            _turnText.visible = RoundManager.turnState is not (TurnState.WaitForResult or TurnState.PreTurn);
+            _turnText.visible = RoundManager.turnState !=  TurnState.PreTurn && RoundManager.roundState != RoundState.Defeat && RoundManager.roundState != RoundState.Victory;
             _controls.visible = RoundManager.turnState is not (TurnState.PreTurn or TurnState.WaitForResult);
             if (subTextOverride != null)
             {

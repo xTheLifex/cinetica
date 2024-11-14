@@ -1,7 +1,9 @@
 using System;
+using System.Collections;
 using System.Linq;
 using UnityEngine;
 using static Cinetica.Utility.Utils;
+using Logger = Cinetica.Utility.Logger;
 
 namespace Cinetica.Gameplay
 {
@@ -9,7 +11,7 @@ namespace Cinetica.Gameplay
     {
         public Difficulty difficulty;
         public float imprecision = 1f;
-        
+        private Logger _logger = new Logger("Enemy AI");
         public void Awake()
         {
             RoundManager.OnTurnStart.AddListener(TurnStart);
@@ -35,17 +37,41 @@ namespace Cinetica.Gameplay
         }
 
         public void TurnStart()
-        {
-            if (RoundManager.IsPlayerTurn()) return;
-            RoundManager.selectedBuilding = GetSelectedBuilding();
-            RoundManager.targetBuilding = GetTargetBuilding();
-            RoundManager.force = GetForce();
-            RoundManager.angle = GetAngle();
+        {   
+
         }
 
         public void TurnEnd()
         {
             
+        }
+
+        public IEnumerator ISelect()
+        {
+            _logger.Log("AI thinking start.");
+            if (RoundManager.IsPlayerTurn()) yield break;
+            var player = RoundManager.GetPlayer();
+            var building = GetSelectedBuilding();
+            var target = GetTargetBuilding();
+
+            if (!building) _logger.LogError("No suitable building for selecting found!");
+            if (!target) _logger.LogError("No suitable target found!");
+                
+            
+            player.SetTrackingTransform(building.transform);
+            player.subTextOverride = "Inimigo selecionou " + building.name;
+            yield return new WaitForSeconds(1.5f);
+            player.SetTrackingTransform(target.transform);
+            player.subTextOverride = "O inimigo irá atacar o " + target.name;
+            yield return new WaitForSeconds(1.5f);
+            player.subTextOverride = null;
+            
+            RoundManager.force = GetForce();
+            RoundManager.angle = GetAngle();
+            
+            RoundManager.selectedBuilding = building;
+            RoundManager.targetBuilding = target;
+            _logger.Log("AI made it's choice.");
         }
 
         public Building GetSelectedBuilding()
@@ -74,8 +100,7 @@ namespace Cinetica.Gameplay
             }
             
             
-            
-            return null;
+            return Pick(plyBuildings.ToArray());
         }
 
         public float GetForce()

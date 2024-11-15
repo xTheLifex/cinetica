@@ -142,19 +142,26 @@ namespace Cinetica.Gameplay
             //TODO: Sound effects
             // TODO: If its a railgun it should just shoot a ultimate mega blaster laser
 
-            if (!projectilePrefab)
+            if (!projectilePrefab || !selectedBuilding)
                 yield break;
 
             var obj = GameObject.Instantiate(projectilePrefab, selectedBuilding.GetFiringPosition(), Quaternion.identity);
-
+            
             var projectile = obj.GetComponent<Projectile>();
             if (!projectile)
             {
                 Debug.LogError("Projectile fired without projectile component.");
                 Destroy(obj);;
             }
+
+            var horizontalRotation = selectedBuilding.horizontalAxis.rotation;
+            var verticalRotation = Quaternion.Euler(angle, 0f, 0f);
+
+            // Combine the horizontal and vertical rotations
+            var fireRotation = horizontalRotation * verticalRotation;
+            var initialVelocity = fireRotation * Vector3.back * velocity;
+            projectile.Initialize(initialVelocity);
             
-            projectile.Initialize(angle, velocity);
             yield return new WaitUntil(() => !obj);
             
             yield return null;

@@ -1,54 +1,44 @@
-using System;
-using System.Collections;
 using UnityEngine;
-using UnityEngine.Events;
 
-namespace Cinetica.Gameplay
+public class Projectile : MonoBehaviour
 {
-    public class Projectile : MonoBehaviour
+    public Vector3 velocity; // Initial velocity
+    public float expiryTime = 5f; // Time before the projectile expires
+    private bool launched = false; // Whether the projectile has been launched
+    private float time = 0f; // Elapsed time since launch
+
+    public void Initialize(Vector3 initialVelocity)
     {
-        public float radius = 0.5f;
-        public UnityEvent OnHit = new UnityEvent();
-        public Building owner;
+        velocity = initialVelocity;
+        launched = true;
+    }
 
-        public float expiryTime = 30f;
-
-        private float velocity;
-        private float angle;
-        private float time = 0f;
-        private bool launched = false;
-
-        public void Initialize(float angle, float velocity)
+    public void Update()
+    {
+        expiryTime -= Time.deltaTime;
+        if (expiryTime <= 0f)
         {
-            this.velocity = velocity;
-            this.angle = angle;
-            launched = true;
+            Debug.LogWarning($"Projectile {name} has expired. This shouldn't happen.");
+            Explode();
+            return;
         }
 
-        public void Update()
-        {
-            expiryTime -= Time.deltaTime;
-            if (expiryTime <= 0f)
-            {
-                Debug.LogWarning($"Projectile {name} has expired. This shouldn't happen.");
-                Explode();
-            }
-            
-            if (launched) return;
-            time += Time.deltaTime;
-        }
+        if (!launched) return;
 
-        public void Explode()
-        {
-            Destroy(gameObject);
-        }
-        
-        #if UNITY_EDITOR
-        private void OnDrawGizmos()
-        {
-            Gizmos.color = Color.blue;
-            Gizmos.DrawWireSphere(transform.position, radius);
-        }
-#endif
+        // Update time
+        time += Time.deltaTime;
+
+        // Apply gravity
+        velocity += Physics.gravity * Time.deltaTime;
+
+        // Update position based on velocity
+        transform.position += velocity * Time.deltaTime;
+    }
+
+    private void Explode()
+    {
+        // Explosion logic here
+        Debug.Log($"{name} exploded!");
+        Destroy(gameObject);
     }
 }

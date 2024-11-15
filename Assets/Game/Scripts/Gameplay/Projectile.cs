@@ -18,9 +18,9 @@ namespace Cinetica.Gameplay
         private float time = 0f;
         private bool launched = false;
 
-        public void Initialize(float angle, float force)
+        public void Initialize(float angle, float velocity)
         {
-            this.velocity = force;
+            this.velocity = velocity;
             this.angle = angle;
             launched = true;
         }

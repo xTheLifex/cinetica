@@ -10,8 +10,8 @@ namespace Cinetica.Gameplay
 {
     public class PlayerController : MonoBehaviour
     {
-        
         // ==================== MISC ===========================================================
+        #region Declarations - Misc
         [NonSerialized] public Camera cam;
         public float cameraSpeed = 5f;
         public bool hardFollow = false;
@@ -21,8 +21,9 @@ namespace Cinetica.Gameplay
         public Transform cameraTarget; // Camera will focus around this target.
         public Transform cameraTransformOverride; // Camera will lock to this transform exactly.
         public Transform stageTransform; // Will set camera to this position instead, looking at target.
-        
-        // ==================== UI ===========================================================
+        #endregion
+        // ==================== USER INTERFACE ====================================================
+        #region Declarations - UI
         private UIDocument _document;
         private List<Building> friendlyBuildings = new List<Building>();
         private List<Building> enemyBuildings = new List<Building>();
@@ -85,9 +86,9 @@ namespace Cinetica.Gameplay
             RoundManager.OnTurnStart.RemoveListener(OnMoveStart);
             RoundManager.OnTurnEnd.RemoveListener(OnTurnEnd);
         }
-
+        #endregion
         // ==================== METHODS ===========================================================
-        
+        #region Methods
         public void OnMoveStart()
         {
             // Update the selectables
@@ -176,9 +177,9 @@ namespace Cinetica.Gameplay
             RoundManager.turnState = TurnState.SelectBuilding;
             cameraTarget = selectedBuilding.transform;
         }
-
-        // ==================== USER INTERFACE ===========================================================
-        
+        #endregion
+        // ==================== USER INTERFACE ====================================================
+        #region UI
         public void UpdateUI()
         {
             if (RoundManager.roundState != RoundState.Playing)
@@ -292,8 +293,9 @@ namespace Cinetica.Gameplay
                 _selectPrevious.SetEnabled(false);
             }
         }
-
-        // ==================== CAMERA ===========================================================
+        #endregion
+        // ==================== CAMERA ============================================================
+        #region Camera
         public void UpdateCamera()
         {
             if (cameraTransformOverride)
@@ -400,5 +402,6 @@ namespace Cinetica.Gameplay
             transform.rotation = Quaternion.Lerp(transform.rotation, t.rotation,
                 Time.deltaTime * cameraSpeed);
         }
+        #endregion
     }
 }

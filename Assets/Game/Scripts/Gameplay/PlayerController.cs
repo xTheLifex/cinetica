@@ -60,8 +60,8 @@ namespace Cinetica.Gameplay
             _turnText = _document.rootVisualElement.Q<TextElement>("TurnText");
             _subText = _document.rootVisualElement.Q<TextElement>("SubText");
 
-            _velocitySlider = _document.rootVisualElement.Q<SliderInt>("ForceSlider");
-            _angleSlider = _document.rootVisualElement.Q<SliderInt>("VelocitySlider");
+            _velocitySlider = _document.rootVisualElement.Q<SliderInt>("VelocitySlider");
+            _angleSlider = _document.rootVisualElement.Q<SliderInt>("AngleSlider");
 
             friendlyBuildings = Building.GetAliveBuildings(Side.Player);
             enemyBuildings = Building.GetAliveBuildings(Side.Enemy);

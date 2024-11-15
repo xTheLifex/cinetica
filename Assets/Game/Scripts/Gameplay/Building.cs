@@ -91,6 +91,7 @@ namespace Cinetica.Gameplay
         public static Building[] GetSelectableWeapons(Side side) =>
             GetAllWeapons(side).Where(x => x.damageableComponent.health > 0f).ToArray();
         public static List<Building> GetAliveBuildings(Side side) => GetAllBuildings().Where(x => x.side == side && x.damageableComponent?.health > 0f).ToList();
+        public Vector3 GetFiringPosition() => firePosition != null ? firePosition.position : transform.position;
         
         public IEnumerator IDisplayEffects()
         {

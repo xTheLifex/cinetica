@@ -80,6 +80,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   stageTransforms: {fileID: 6214170402057340485}
+  playerCamStaticPos: {fileID: 0}
+  enemyCamStaticPos: {fileID: 0}
+  projectilePrefab: {fileID: 7435436613210588676, guid: 6e1136043eb34bc4da4b3cd0c7fb7267, type: 3}
 --- !u!1 &6393058079344726208
 GameObject:
   m_ObjectHideFlags: 0

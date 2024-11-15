@@ -9,7 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6759359138097361666}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Blockout
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -49,7 +49,7 @@ GameObject:
   - component: {fileID: 2936143026239402978}
   - component: {fileID: 7975002926203705403}
   - component: {fileID: 2435158398772850193}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Life 2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -135,7 +135,7 @@ GameObject:
   - component: {fileID: 8060663039229251198}
   - component: {fileID: 6236889490097420291}
   - component: {fileID: 7392124296278948339}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Core (03)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -221,7 +221,7 @@ GameObject:
   - component: {fileID: 5931342422208386002}
   - component: {fileID: 3955342242879109463}
   - component: {fileID: 1694217117943624031}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Core (02)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -307,7 +307,7 @@ GameObject:
   - component: {fileID: 7233532932835885059}
   - component: {fileID: 6378571478037681908}
   - component: {fileID: 2563492548905292621}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Core (05)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -391,7 +391,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2119058010775484631}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: CameraTarget
   m_TagString: Untagged
   m_Icon: {fileID: 4162164826716764455, guid: 0000000000000000d000000000000000, type: 0}
@@ -425,7 +425,7 @@ GameObject:
   - component: {fileID: 7025584202961027538}
   - component: {fileID: 2264944139692613206}
   - component: {fileID: 8972967638689866965}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Core
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -511,7 +511,7 @@ GameObject:
   - component: {fileID: 6473384554529327070}
   - component: {fileID: 2237924011143621371}
   - component: {fileID: 2238484086456959777}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Life 1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -597,7 +597,7 @@ GameObject:
   - component: {fileID: 709744087781807664}
   - component: {fileID: 8626900970204979942}
   - component: {fileID: 7256962354447804671}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Point Light
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -720,9 +720,9 @@ GameObject:
   - component: {fileID: 3200575729609959885}
   - component: {fileID: 3627862670145908939}
   - component: {fileID: 2040404747333295405}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Core
-  m_TagString: Untagged
+  m_TagString: Building
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -820,6 +820,15 @@ MonoBehaviour:
   maxForce: 100
   maxAngle: 45
   minAngle: 0
+  angle: 0
+  force: 0
+  horizontalAxis: {fileID: 0}
+  verticalAxis: {fileID: 0}
+  firePosition: {fileID: 0}
+  maxCharge: 1000
+  charge: 1000
+  chargeRecovery: 100
+  shield: {fileID: 0}
 --- !u!1 &7351653154934792948
 GameObject:
   m_ObjectHideFlags: 0
@@ -831,7 +840,7 @@ GameObject:
   - component: {fileID: 3263972268414018311}
   - component: {fileID: 5428319179765226260}
   - component: {fileID: 7478927392470198323}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Nucleus
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -917,7 +926,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8673817604605327803}
   - component: {fileID: 5526162299601936914}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: CameraPosition
   m_TagString: Untagged
   m_Icon: {fileID: 4162164826716764455, guid: 0000000000000000d000000000000000, type: 0}

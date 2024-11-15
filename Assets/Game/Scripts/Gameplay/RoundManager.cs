@@ -40,7 +40,9 @@ namespace Cinetica.Gameplay
         public Transform playerCamStaticPos, enemyCamStaticPos;
 
         public static RoundManager Instance;
-
+        public static GameObject GetProjectilePrefab() => Instance.projectilePrefab;
+        public GameObject projectilePrefab;
+        
         public bool ValidGame(Side side)
         {
             if (Building.GetCore(side).damageableComponent.health <= 0f) return false;
@@ -138,6 +140,24 @@ namespace Cinetica.Gameplay
 
         private IEnumerator IFireWeapon()
         {
+            //TODO: Sound effects
+            // TODO: If its a railgun it should just shoot a ultimate mega blaster laser
+
+            if (!projectilePrefab)
+                yield break;
+
+            var obj = GameObject.Instantiate(projectilePrefab, selectedBuilding.GetFiringPosition(), Quaternion.identity);
+
+            var projectile = obj.GetComponent<Projectile>();
+            if (!projectile)
+            {
+                Debug.LogError("Projectile fired without projectile component.");
+                Destroy(obj);;
+            }
+            
+            projectile.Initialize(angle, force);
+            yield return new WaitUntil(() => !obj);
+            
             yield return null;
         }
         

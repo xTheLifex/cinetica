@@ -24,10 +24,43 @@ namespace Cinetica.Gameplay
         public Transform horizontalAxis;
         public Transform verticalAxis;
         public Transform firePosition;
+
+        public float maxCharge = 1000f;
+        public float charge = 1000f;
+        public float chargeRecovery = 100f;
+
+        public GameObject shield;
         
         private void Awake()
         {
             damageableComponent = GetComponent<Damageable>();
+            RoundManager.OnTurnStart.AddListener(TurnStart);
+            RoundManager.OnTurnEnd.AddListener(TurnEnd);
+        }
+
+        private void OnDestroy()
+        {
+            RoundManager.OnTurnEnd.RemoveListener(TurnEnd);
+            RoundManager.OnTurnStart.RemoveListener(TurnStart);
+        }
+
+        private void TurnStart()
+        {
+            if (!shield) return;
+            
+            if (buildingType == BuildingType.ShieldGenerator)
+            {
+                shield.SetActive(side == Side.Player ? !RoundManager.IsPlayerTurn() : RoundManager.IsPlayerTurn());
+            }
+        }
+        
+        private void TurnEnd()
+        {
+            if (RoundManager.roundState != RoundState.Playing) return;
+            if (damageableComponent.health <= 0f) return;
+            
+            charge += chargeRecovery;
+            charge = Mathf.Clamp(charge, 0f, maxCharge);
         }
 
         public void Update()
@@ -52,9 +85,11 @@ namespace Cinetica.Gameplay
 
 
         public static Building[] GetAllBuildings() => GameObject.FindObjectsByType<Building>(FindObjectsSortMode.None).ToArray();
-
+        public static Building GetCore(Side side) => FindObjectsByType<Building>(FindObjectsSortMode.None).FirstOrDefault(x => x.buildingType == BuildingType.Core && x.side == side);
         public static Building[] GetAllWeapons(Side side) => GetAllBuildings().Where(x => x.side == side &&
             (x.buildingType == BuildingType.Railgun || x.buildingType == BuildingType.Turret)).ToArray();
+        public static Building[] GetSelectableWeapons(Side side) =>
+            GetAllWeapons(side).Where(x => x.damageableComponent.health > 0f).ToArray();
         public static List<Building> GetAliveBuildings(Side side) => GetAllBuildings().Where(x => x.side == side && x.damageableComponent?.health > 0f).ToList();
         
         public IEnumerator IDisplayEffects()

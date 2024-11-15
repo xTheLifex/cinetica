@@ -14,7 +14,7 @@ namespace Cinetica.Gameplay
         private Logger _logger = new Logger("Enemy AI");
         public void Awake()
         {
-            RoundManager.OnMoveStart.AddListener(MoveStart);
+            RoundManager.OnTurnStart.AddListener(MoveStart);
             RoundManager.OnTurnEnd.AddListener(TurnEnd);
             switch (difficulty)
             {
@@ -32,7 +32,7 @@ namespace Cinetica.Gameplay
 
         public void OnDestroy()
         {
-            RoundManager.OnMoveStart.RemoveListener(MoveStart);
+            RoundManager.OnTurnStart.RemoveListener(MoveStart);
             RoundManager.OnTurnEnd.RemoveListener(TurnEnd);
         }
 
@@ -55,9 +55,18 @@ namespace Cinetica.Gameplay
             var building = GetSelectedBuilding();
             var target = GetTargetBuilding();
 
-            if (!building) _logger.LogError("No suitable building for selecting found!");
-            if (!target) _logger.LogError("No suitable target found!");
+            if (!building) _logger.LogWarning("No suitable building for selecting found!");
+            if (!target) _logger.LogWarning("No suitable target found!");
 
+            if (!building || !target)
+            {
+                player.subTextOverride = "O inimigo não parece agir...";
+                yield return new WaitForSeconds(1f);
+                player.subTextOverride = null;
+                RoundManager.skip = true;
+                yield break;
+            }
+            
             // BUILDING
             RoundManager.turnState = TurnState.SelectBuilding;
             player.SetTrackingTransform(building.transform);

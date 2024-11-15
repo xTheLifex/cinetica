@@ -375,6 +375,15 @@ MonoBehaviour:
   maxForce: 100
   maxAngle: 45
   minAngle: 0
+  angle: 0
+  force: 0
+  horizontalAxis: {fileID: 0}
+  verticalAxis: {fileID: 0}
+  firePosition: {fileID: 0}
+  maxCharge: 1000
+  charge: 1000
+  chargeRecovery: 100
+  shield: {fileID: 178973977843488115}
 --- !u!1 &5317869964146745604
 GameObject:
   m_ObjectHideFlags: 0

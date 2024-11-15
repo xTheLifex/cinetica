@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Linq;
 using Cinetica.Utility;
+using PlasticGui;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.Serialization;
@@ -17,12 +18,13 @@ namespace Cinetica.Gameplay
         public static Building selectedBuilding;
         public static Building targetBuilding;
         public static bool selectionsMade = false;
+        public static bool skip = false;
         public static Turn turn = Turn.Player;
 
         public static RoundState roundState = RoundState.Playing;
         public static TurnState turnState = TurnState.PreTurn;
 
-        public static UnityEvent OnMoveStart = new UnityEvent();
+        public static UnityEvent OnTurnStart = new UnityEvent();
         public static UnityEvent OnTurnEnd = new UnityEvent();
 
         public static UnityEvent OnSelection = new UnityEvent();
@@ -38,11 +40,17 @@ namespace Cinetica.Gameplay
         public Transform playerCamStaticPos, enemyCamStaticPos;
 
         public static RoundManager Instance;
+
+        public bool ValidGame(Side side)
+        {
+            if (Building.GetCore(side).damageableComponent.health <= 0f) return false;
+            return (Building.GetSelectableWeapons(side)).Length > 0;
+        }
         
         private void Awake()
         {
             Instance = this;
-            OnMoveStart.RemoveAllListeners();
+            OnTurnStart.RemoveAllListeners();
             OnTurnEnd.RemoveAllListeners();
             OnSelection.RemoveAllListeners();
             StartCoroutine(IExecuteRound());
@@ -52,13 +60,27 @@ namespace Cinetica.Gameplay
         {
             _logger.Log("Starting Round...");
             yield return null;
-            while (true)
+            
+            while (roundState == RoundState.Playing)
             {
+                // CHECK FOR WIN OR LOSS
+                if (!ValidGame(Side.Player))
+                {
+                    roundState = RoundState.Defeat;
+                    break;
+                }
+
+                if (!ValidGame(Side.Enemy))
+                {
+                    roundState = RoundState.Victory;
+                    break;
+                }
+                
                 // START
                 _logger.Log($"Start {(IsPlayerTurn() ? "Player" : "Enemy")}'s turn");
                 turnState = TurnState.PreTurn;
                 yield return new WaitForSeconds(1f);
-                OnMoveStart?.Invoke();
+                OnTurnStart?.Invoke();
 
                 // ====== SELECT TARGET & WEAPON & PARAMETERS
                 _logger.Log("Waiting for target & weapon & parameters...");
@@ -70,14 +92,10 @@ namespace Cinetica.Gameplay
                 turnState = TurnState.WaitForResult;
                 selectionsMade = false;
                 _logger.Log("Waiting for weapon to fire...");
-                yield return IFireWeapon();
-
                 var stage = GetClosestStageTransform(selectedBuilding.transform.position);
-                if (stage)
-                {
-                    // TODO: Replace with projectile.
-                    GetPlayer().SetStageCamera(selectedBuilding.transform, stage);
-                }
+                if (stage) GetPlayer().SetStageCamera(selectedBuilding.transform, stage);
+                yield return new WaitForSeconds(1f);
+                yield return IFireWeapon();
 
                 // ====== WAIT FOR HIT
                 _logger.Log("Waiting for effects...");
@@ -108,13 +126,12 @@ namespace Cinetica.Gameplay
             if (!IsPlayerTurn())
                 yield return GetEnemy().ISelect();
             
-            //turnState = TurnState.SelectBuilding;
-            while (!selectedBuilding) yield return null;
-            
-            //turnState = TurnState.SelectTarget;
-            while (!targetBuilding) yield return null;
-            
-            while (!selectionsMade) yield return null;
+            skip = false;
+            yield return new WaitUntil(() => selectedBuilding || skip);
+            skip = false;
+            yield return new WaitUntil(() => targetBuilding || skip);
+            skip = false;
+            yield return new WaitUntil(() => selectionsMade || skip);
             
             _logger.Log("Selection ended with angle of " + angle  + " and force of "  + force);
         }

@@ -65,7 +65,7 @@ namespace Cinetica.Gameplay
             friendlyBuildings = Building.GetAliveBuildings(Side.Player);
             enemyBuildings = Building.GetAliveBuildings(Side.Enemy);
             
-            RoundManager.OnMoveStart.AddListener(OnMoveStart);
+            RoundManager.OnTurnStart.AddListener(OnMoveStart);
             RoundManager.OnTurnEnd.AddListener(OnTurnEnd);;
 
             _selectNext.clicked += SelectNext;
@@ -82,7 +82,7 @@ namespace Cinetica.Gameplay
 
         public void OnDestroy()
         {
-            RoundManager.OnMoveStart.RemoveListener(OnMoveStart);
+            RoundManager.OnTurnStart.RemoveListener(OnMoveStart);
             RoundManager.OnTurnEnd.RemoveListener(OnTurnEnd);
         }
 
@@ -93,7 +93,7 @@ namespace Cinetica.Gameplay
             // Update the selectables
             friendlyBuildings = Building.GetAliveBuildings(Side.Player);
             enemyBuildings = Building.GetAliveBuildings(Side.Enemy);
-
+            
             selectedBuilding = friendlyBuildings[1];
             targetedBuilding = enemyBuildings[1];
 

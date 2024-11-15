@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Cinetica.Utility;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 namespace Cinetica.Gameplay
 {
@@ -14,12 +15,12 @@ namespace Cinetica.Gameplay
         public Damageable damageableComponent;
         public BuildingType buildingType = BuildingType.Dummy;
 
-        public float maxForce = 100f; // Turret: 100, Railgun: 1K
+        [FormerlySerializedAs("maxForce")] public float maxVelocity = 100f; // Turret: 100, Railgun: 1K
         public float maxAngle = 45f;
         public float minAngle = 0f;
 
         public float angle = 0f;
-        public float force = 0f;
+        [FormerlySerializedAs("velocity")] public float velocity = 0f;
 
         public Transform horizontalAxis;
         public Transform verticalAxis;
@@ -70,7 +71,7 @@ namespace Cinetica.Gameplay
             if (target == null || horizontalAxis == null || verticalAxis == null) return;
 
             angle = RoundManager.angle;
-            force = RoundManager.force;
+            velocity = RoundManager.velocity;
             
             // Horizontal rotation: Smoothly look at the target in the horizontal plane only
             Vector3 directionToTarget = (target.transform.position - horizontalAxis.transform.position).normalized;

@@ -84,7 +84,7 @@ namespace Cinetica.Gameplay
             // PARAMETERS
             RoundManager.turnState = TurnState.InputParameters;
             player.SetCameraToStaticPosition();
-            RoundManager.force = GetForce();
+            RoundManager.velocity = GetVelocity();
             RoundManager.angle = GetAngle();
             player.subTextOverride = "O inimigo está decidindo os parâmetros...";
             yield return new WaitForSeconds(2f);
@@ -93,7 +93,7 @@ namespace Cinetica.Gameplay
             RoundManager.selectionsMade = true;
             player.subTextOverride = null;
             player.ResetCamera();
-            _logger.Log($"AI made it's choice: F:{RoundManager.force}, A:{RoundManager.angle}");
+            _logger.Log($"AI made it's choice: F:{RoundManager.velocity}, A:{RoundManager.angle}");
         }
 
         public Building GetSelectedBuilding()
@@ -125,9 +125,9 @@ namespace Cinetica.Gameplay
             return Pick(plyBuildings.ToArray());
         }
 
-        public float GetForce()
+        public float GetVelocity()
         {
-            // TODO: Select force based on selections above
+            // TODO: Select velocity based on selections above
             return 100f;
         }
 

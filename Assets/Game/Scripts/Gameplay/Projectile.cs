@@ -13,14 +13,14 @@ namespace Cinetica.Gameplay
 
         public float expiryTime = 30f;
 
-        private float force;
+        private float velocity;
         private float angle;
         private float time = 0f;
         private bool launched = false;
 
         public void Initialize(float angle, float force)
         {
-            this.force = force;
+            this.velocity = force;
             this.angle = angle;
             launched = true;
         }

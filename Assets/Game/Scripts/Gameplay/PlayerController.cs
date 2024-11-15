@@ -16,7 +16,7 @@ namespace Cinetica.Gameplay
         public float cameraSpeed = 5f;
         public bool hardFollow = false;
         public string subTextOverride;
-        public float force = 0f;
+        public float velocity = 0f;
         public float angle = 0f;
         public Transform cameraTarget; // Camera will focus around this target.
         public Transform cameraTransformOverride; // Camera will lock to this transform exactly.
@@ -42,7 +42,7 @@ namespace Cinetica.Gameplay
         private VisualElement _controls, 
             _infoPanel;
 
-        private SliderInt _forceSlider, 
+        private SliderInt _velocitySlider, 
             _angleSlider;
         
         public void Awake()
@@ -60,8 +60,8 @@ namespace Cinetica.Gameplay
             _turnText = _document.rootVisualElement.Q<TextElement>("TurnText");
             _subText = _document.rootVisualElement.Q<TextElement>("SubText");
 
-            _forceSlider = _document.rootVisualElement.Q<SliderInt>("ForceSlider");
-            _angleSlider = _document.rootVisualElement.Q<SliderInt>("AngleSlider");
+            _velocitySlider = _document.rootVisualElement.Q<SliderInt>("ForceSlider");
+            _angleSlider = _document.rootVisualElement.Q<SliderInt>("VelocitySlider");
 
             friendlyBuildings = Building.GetAliveBuildings(Side.Player);
             enemyBuildings = Building.GetAliveBuildings(Side.Enemy);
@@ -99,10 +99,10 @@ namespace Cinetica.Gameplay
             targetedBuilding = enemyBuildings[1];
 
             angle = selectedBuilding.angle;
-            force = selectedBuilding.force;
+            velocity = selectedBuilding.velocity;
 
             _angleSlider.value = (int)angle;
-            _forceSlider.value = (int)force;
+            _velocitySlider.value = (int)velocity;
             
             ResetCamera();
             cameraTarget = selectedBuilding.transform;
@@ -164,7 +164,7 @@ namespace Cinetica.Gameplay
                 case TurnState.InputParameters:
                     // Fire weapon
                     RoundManager.angle = angle;
-                    RoundManager.force = force;
+                    RoundManager.velocity = velocity;
                     RoundManager.selectionsMade = true;
                     return;
             }
@@ -245,11 +245,11 @@ namespace Cinetica.Gameplay
                         _subText.text = "Defina os Parâmetros de Lançamento";
                         _selectConfirm.text = "Confirmar Lançamento";
                         // TODO: Any restrictions to be passed to UI here and validated after too.
-                        force = _forceSlider.value;
+                        velocity = _velocitySlider.value;
                         angle = _angleSlider.value;
                         
                         RoundManager.angle = angle;
-                        RoundManager.force = force;
+                        RoundManager.velocity = velocity;
                         break;
                     default:
                         _subText.visible = false;

@@ -737,6 +737,14 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 3696383662160870424, guid: 752a21cc650fab882ae1444de05932af, type: 3}
+      propertyPath: enemyCamStaticPos
+      value: 
+      objectReference: {fileID: 191541488}
+    - target: {fileID: 3696383662160870424, guid: 752a21cc650fab882ae1444de05932af, type: 3}
+      propertyPath: playerCamStaticPos
+      value: 
+      objectReference: {fileID: 328597226}
     - target: {fileID: 4513016779901019800, guid: 752a21cc650fab882ae1444de05932af, type: 3}
       propertyPath: m_Name
       value: Round Manager

@@ -13,7 +13,7 @@ namespace Cinetica.Gameplay
     public class RoundManager : MonoBehaviour
     {
         public static float angle = 0f;
-        public static float force = 500f;
+        public static float velocity = 500f;
         
         public static Building selectedBuilding;
         public static Building targetBuilding;
@@ -26,7 +26,6 @@ namespace Cinetica.Gameplay
 
         public static UnityEvent OnTurnStart = new UnityEvent();
         public static UnityEvent OnTurnEnd = new UnityEvent();
-
         public static UnityEvent OnSelection = new UnityEvent();
 
         public static bool IsPlayerTurn() => turn == Turn.Player;
@@ -110,7 +109,7 @@ namespace Cinetica.Gameplay
                 selectedBuilding = null;
                 targetBuilding = null;
                 angle = 0f;
-                force = 0f;
+                velocity = 0f;
                 selectionsMade = false;
                 
                 turn = (turn == Turn.Enemy) ? Turn.Player : Turn.Enemy;
@@ -135,7 +134,7 @@ namespace Cinetica.Gameplay
             skip = false;
             yield return new WaitUntil(() => selectionsMade || skip);
             
-            _logger.Log("Selection ended with angle of " + angle  + " and force of "  + force);
+            _logger.Log("Selection ended with angle of " + angle  + " and velocity of "  + velocity);
         }
 
         private IEnumerator IFireWeapon()
@@ -155,7 +154,7 @@ namespace Cinetica.Gameplay
                 Destroy(obj);;
             }
             
-            projectile.Initialize(angle, force);
+            projectile.Initialize(angle, velocity);
             yield return new WaitUntil(() => !obj);
             
             yield return null;

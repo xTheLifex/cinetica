@@ -121,7 +121,8 @@ namespace Cinetica.UI
             {
                 Button button = levelSelectTemplateAsset.CloneTree().Q<Button>("LevelTemplate");
                 button.SetEnabled(entry.RequirementsMet());
-                button.text = entry.displayName;
+                button.enableRichText = true;
+                button.text = $"<color={(GameManager.playerData.IsLevelComplete(entry.levelName) ? "green" : "white")}>{entry.displayName}</color>";
                 button.clicked += () =>
                 {
                     _selectedLevel = entry;

@@ -168,7 +168,7 @@ namespace Cinetica.Gameplay
                     if (parent)
                     {
                         var building = parent.GetComponent<Building>();
-                        if (building)
+                        if (building && !col.transform.CompareTag("AI Target"))
                         {
                             // We hit a shield. Just calculate past it.
                             if (building.buildingType == BuildingType.ShieldGenerator)

@@ -6,6 +6,7 @@ TagManager:
   tags:
   - Building
   - Projectile
+  - AI Target
   layers:
   - Default
   - TransparentFX

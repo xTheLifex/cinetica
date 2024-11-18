@@ -59,6 +59,9 @@ public class Projectile : MonoBehaviour
                         if (shield.shieldCharge > 0)
                         {
                             shield.shieldCharge -= 1;
+                            // hacky fix for AI shooting this even tho its disabled.
+                            if (shield.shieldCharge <= 0)
+                                shield.damageableComponent.Damage(shield.damageableComponent.maxHealth);
                             Explode();
                             break;
                         }

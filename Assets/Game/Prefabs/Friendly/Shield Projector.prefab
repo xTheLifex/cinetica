@@ -122,6 +122,59 @@ Transform:
   - {fileID: 3518380799511157827}
   m_Father: {fileID: 3125665147053608839}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &3310891070385150751
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 8318919560845842400}
+  - component: {fileID: 7180607936012292759}
+  m_Layer: 6
+  m_Name: AI Target
+  m_TagString: AI Target
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &8318919560845842400
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3310891070385150751}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0.5, z: 0}
+  m_LocalScale: {x: 0.5, y: 0.5, z: 0.5}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 3125665147053608839}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!65 &7180607936012292759
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3310891070385150751}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 1, y: 2, z: 1}
+  m_Center: {x: 0, y: 0.5, z: 0}
 --- !u!1 &3635439201443120482
 GameObject:
   m_ObjectHideFlags: 0
@@ -319,6 +372,7 @@ Transform:
   - {fileID: 793570986646367563}
   - {fileID: 662037180836089801}
   - {fileID: 6291766911428830221}
+  - {fileID: 8318919560845842400}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!65 &2098219363676521950
@@ -354,8 +408,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2c3feaf8f0ce4db8a39e154128beaecc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxHealth: 100
-  health: 100
+  maxHealth: 1
+  health: 1
   godmode: 0
 --- !u!114 &308322164281312736
 MonoBehaviour:
@@ -373,6 +427,7 @@ MonoBehaviour:
   damageableComponent: {fileID: 0}
   buildingType: 4
   maxVelocity: 100
+  minVelocity: 5
   maxAngle: 45
   minAngle: 0
   angle: 0
@@ -380,9 +435,8 @@ MonoBehaviour:
   horizontalAxis: {fileID: 0}
   verticalAxis: {fileID: 0}
   firePosition: {fileID: 0}
-  maxCharge: 100
-  charge: 100
-  chargeRecovery: 0
+  shieldCharge: 3
+  damage: 1
   shield: {fileID: 178973977843488115}
 --- !u!1 &5317869964146745604
 GameObject:

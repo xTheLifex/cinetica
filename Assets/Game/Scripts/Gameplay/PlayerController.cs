@@ -198,7 +198,7 @@ namespace Cinetica.Gameplay
                 _infoPanel.visible = false;
                 _controls.visible = false;
                 _turnText.visible = true;
-                _turnText.text = (RoundManager.roundState == RoundState.Victory ? "Vitória" : "Derrota");
+                _turnText.text = (RoundManager.roundState == RoundState.Victory ? "<color=green>Vitória</color>" : "<color=red>Derrota</color>");
                 return;
             }
 

@@ -81,7 +81,7 @@ namespace Cinetica.Gameplay
             // TARGET
             RoundManager.turnState = TurnState.SelectTarget;
             player.SetTrackingTransform(target.transform);
-            player.subTextOverride = "O inimigo irá atacar o " + target.name;
+            player.subTextOverride = "O inimigo irá atacar " + target.name;
             RoundManager.targetBuilding = target;
             yield return new WaitForSeconds(1.5f);
             

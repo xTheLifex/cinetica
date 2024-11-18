@@ -44,8 +44,8 @@ namespace Cinetica.Gameplay
         
         public bool ValidGame(Side side)
         {
-            if (Building.GetCore(side).damageableComponent.health <= 0f) return false;
-            return (Building.GetSelectableWeapons(side)).Length > 0;
+            if (Building.GetCore(side).damageableComponent.health <= 0) return false;
+            return (Building.GetSelectableBuildings(side)).Count > 0;
         }
         
         private void Awake()

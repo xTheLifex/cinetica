@@ -21,12 +21,6 @@ namespace Cinetica.UI
         private VisualElement _tutorialWindow, _levelSelectWindow;
 
         private LevelEntry _selectedLevel;
-
-        private readonly List<LevelEntry> _levelEntries = new List<LevelEntry>()
-        {
-            new LevelEntry("Testing", "Armazém - Introdução 1"),
-            new LevelEntry("Main1", "Sala Circular - Avançado 1", new string[] {"Testing"}),
-        };
         
         public override void Awake()
         {
@@ -117,7 +111,7 @@ namespace Cinetica.UI
         private void PopulateLevels()
         {
             _levelTemplateContainer.Clear();
-            foreach (LevelEntry entry in _levelEntries)
+            foreach (LevelEntry entry in GameManager.GetLevelEntries())
             {
                 Button button = levelSelectTemplateAsset.CloneTree().Q<Button>("LevelTemplate");
                 button.SetEnabled(entry.RequirementsMet());
@@ -175,39 +169,6 @@ namespace Cinetica.UI
             {
                 window.style.top = new StyleLength(new Length(x, LengthUnit.Percent));
             }
-        }
-    }
-
-    public class LevelEntry
-    {
-        public string displayName = "Fase";
-        public string levelName = "Main1";
-        public string[] levelRequirements = Array.Empty<string>();
-
-        public LevelEntry(string levelName, string displayName, string[] levelRequirements = null)
-        {
-            this.displayName = displayName;
-            this.levelName = levelName;
-            this.levelRequirements = levelRequirements ?? Array.Empty<string>();
-        }
-
-        public bool RequirementsMet()
-        {
-            if (levelRequirements == null || levelRequirements.Length == 0) return true;
-            bool allCompleted = true;
-
-            if (!SceneExists(levelName))
-                return false;
-            
-            foreach (var level in levelRequirements)
-            {
-                if (!GameManager.playerData.IsLevelComplete(level))
-                {
-                    allCompleted = false;
-                }
-            }
-
-            return allCompleted;
         }
     }
 }

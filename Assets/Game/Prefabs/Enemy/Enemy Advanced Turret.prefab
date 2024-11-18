@@ -56,10 +56,22 @@ PrefabInstance:
       propertyPath: 'm_Materials.Array.data[0]'
       value: 
       objectReference: {fileID: 2100000, guid: 273643c551371166885efad7d3f736f6, type: 2}
+    - target: {fileID: 2697387652450529347, guid: 0d9310c630ee536a9b4acf60aa7231ee, type: 3}
+      propertyPath: health
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2697387652450529347, guid: 0d9310c630ee536a9b4acf60aa7231ee, type: 3}
+      propertyPath: maxHealth
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 2826737557436478652, guid: 0d9310c630ee536a9b4acf60aa7231ee, type: 3}
       propertyPath: side
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 2826737557436478652, guid: 0d9310c630ee536a9b4acf60aa7231ee, type: 3}
+      propertyPath: damageableComponent
+      value: 
+      objectReference: {fileID: 4859029241886276471}
     - target: {fileID: 3445576641055151137, guid: 0d9310c630ee536a9b4acf60aa7231ee, type: 3}
       propertyPath: 'm_Materials.Array.data[0]'
       value: 
@@ -90,10 +102,21 @@ PrefabInstance:
       objectReference: {fileID: 2100000, guid: 1d25c4e3d14b9ba4498caff75767b415, type: 2}
     - target: {fileID: 9149817268020321983, guid: 0d9310c630ee536a9b4acf60aa7231ee, type: 3}
       propertyPath: m_Name
-      value: Enemy Railgun Variant
+      value: Enemy Advanced Turret
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 0d9310c630ee536a9b4acf60aa7231ee, type: 3}
+--- !u!114 &4859029241886276471 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 2697387652450529347, guid: 0d9310c630ee536a9b4acf60aa7231ee, type: 3}
+  m_PrefabInstance: {fileID: 7350356859352206132}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2c3feaf8f0ce4db8a39e154128beaecc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

@@ -210,6 +210,59 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!1 &2552096530678992387
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 5061040975571171383}
+  - component: {fileID: 1436870760214941436}
+  m_Layer: 6
+  m_Name: AI Target
+  m_TagString: AI Target
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &5061040975571171383
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2552096530678992387}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0.9999995, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1742783859870250012}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!65 &1436870760214941436
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2552096530678992387}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 1, y: 2, z: 1}
+  m_Center: {x: 0, y: 0.5, z: 0}
 --- !u!1 &2827905402753884132
 GameObject:
   m_ObjectHideFlags: 0
@@ -742,6 +795,7 @@ Transform:
   m_Children:
   - {fileID: 6759359138097361666}
   - {fileID: 2119058010775484631}
+  - {fileID: 5061040975571171383}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!65 &8049127511815092441
@@ -799,8 +853,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2c3feaf8f0ce4db8a39e154128beaecc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxHealth: 100
-  health: 100
+  maxHealth: 3
+  health: 3
   godmode: 0
 --- !u!114 &2040404747333295405
 MonoBehaviour:
@@ -815,19 +869,19 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   side: 0
-  damageableComponent: {fileID: 0}
+  damageableComponent: {fileID: 3627862670145908939}
   buildingType: 1
-  maxForce: 100
+  maxVelocity: 100
+  minVelocity: 5
   maxAngle: 45
   minAngle: 0
   angle: 0
-  force: 0
+  velocity: 0
   horizontalAxis: {fileID: 0}
   verticalAxis: {fileID: 0}
   firePosition: {fileID: 0}
-  maxCharge: 1000
-  charge: 1000
-  chargeRecovery: 100
+  shieldCharge: 3
+  damage: 1
   shield: {fileID: 0}
 --- !u!1 &7351653154934792948
 GameObject:

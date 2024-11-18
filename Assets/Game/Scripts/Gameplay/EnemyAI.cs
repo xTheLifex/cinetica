@@ -4,6 +4,7 @@ using System.Linq;
 using UnityEngine;
 using static Cinetica.Utility.Utils;
 using Logger = Cinetica.Utility.Logger;
+using Random = UnityEngine.Random;
 
 namespace Cinetica.Gameplay
 {
@@ -26,6 +27,9 @@ namespace Cinetica.Gameplay
                     break;
                 case Difficulty.Hard:
                     imprecision = 0.1f;
+                    break;
+                case Difficulty.Impossible:
+                    imprecision = 0f;
                     break;
             }
         }
@@ -84,17 +88,17 @@ namespace Cinetica.Gameplay
             // PARAMETERS
             RoundManager.turnState = TurnState.InputParameters;
             player.SetCameraToStaticPosition();
-            var launchParameters = GetLaunchParameters(building, target);
-            RoundManager.velocity = launchParameters.vel;
-            RoundManager.angle = launchParameters.angle;
             player.subTextOverride = "O inimigo está decidindo os parâmetros...";
-            yield return new WaitForSeconds(2f);
+            var launchParameters = GetLaunchParameters(building, target);
+            RoundManager.velocity = Mathf.Clamp(launchParameters.vel + (imprecision * Random.Range(-5f, 5f)), building.minVelocity, building.maxVelocity);
+            RoundManager.angle = Mathf.Clamp(launchParameters.angle + (imprecision * Random.Range(-5f, 5f)), building.minAngle, building.maxAngle);
+            yield return new WaitForSeconds(1f);
             
             // FINISH
             RoundManager.selectionsMade = true;
             player.subTextOverride = null;
             player.ResetCamera();
-            _logger.Log($"AI made it's choice: F:{RoundManager.velocity}, A:{RoundManager.angle}");
+            _logger.Log($"AI made it's choice: Velocity: {RoundManager.velocity}, Angle:{RoundManager.angle}");
         }
 
         public Building GetSelectedBuilding()
@@ -136,11 +140,13 @@ namespace Cinetica.Gameplay
 
             var expireTime = projectile.expiryTime;
 
-            for (var angle = minAngle; angle < maxAngle; angle += 1f)
+            for (var angle = maxAngle; angle > minAngle; angle -= 1f)
             {
-                for (var velocity = minVelocity; velocity < maxVelocity; velocity += 5f)
+                for (var velocity = maxVelocity; velocity > minVelocity; velocity -= 5f)
                 {
-                    if (Building.SimulateShot(weapon, target, angle, velocity, radius, expireTime, true, 1f))
+                    weapon.angle = angle;
+                    weapon.velocity = velocity;
+                    if (Building.SimulateShot(weapon, target, angle, velocity, radius * 0.75f, expireTime, true, 1f))
                     {
                         _logger.Log($"AI found launch parameters: (angle: {angle}, velocity: {velocity})");
                         return (angle, velocity);

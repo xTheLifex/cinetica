@@ -95,8 +95,8 @@ namespace Cinetica.Gameplay
             friendlyBuildings = Building.GetSelectableBuildings(Side.Player);
             enemyBuildings = Building.GetAliveBuildings(Side.Enemy);
             
-            selectedBuilding = friendlyBuildings[1];
-            targetedBuilding = enemyBuildings[1];
+            selectedBuilding = friendlyBuildings[0];
+            targetedBuilding = enemyBuildings[0];
 
             var minAngle = selectedBuilding.minAngle;
             var maxAngle = selectedBuilding.maxAngle;

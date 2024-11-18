@@ -1111,8 +1111,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2c3feaf8f0ce4db8a39e154128beaecc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxHealth: 100
-  health: 100
+  maxHealth: 1
+  health: 1
   godmode: 0
 --- !u!114 &2826737557436478652
 MonoBehaviour:
@@ -1127,7 +1127,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   side: 0
-  damageableComponent: {fileID: 0}
+  damageableComponent: {fileID: 2697387652450529347}
   buildingType: 2
   maxVelocity: 40
   minVelocity: 5
@@ -1138,9 +1138,8 @@ MonoBehaviour:
   horizontalAxis: {fileID: 3775497929532863235}
   verticalAxis: {fileID: 7129345283581713760}
   firePosition: {fileID: 1137367453031355073}
-  maxCharge: 1000
-  charge: 1000
-  chargeRecovery: 100
+  shieldCharge: 3
+  damage: 1
   shield: {fileID: 0}
 --- !u!1 &9157576092512216409
 GameObject:

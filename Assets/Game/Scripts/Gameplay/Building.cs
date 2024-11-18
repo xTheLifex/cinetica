@@ -28,6 +28,7 @@ namespace Cinetica.Gameplay
         public Transform firePosition;
 
         public int shieldCharge = 3;
+        public int damage = 1;
 
         public GameObject shield;
         
@@ -50,7 +51,10 @@ namespace Cinetica.Gameplay
             
             if (buildingType == BuildingType.ShieldGenerator)
             {
-                shield.SetActive(side == Side.Player ? !RoundManager.IsPlayerTurn() : RoundManager.IsPlayerTurn());
+                if (shieldCharge > 0)
+                    shield.SetActive(side == Side.Player ? !RoundManager.IsPlayerTurn() : RoundManager.IsPlayerTurn());
+                else
+                    shield.SetActive(false);
             }
         }
         
@@ -80,6 +84,11 @@ namespace Cinetica.Gameplay
             }
             #endif
                 
+            AdjustTowards(target);
+        }
+
+        public void AdjustTowards(Building target)
+        {
             // Horizontal rotation: Smoothly look at the target in the horizontal plane only
             Vector3 directionToTarget = (target.transform.position - horizontalAxis.transform.position).normalized;
             directionToTarget.y = 0; // Ensure only horizontal rotation
@@ -96,9 +105,7 @@ namespace Cinetica.Gameplay
         public static Building GetCore(Side side) => FindObjectsByType<Building>(FindObjectsSortMode.None).FirstOrDefault(x => x.buildingType == BuildingType.Core && x.side == side);
         public static Building[] GetAllWeapons(Side side) => GetAllBuildings().Where(x => x.side == side &&
             (x.buildingType == BuildingType.Railgun || x.buildingType == BuildingType.Turret)).ToArray();
-        public static Building[] GetSelectableWeapons(Side side) =>
-            GetAllWeapons(side).Where(x => x.damageableComponent.health > 0f).ToArray();
-        public static List<Building> GetAliveBuildings(Side side) => GetAllBuildings().Where(x => x.side == side && x.damageableComponent?.health > 0f).ToList();
+        public static List<Building> GetAliveBuildings(Side side) => GetAllBuildings().Where(x => x.side == side && x.damageableComponent?.health > 0).ToList();
         public static List<Building> GetSelectableBuildings(Side side) => GetAliveBuildings(side).Where(x =>
             x.buildingType is
                 (BuildingType.Turret or BuildingType.Railgun)).ToList();
@@ -152,27 +159,34 @@ namespace Cinetica.Gameplay
                     Debug.DrawLine(lastPos, simulatedPosition, Color.red, debugTime);
                 #endif
 
+                weapon.AdjustTowards(target);
                 foreach (var col in Physics.OverlapSphere(simulatedPosition, radius))
                 {
-                    if (col.transform.parent)
+                    var parent = col.transform.parent;
+                    if (col.CompareTag("Building"))
+                        continue;
+                    if (parent)
                     {
-                        var shield = col.transform.parent.GetComponent<Building>();
-                        if (shield && shield.buildingType == BuildingType.ShieldGenerator)
+                        var building = parent.GetComponent<Building>();
+                        if (building)
                         {
-                            // We hit a shield generator.
-                            continue;
+                            // We hit a shield. Just calculate past it.
+                            if (building.buildingType == BuildingType.ShieldGenerator)
+                                continue;
+                        }
+                        
+                        if (building && building.side == Side.Player && building == target
+                            && col.transform.CompareTag("AI Target"))
+                        {
+                            #if UNITY_EDITOR
+                            if (debugDraw)
+                                Debug.DrawLine(simulatedPosition, simulatedPosition + Vector3.up * 5f, Color.green, debugTime);
+                            #endif
+                            return true;
                         }
                     }
 
-                    var building = col.GetComponent<Building>();
-                    if (building && building.side == Side.Player && building == target)
-                    {
-                        #if UNITY_EDITOR
-                        if (debugDraw)
-                            Debug.DrawLine(simulatedPosition, simulatedPosition + Vector3.up * 5f, Color.green, debugTime);
-                        #endif
-                        return true;
-                    }
+                    return false;
                 }
             }
 

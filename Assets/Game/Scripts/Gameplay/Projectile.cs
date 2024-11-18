@@ -2,15 +2,16 @@ using System;
 using Cinetica;
 using Cinetica.Gameplay;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 public class Projectile : MonoBehaviour
 {
     public Vector3 velocity; // Initial velocity
     public float expiryTime = 10f; // Time before the projectile expires
     public Building owner; // The building that fired this projectile
-    public float baseDamage = 25; // Amout of damage this gun should cause
     public float radius = 0.25f; // Radius of collision detection
     
+    private int damage = 1;
     private bool launched = false; // Whether the projectile has been launched
     private float time = 0f; // Elapsed time since launch
 
@@ -22,6 +23,7 @@ public class Projectile : MonoBehaviour
         launched = true;
         initialPosition = transform.position;
         this.owner = owner;
+        this.damage = owner.damage;
     }
 
     public void Update()
@@ -69,6 +71,9 @@ public class Projectile : MonoBehaviour
             }
             
             var building = col.GetComponent<Building>();
+            if (!building)
+                building = col.transform.parent.GetComponent<Building>();
+            
             if (building)
             {
                 if (owner)
@@ -80,7 +85,7 @@ public class Projectile : MonoBehaviour
                     if (owner.side == building.side) continue;
                 }
                 
-                building.damageableComponent.Damage(velocity.magnitude * baseDamage);
+                building.damageableComponent.Damage(damage);
                 
             }
             Debug.Log($"{name} collided with {col.gameObject.name}");

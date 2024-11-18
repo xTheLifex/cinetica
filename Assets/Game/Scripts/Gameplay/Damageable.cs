@@ -5,24 +5,21 @@ namespace Cinetica.Gameplay
 {
     public class Damageable : MonoBehaviour
     {
-        public float maxHealth = 100f;
-        public float health = 100f;
+        public int maxHealth = 3;
+        public int health = 1;
 
         public bool godmode = false;
         
-        private UnityEvent OnZero = new UnityEvent();
-        private UnityEvent OnDamaged = new UnityEvent();
-        
-        public void Damage(float amount)
+        public void Damage(int amount)
         {
             if (godmode) return;
-            health = Mathf.Clamp(health - amount, 0f, maxHealth);
+            health = Mathf.Clamp(health - amount, 0, maxHealth);
             Debug.Log($"{gameObject.name} took {amount} damage.");
         }
 
-        public void Heal(float amount)
+        public void Heal(int amount)
         {
-            health = Mathf.Clamp(health + amount, 0f, maxHealth);
+            health = Mathf.Clamp(health + amount, 0, maxHealth);
         }
     }
 }

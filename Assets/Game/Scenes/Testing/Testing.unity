@@ -867,9 +867,13 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 2826737557436478652, guid: 0d9310c630ee536a9b4acf60aa7231ee, type: 3}
+      propertyPath: buildingType
+      value: 3
+      objectReference: {fileID: 0}
     - target: {fileID: 9149817268020321983, guid: 0d9310c630ee536a9b4acf60aa7231ee, type: 3}
       propertyPath: m_Name
-      value: Railgun
+      value: Advanced Turret
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -1000,7 +1004,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 1800059746726532491, guid: 62dfe3cfb3e8ab7558f03a315e85db7f, type: 3}
       propertyPath: m_Name
-      value: Enemy Railgun
+      value: Enemy Advanced Turret
       objectReference: {fileID: 0}
     - target: {fileID: 7936591544975311703, guid: 62dfe3cfb3e8ab7558f03a315e85db7f, type: 3}
       propertyPath: m_LocalPosition.x

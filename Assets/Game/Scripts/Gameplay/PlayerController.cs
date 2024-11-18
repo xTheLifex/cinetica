@@ -98,13 +98,18 @@ namespace Cinetica.Gameplay
             selectedBuilding = friendlyBuildings[1];
             targetedBuilding = enemyBuildings[1];
 
-            angle = selectedBuilding.angle;
-            velocity = selectedBuilding.velocity;
+            var minAngle = selectedBuilding.minAngle;
+            var maxAngle = selectedBuilding.maxAngle;
+            var minVelocity = selectedBuilding.minVelocity;
+            var maxVelocity = selectedBuilding.maxVelocity;
+            
+            angle = Mathf.Clamp(selectedBuilding.angle, minAngle, maxAngle);
+            velocity = Mathf.Clamp(selectedBuilding.velocity, minVelocity, maxVelocity);
 
-            _angleSlider.highValue = (int)selectedBuilding.maxAngle;
-            _angleSlider.lowValue = (int)selectedBuilding.minAngle;
-            _velocitySlider.highValue = (int)selectedBuilding.maxVelocity;
-            _velocitySlider.lowValue = (int)selectedBuilding.minVelocity;
+            _angleSlider.highValue = (int)maxAngle;
+            _angleSlider.lowValue = (int)minAngle;
+            _velocitySlider.highValue = (int)maxVelocity;
+            _velocitySlider.lowValue = (int)minVelocity;
             
             _angleSlider.value = (int)angle;
             _velocitySlider.value = (int)velocity;

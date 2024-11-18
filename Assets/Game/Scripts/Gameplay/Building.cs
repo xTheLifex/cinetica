@@ -27,9 +27,7 @@ namespace Cinetica.Gameplay
         public Transform verticalAxis;
         public Transform firePosition;
 
-        public float maxCharge = 1000f;
-        public float charge = 1000f;
-        public float chargeRecovery = 100f;
+        public int shieldCharge = 3;
 
         public GameObject shield;
         
@@ -58,11 +56,7 @@ namespace Cinetica.Gameplay
         
         private void TurnEnd()
         {
-            if (RoundManager.roundState != RoundState.Playing) return;
-            if (damageableComponent.health <= 0f) return;
             
-            charge += chargeRecovery;
-            charge = Mathf.Clamp(charge, 0f, maxCharge);
         }
 
         public void Update()

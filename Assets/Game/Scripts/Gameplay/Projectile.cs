@@ -46,19 +46,24 @@ public class Projectile : MonoBehaviour
         
         foreach (var col in Physics.OverlapSphere(transform.position, radius))
         {
-            var shield = col.transform.parent.GetComponent<Building>();
-            if (shield)
+            if (col.transform.parent)
             {
-                if (shield.buildingType == BuildingType.ShieldGenerator)
+                var shield = col.transform.parent.GetComponent<Building>();
+                if (shield)
                 {
-                    // We hit a shield generator.
-                    if (shield.charge > 0f)
+                    if (shield.buildingType == BuildingType.ShieldGenerator)
                     {
-                        shield.charge -= baseDamage;
-                    }
-                    else
-                    {
-                        continue;
+                        // We hit a shield generator.
+                        if (shield.shieldCharge > 0)
+                        {
+                            shield.shieldCharge -= 1;
+                            Explode();
+                            break;
+                        }
+                        else
+                        {
+                            continue;
+                        }
                     }
                 }
             }
@@ -80,6 +85,7 @@ public class Projectile : MonoBehaviour
             }
             Debug.Log($"{name} collided with {col.gameObject.name}");
             Explode();
+            break;
         }
     }
 

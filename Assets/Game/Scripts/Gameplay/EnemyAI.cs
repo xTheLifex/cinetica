@@ -84,8 +84,9 @@ namespace Cinetica.Gameplay
             // PARAMETERS
             RoundManager.turnState = TurnState.InputParameters;
             player.SetCameraToStaticPosition();
-            RoundManager.velocity = 25f;
-            RoundManager.angle = 45f;
+            var launchParameters = GetLaunchParameters(building, target);
+            RoundManager.velocity = launchParameters.vel;
+            RoundManager.angle = launchParameters.angle;
             player.subTextOverride = "O inimigo está decidindo os parâmetros...";
             yield return new WaitForSeconds(2f);
             
@@ -99,14 +100,6 @@ namespace Cinetica.Gameplay
         public Building GetSelectedBuilding()
         {
             var weapons = Building.GetAllWeapons(Side.Enemy);
-            
-            if (difficulty == Difficulty.Hard)
-            {
-                // Try selecting railguns first
-                var railgun = weapons.First(x => x.buildingType == BuildingType.Railgun);
-                if (railgun) return railgun;
-            }
-
             return Pick(weapons);
         }
 
@@ -130,8 +123,6 @@ namespace Cinetica.Gameplay
             var defaults = (5f, 10f);
             var prefab = RoundManager.GetProjectilePrefab();
             if (!prefab) return defaults;
-
-            var firingPoint = weapon.firePosition ? weapon.firePosition.position : weapon.transform.position;
             
             var projectile = prefab.GetComponent<Projectile>();
             if (!projectile) return defaults;
@@ -143,25 +134,67 @@ namespace Cinetica.Gameplay
 
             var maxVelocity = weapon.maxVelocity;
             var minVelocity = weapon.minVelocity;
+
+            var expireTime = projectile.expiryTime;
+
+            const float timeStep = 0.3f;
             
-            
-            for (float angle = minAngle; angle < maxAngle; angle++)
+            for (var angle = minAngle; angle < maxAngle; angle += 1f)
             {
-                for (float velocity = minVelocity; velocity < maxVelocity; velocity++)
+                for (var velocity = minVelocity; velocity < maxVelocity; velocity += 5f)
                 {
-                    bool end = false;
-                    int attempts = 200;
-                    
-                    while (end == true || attempts <= 0)
+                    var horizontalRotation = weapon.horizontalAxis.rotation;
+                    var verticalRotation = Quaternion.Euler(angle, 0f, 0f);
+                    var fireRotation = horizontalRotation * verticalRotation;
+                    var simulatedPosition = weapon.GetFiringPosition();
+                    var simulatedVelocity = fireRotation * Vector3.back * velocity;
+                    for (var time=0f; time < expireTime; time += timeStep)
                     {
-                        // Simulate projectile until it hits building, or attempts expire
+                        var lastPos = simulatedPosition;
+                        simulatedVelocity += Physics.gravity * timeStep;
+                        simulatedPosition += simulatedVelocity * timeStep;
+                        var collision = false;
                         
-                        attempts -= 1;
+                        #if UNITY_EDITOR
+                        Debug.DrawLine(lastPos, simulatedPosition, Color.red, 1f);
+                        #endif
+                        
+                        foreach (var col in Physics.OverlapSphere(simulatedPosition, radius))
+                        {
+                            if (col.transform.parent)
+                            {
+                                var shield = col.transform.parent.GetComponent<Building>();
+                                if (shield)
+                                {
+                                    if (shield.buildingType == BuildingType.ShieldGenerator)
+                                    {
+                                        // We hit a shield generator.
+                                        continue;
+                                    }
+                                }
+                            }
+                            
+                            var building = col.GetComponent<Building>();
+                            if (building)
+                            {
+                                if (building.side != Side.Player) continue;
+                                if (building != target) continue;
+                                
+                                #if UNITY_EDITOR
+                                Debug.DrawLine(simulatedPosition, simulatedPosition + (Vector3.up * 5f), Color.green, 2f);
+                                #endif
+                                _logger.Log($"AI found launch parameters: (angle: {angle}, velocity: {velocity})");
+                                return (angle, velocity);
+                            }
+                            collision = true;
+                        }
+
+                        if (collision) break;
                     }
                 }
             }
-            
             _logger.LogWarning("Cant find a good angle to shoot projectile");
+            return defaults;
         }
     }
 }

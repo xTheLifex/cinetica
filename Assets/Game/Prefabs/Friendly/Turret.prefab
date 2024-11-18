@@ -723,11 +723,12 @@ MonoBehaviour:
   side: 0
   damageableComponent: {fileID: 0}
   buildingType: 2
-  maxForce: 100
-  maxAngle: 45
+  maxVelocity: 20
+  minVelocity: 5
+  maxAngle: 80
   minAngle: 0
   angle: 0
-  force: 0
+  velocity: 0
   horizontalAxis: {fileID: 4330156261624620793}
   verticalAxis: {fileID: 696057513502106833}
   firePosition: {fileID: 4717356706353332762}

@@ -1170,7 +1170,7 @@ MonoBehaviour:
   horizontalAxis: {fileID: 3775497929532863235}
   verticalAxis: {fileID: 7129345283581713760}
   firePosition: {fileID: 1137367453031355073}
-  aimModePosition: {fileID: 0}
+  aimModePosition: {fileID: 8493757318129119008}
   shieldCharge: 3
   damage: 1
   shield: {fileID: 0}

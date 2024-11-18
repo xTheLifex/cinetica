@@ -62,6 +62,12 @@ namespace Cinetica.Gameplay
 
         private IEnumerator IExecuteRound()
         {
+            if (GameManager.Instance.IsLoadingLevel)
+            {
+                _logger.Log("Waiting for level to finish loading...");
+                yield return new WaitUntil(() => GameManager.Instance.IsLoadingLevel == false);
+            }
+            
             _logger.Log("Starting Round...");
             yield return null;
             
@@ -81,6 +87,7 @@ namespace Cinetica.Gameplay
                     var player = GetPlayer();
                     player.ToggleEndScreen(true);
                     if (!String.IsNullOrEmpty(levelID)) GameManager.playerData.SetLevelComplete(levelID);
+                    GameManager.playerData.Save();
                     roundState = RoundState.Victory;
                     break;
                 }
@@ -182,10 +189,6 @@ namespace Cinetica.Gameplay
         private IEnumerator IWaitForEffects()
         {
             yield break;
-            // TODO: Finish?
-            var buildings = GameObject.FindObjectsByType<Building>(FindObjectsSortMode.None).ToArray();
-            foreach (var b in buildings)
-                yield return b.IDisplayEffects();
         }
     }
 }

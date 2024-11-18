@@ -383,7 +383,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5674198467059745294, guid: 1eceba62c8e90209e96cf94a0c97da31, type: 3}
       propertyPath: m_Name
-      value: Core
+      value: "N\xFAcleo"
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -563,7 +563,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4956854684992049160, guid: 82a6ab5354c780e9f82b0da8a2dbeeab, type: 3}
       propertyPath: m_Name
-      value: Shield Projector
+      value: Escudo
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -580,7 +580,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 3029158755361090159, guid: c963c679b92637928876482f72a1b6d1, type: 3}
       propertyPath: m_Name
-      value: Turret
+      value: Torreta
       objectReference: {fileID: 0}
     - target: {fileID: 3542371310967511013, guid: c963c679b92637928876482f72a1b6d1, type: 3}
       propertyPath: m_LocalPosition.x
@@ -738,6 +738,10 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3696383662160870424, guid: 752a21cc650fab882ae1444de05932af, type: 3}
+      propertyPath: levelID
+      value: Testing
+      objectReference: {fileID: 0}
+    - target: {fileID: 3696383662160870424, guid: 752a21cc650fab882ae1444de05932af, type: 3}
       propertyPath: enemyCamStaticPos
       value: 
       objectReference: {fileID: 191541488}
@@ -812,7 +816,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5332244935446353749, guid: 638d6275ad1c78b248c97d4f5c2109c5, type: 3}
       propertyPath: m_Name
-      value: Enemy Shield Projector
+      value: Escudo Inimigo
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -873,7 +877,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 9149817268020321983, guid: 0d9310c630ee536a9b4acf60aa7231ee, type: 3}
       propertyPath: m_Name
-      value: Advanced Turret
+      value: "Torreta Avan\xE7ada"
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -947,7 +951,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 542866224804286793, guid: 84254f175a85e756b8723cb978a22b59, type: 3}
       propertyPath: m_Name
-      value: Enemy Core
+      value: "N\xFAcleo Inimigo"
       objectReference: {fileID: 0}
     - target: {fileID: 5843970453050517339, guid: 84254f175a85e756b8723cb978a22b59, type: 3}
       propertyPath: m_LocalPosition.x
@@ -1004,7 +1008,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 1800059746726532491, guid: 62dfe3cfb3e8ab7558f03a315e85db7f, type: 3}
       propertyPath: m_Name
-      value: Enemy Advanced Turret
+      value: "Torreta Avan\xE7ada Inimiga"
       objectReference: {fileID: 0}
     - target: {fileID: 7936591544975311703, guid: 62dfe3cfb3e8ab7558f03a315e85db7f, type: 3}
       propertyPath: m_LocalPosition.x
@@ -1162,7 +1166,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4252922762712224217, guid: 6468da5a8807473758931cc10962ff02, type: 3}
       propertyPath: m_Name
-      value: Enemy Turret
+      value: Torreta Inimiga
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

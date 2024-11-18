@@ -19,6 +19,7 @@ namespace Cinetica.Gameplay
         public float velocity = 0f;
         public float angle = 0f;
         public Transform cameraTarget; // Camera will focus around this target.
+        public Transform cameraAimModePos; // Camera will be here, looking at camera target, in gun aim mode.
         public Transform cameraTransformOverride; // Camera will lock to this transform exactly.
         public Transform stageTransform; // Will set camera to this position instead, looking at target.
         #endregion
@@ -223,8 +224,14 @@ namespace Cinetica.Gameplay
                 case TurnState.InputParameters:
                     _infoPanel.visible = true;
                     _controls.visible = true;
-                    if (selectedBuilding && RoundManager.IsPlayerTurn())
-                        SetTrackingTransform(selectedBuilding.transform);
+                    if (selectedBuilding && targetedBuilding && RoundManager.IsPlayerTurn())
+                    {
+                        var aimPos = selectedBuilding.aimModePosition;
+                        if (!aimPos)
+                            SetTrackingTransform(selectedBuilding.transform);
+                        else
+                            SetAimTarget(selectedBuilding.aimModePosition, targetedBuilding.transform);
+                    }
                     break;
                 case TurnState.WaitForResult:
                     _infoPanel.visible = false;
@@ -266,12 +273,7 @@ namespace Cinetica.Gameplay
                         break;
                 }
             }
-            else
-            {
-                _turnText.text = "<color=red>Turno do Oponente</color>";
-                _infoPanel.visible = false;
-                _controls.visible = false;
-            }
+            
             
             _subText.visible = RoundManager.turnState is not (TurnState.WaitForResult or TurnState.PreTurn);
             _turnText.visible = RoundManager.turnState !=  TurnState.PreTurn && RoundManager.roundState != RoundState.Defeat && RoundManager.roundState != RoundState.Victory;
@@ -281,9 +283,14 @@ namespace Cinetica.Gameplay
                 _subText.visible = true;
                 _subText.text = subTextOverride;
             }
+
+            if (!RoundManager.IsPlayerTurn())
+            {
+                _turnText.text = "<color=red>Turno do Oponente</color>";
+                _infoPanel.visible = false;
+                _controls.visible = false;
+            }
             
-
-
             if (selectedBuilding && RoundManager.turnState is TurnState.SelectBuilding)
             {
                 _selectNext.SetEnabled(true);
@@ -314,8 +321,13 @@ namespace Cinetica.Gameplay
             {
                 if (stageTransform)
                     MoveCameraToStagePosition(stageTransform);
-                else if(cameraTarget)
-                    MoveCameraTowards(cameraTarget);
+                else if (cameraTarget)
+                {
+                    if (cameraAimModePos)
+                        AimCamera(targetedBuilding.transform);
+                    else
+                        AttachCameraTo(cameraTarget);
+                }
             }
         }
 
@@ -337,12 +349,20 @@ namespace Cinetica.Gameplay
             ResetCamera();
             cameraTransformOverride = t;
         }
+
+        public void SetAimTarget(Transform pos, Transform target)
+        {
+            ResetCamera();
+            cameraAimModePos = pos;
+            cameraTarget = target;
+        }
         
         public void ResetCamera()
         {
             cameraTransformOverride = null;
             cameraTarget = null;
             stageTransform = null;
+            cameraAimModePos = null;
         }
 
         public void SetCameraToStaticPosition()
@@ -361,13 +381,13 @@ namespace Cinetica.Gameplay
             transform.LookAt(cameraTarget.position + (Vector3.up * 1f));
         }
         
-        public void MoveCameraTowards(Transform target)
+        public void AttachCameraTo(Transform target, bool aimMode = false)
         {
             if (!cam) return;
 
             // Find the "CameraTarget" within the target object
             Transform camTarget = target.Find("CameraTarget");
-            if (camTarget != null)
+            if (camTarget != null && !aimMode)
             {
                 // If "CameraTarget" exists, find "CameraPosition" within it
                 Transform camPosition = camTarget.Find("CameraPosition");
@@ -389,22 +409,29 @@ namespace Cinetica.Gameplay
             }
             else
             {
-                // Default behavior if "CameraTarget" is not found
-                Vector3 targetPos = target.position + (Vector3.up * 2f) + (Vector3.forward * 2f);
-        
-                if (hardFollow)
-                {
-                    transform.position = targetPos;
-                }
-                else
-                {
-                    transform.position = Vector3.Lerp(transform.position, targetPos, Time.deltaTime * cameraSpeed);
-                }
-
-                transform.LookAt(target.position + (Vector3.up * 2f));
+                MoveCameraTowards(target.position + (Vector3.up * 2f) + (Vector3.forward * 2f));
+                transform.LookAt(target.position + (Vector3.up * 2f));      
             }
         }
 
+        public void MoveCameraTowards(Vector3 targetPos)
+        {
+            if (hardFollow)
+            {
+                transform.position = targetPos;
+            }
+            else
+            {
+                transform.position = Vector3.Lerp(transform.position, targetPos, Time.deltaTime * cameraSpeed);
+            }
+        }
+        
+        public void AimCamera(Transform target)
+        {
+            if (!cam) return;
+            MoveCameraTowards(cameraAimModePos.position);
+            transform.LookAt(target.position + (Vector3.up * 2f));
+        }
 
         public void SnapCameraTo(Transform t)
         {

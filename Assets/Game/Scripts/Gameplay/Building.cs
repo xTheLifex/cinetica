@@ -26,6 +26,7 @@ namespace Cinetica.Gameplay
         public Transform horizontalAxis;
         public Transform verticalAxis;
         public Transform firePosition;
+        public Transform aimModePosition;
 
         public int shieldCharge = 3;
         public int damage = 1;
@@ -110,7 +111,6 @@ namespace Cinetica.Gameplay
             x.buildingType is
                 (BuildingType.Turret or BuildingType.Railgun)).ToList();
         public Vector3 GetFiringPosition() => firePosition != null ? firePosition.position : transform.position;
-        
         public IEnumerator IDisplayEffects()
         {
             var player = RoundManager.GetPlayer();

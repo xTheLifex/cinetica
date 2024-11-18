@@ -103,7 +103,7 @@ namespace Cinetica.Gameplay
 
         public Building GetSelectedBuilding()
         {
-            var weapons = Building.GetAllWeapons(Side.Enemy);
+            var weapons = Building.GetSelectableBuildings(Side.Enemy).ToArray();
             return Pick(weapons);
         }
 

@@ -237,6 +237,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 696057513502106833}
+  - {fileID: 1195559854026609076}
   m_Father: {fileID: 4035718301964064627}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!33 &6934380942842521824
@@ -733,6 +734,7 @@ MonoBehaviour:
   horizontalAxis: {fileID: 4330156261624620793}
   verticalAxis: {fileID: 696057513502106833}
   firePosition: {fileID: 4717356706353332762}
+  aimModePosition: {fileID: 1195559854026609076}
   shieldCharge: 3
   damage: 1
   shield: {fileID: 0}
@@ -897,6 +899,37 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!1 &5136978740123168648
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1195559854026609076}
+  m_Layer: 6
+  m_Name: AimCameraTarget
+  m_TagString: Untagged
+  m_Icon: {fileID: 4162164826716764455, guid: 0000000000000000d000000000000000, type: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1195559854026609076
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5136978740123168648}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 1.866, y: 1.493, z: 1.347}
+  m_LocalScale: {x: 1.9166591, y: 2.2843308, z: 1.9166591}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 4330156261624620793}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &5325977766775016331
 GameObject:
   m_ObjectHideFlags: 0

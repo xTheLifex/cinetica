@@ -17,6 +17,7 @@ namespace Cinetica.Gameplay
         {
             if (godmode) return;
             health = Mathf.Clamp(health - amount, 0f, maxHealth);
+            Debug.Log($"{gameObject.name} took {amount} damage.");
         }
 
         public void Heal(float amount)

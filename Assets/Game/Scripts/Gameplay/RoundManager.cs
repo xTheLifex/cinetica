@@ -145,7 +145,7 @@ namespace Cinetica.Gameplay
             if (!projectilePrefab || !selectedBuilding)
                 yield break;
 
-            var obj = GameObject.Instantiate(projectilePrefab, selectedBuilding.GetFiringPosition(), Quaternion.identity);
+            var obj = Instantiate(projectilePrefab, selectedBuilding.GetFiringPosition(), Quaternion.identity);
             
             var projectile = obj.GetComponent<Projectile>();
             if (!projectile)
@@ -160,7 +160,11 @@ namespace Cinetica.Gameplay
             // Combine the horizontal and vertical rotations
             var fireRotation = horizontalRotation * verticalRotation;
             var initialVelocity = fireRotation * Vector3.back * velocity;
-            projectile.Initialize(initialVelocity);
+            projectile.Initialize(initialVelocity, selectedBuilding);
+
+            var player = GetPlayer();
+            var stage = GetClosestStageTransform(obj.transform.position);
+            player.SetStageCamera(obj.transform, stage);
             
             yield return new WaitUntil(() => !obj);
             

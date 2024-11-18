@@ -101,3 +101,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   velocity: {x: 0, y: 0, z: 0}
   expiryTime: 5
+  owner: {fileID: 0}
+  radius: 0.5

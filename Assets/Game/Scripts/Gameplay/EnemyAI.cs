@@ -84,8 +84,8 @@ namespace Cinetica.Gameplay
             // PARAMETERS
             RoundManager.turnState = TurnState.InputParameters;
             player.SetCameraToStaticPosition();
-            RoundManager.velocity = GetVelocity();
-            RoundManager.angle = GetAngle();
+            RoundManager.velocity = 25f;
+            RoundManager.angle = 45f;
             player.subTextOverride = "O inimigo está decidindo os parâmetros...";
             yield return new WaitForSeconds(2f);
             
@@ -125,16 +125,43 @@ namespace Cinetica.Gameplay
             return Pick(plyBuildings.ToArray());
         }
 
-        public float GetVelocity()
+        public (float angle, float vel) GetLaunchParameters(Building weapon, Building target)
         {
-            // TODO: Select velocity based on selections above
-            return 100f;
-        }
+            var defaults = (5f, 10f);
+            var prefab = RoundManager.GetProjectilePrefab();
+            if (!prefab) return defaults;
 
-        public float GetAngle()
-        {
-            // TODO: Get angle based on selections above
-            return 0;
+            var firingPoint = weapon.firePosition ? weapon.firePosition.position : weapon.transform.position;
+            
+            var projectile = prefab.GetComponent<Projectile>();
+            if (!projectile) return defaults;
+            
+            var radius = projectile.radius;
+            
+            var minAngle = weapon.minAngle;
+            var maxAngle = weapon.maxAngle;
+
+            var maxVelocity = weapon.maxVelocity;
+            var minVelocity = weapon.minVelocity;
+            
+            
+            for (float angle = minAngle; angle < maxAngle; angle++)
+            {
+                for (float velocity = minVelocity; velocity < maxVelocity; velocity++)
+                {
+                    bool end = false;
+                    int attempts = 200;
+                    
+                    while (end == true || attempts <= 0)
+                    {
+                        // Simulate projectile until it hits building, or attempts expire
+                        
+                        attempts -= 1;
+                    }
+                }
+            }
+            
+            _logger.LogWarning("Cant find a good angle to shoot projectile");
         }
     }
 }

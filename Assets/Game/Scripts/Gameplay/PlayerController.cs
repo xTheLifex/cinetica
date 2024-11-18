@@ -92,7 +92,7 @@ namespace Cinetica.Gameplay
         public void OnMoveStart()
         {
             // Update the selectables
-            friendlyBuildings = Building.GetAliveBuildings(Side.Player);
+            friendlyBuildings = Building.GetSelectableBuildings(Side.Player);
             enemyBuildings = Building.GetAliveBuildings(Side.Enemy);
             
             selectedBuilding = friendlyBuildings[1];
@@ -101,6 +101,11 @@ namespace Cinetica.Gameplay
             angle = selectedBuilding.angle;
             velocity = selectedBuilding.velocity;
 
+            _angleSlider.highValue = (int)selectedBuilding.maxAngle;
+            _angleSlider.lowValue = (int)selectedBuilding.minAngle;
+            _velocitySlider.highValue = (int)selectedBuilding.maxVelocity;
+            _velocitySlider.lowValue = (int)selectedBuilding.minVelocity;
+            
             _angleSlider.value = (int)angle;
             _velocitySlider.value = (int)velocity;
             
@@ -345,7 +350,9 @@ namespace Cinetica.Gameplay
         
         public void MoveCameraToStagePosition(Transform t)
         {
-            transform.position = Vector3.Lerp(transform.position, stageTransform.position, Time.deltaTime * cameraSpeed);   
+            if (!stageTransform) return;
+            transform.position = Vector3.Lerp(transform.position, stageTransform.position, Time.deltaTime * cameraSpeed);
+            if (!cameraTarget) return;
             transform.LookAt(cameraTarget.position + (Vector3.up * 1f));
         }
         

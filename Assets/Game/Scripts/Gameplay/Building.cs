@@ -16,6 +16,7 @@ namespace Cinetica.Gameplay
         public BuildingType buildingType = BuildingType.Dummy;
 
         [FormerlySerializedAs("maxForce")] public float maxVelocity = 100f; // Turret: 100, Railgun: 1K
+        public float minVelocity = 5f;
         public float maxAngle = 45f;
         public float minAngle = 0f;
 
@@ -92,6 +93,9 @@ namespace Cinetica.Gameplay
         public static Building[] GetSelectableWeapons(Side side) =>
             GetAllWeapons(side).Where(x => x.damageableComponent.health > 0f).ToArray();
         public static List<Building> GetAliveBuildings(Side side) => GetAllBuildings().Where(x => x.side == side && x.damageableComponent?.health > 0f).ToList();
+        public static List<Building> GetSelectableBuildings(Side side) => GetAliveBuildings(side).Where(x =>
+            x.buildingType is
+                (BuildingType.Turret or BuildingType.Railgun)).ToList();
         public Vector3 GetFiringPosition() => firePosition != null ? firePosition.position : transform.position;
         
         public IEnumerator IDisplayEffects()

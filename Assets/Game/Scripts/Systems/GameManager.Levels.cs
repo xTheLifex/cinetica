@@ -11,10 +11,10 @@ namespace Cinetica
         private static readonly List<LevelEntry> _levelEntries = new List<LevelEntry>()
         {
             new LevelEntry("2Fort", "Fácil - 2 Fortes"),
-            new LevelEntry("Unimatrix", "Fácil - Unimatrix", new string[] {"2Fort"}),
-            new LevelEntry("Under", "Médio - Em Desvantagem", new string[] {"Unimatrix"}),
-            new LevelEntry("UnimatrixChallege", "Difícil - Unimatrix II", new string[] {"Under"}),
-            new LevelEntry("Testing", "Extra - Mapa Original", new string[] {"Under"}),
+            //new LevelEntry("Unimatrix", "Fácil - Unimatrix", new string[] {"2Fort"}),
+            //new LevelEntry("Under", "Médio - Em Desvantagem", new string[] {"Unimatrix"}),
+            //new LevelEntry("UnimatrixChallege", "Difícil - Unimatrix II", new string[] {"Under"}),
+            new LevelEntry("Testing", "Extra - Mapa Original", new string[] {"2Fort"}),
         };
         public static List<LevelEntry> GetLevelEntries() => _levelEntries;
     }
@@ -22,7 +22,7 @@ namespace Cinetica
     public class LevelEntry
     {
         public string displayName = "Fase";
-        public string levelName = "Main1";
+        public string levelName = "Testing";
         public string[] levelRequirements = Array.Empty<string>();
 
         public LevelEntry(string levelName, string displayName, string[] levelRequirements = null)

@@ -41,6 +41,8 @@ namespace Cinetica.Gameplay
         public static RoundManager Instance;
         public static GameObject GetProjectilePrefab() => Instance.projectilePrefab;
         public GameObject projectilePrefab;
+
+        public string levelID; // Level ID in Level Entries 
         
         public bool ValidGame(Side side)
         {
@@ -54,6 +56,7 @@ namespace Cinetica.Gameplay
             OnTurnStart.RemoveAllListeners();
             OnTurnEnd.RemoveAllListeners();
             OnSelection.RemoveAllListeners();
+            if (String.IsNullOrEmpty(levelID)) _logger.LogWarning("Level does not have a level ID set! It will not track progress!");
             StartCoroutine(IExecuteRound());
         }
 
@@ -77,6 +80,7 @@ namespace Cinetica.Gameplay
                 {
                     var player = GetPlayer();
                     player.ToggleEndScreen(true);
+                    if (!String.IsNullOrEmpty(levelID)) GameManager.playerData.SetLevelComplete(levelID);
                     roundState = RoundState.Victory;
                     break;
                 }

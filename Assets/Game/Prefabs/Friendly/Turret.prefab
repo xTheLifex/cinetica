@@ -723,7 +723,7 @@ MonoBehaviour:
   side: 0
   damageableComponent: {fileID: 0}
   buildingType: 2
-  maxVelocity: 20
+  maxVelocity: 35
   minVelocity: 5
   maxAngle: 80
   minAngle: 0
@@ -732,9 +732,7 @@ MonoBehaviour:
   horizontalAxis: {fileID: 4330156261624620793}
   verticalAxis: {fileID: 696057513502106833}
   firePosition: {fileID: 4717356706353332762}
-  maxCharge: 1000
-  charge: 1000
-  chargeRecovery: 100
+  shieldCharge: 3
   shield: {fileID: 0}
 --- !u!1 &3346302714643134995
 GameObject:

@@ -123,12 +123,11 @@ namespace Cinetica.Gameplay
             var defaults = (5f, 10f);
             var prefab = RoundManager.GetProjectilePrefab();
             if (!prefab) return defaults;
-            
+
             var projectile = prefab.GetComponent<Projectile>();
             if (!projectile) return defaults;
-            
+
             var radius = projectile.radius;
-            
             var minAngle = weapon.minAngle;
             var maxAngle = weapon.maxAngle;
 
@@ -137,63 +136,19 @@ namespace Cinetica.Gameplay
 
             var expireTime = projectile.expiryTime;
 
-            const float timeStep = 0.3f;
-            
             for (var angle = minAngle; angle < maxAngle; angle += 1f)
             {
                 for (var velocity = minVelocity; velocity < maxVelocity; velocity += 5f)
                 {
-                    var horizontalRotation = weapon.horizontalAxis.rotation;
-                    var verticalRotation = Quaternion.Euler(angle, 0f, 0f);
-                    var fireRotation = horizontalRotation * verticalRotation;
-                    var simulatedPosition = weapon.GetFiringPosition();
-                    var simulatedVelocity = fireRotation * Vector3.back * velocity;
-                    for (var time=0f; time < expireTime; time += timeStep)
+                    if (Building.SimulateShot(weapon, target, angle, velocity, radius, expireTime, true, 1f))
                     {
-                        var lastPos = simulatedPosition;
-                        simulatedVelocity += Physics.gravity * timeStep;
-                        simulatedPosition += simulatedVelocity * timeStep;
-                        var collision = false;
-                        
-                        #if UNITY_EDITOR
-                        Debug.DrawLine(lastPos, simulatedPosition, Color.red, 1f);
-                        #endif
-                        
-                        foreach (var col in Physics.OverlapSphere(simulatedPosition, radius))
-                        {
-                            if (col.transform.parent)
-                            {
-                                var shield = col.transform.parent.GetComponent<Building>();
-                                if (shield)
-                                {
-                                    if (shield.buildingType == BuildingType.ShieldGenerator)
-                                    {
-                                        // We hit a shield generator.
-                                        continue;
-                                    }
-                                }
-                            }
-                            
-                            var building = col.GetComponent<Building>();
-                            if (building)
-                            {
-                                if (building.side != Side.Player) continue;
-                                if (building != target) continue;
-                                
-                                #if UNITY_EDITOR
-                                Debug.DrawLine(simulatedPosition, simulatedPosition + (Vector3.up * 5f), Color.green, 2f);
-                                #endif
-                                _logger.Log($"AI found launch parameters: (angle: {angle}, velocity: {velocity})");
-                                return (angle, velocity);
-                            }
-                            collision = true;
-                        }
-
-                        if (collision) break;
+                        _logger.Log($"AI found launch parameters: (angle: {angle}, velocity: {velocity})");
+                        return (angle, velocity);
                     }
                 }
             }
-            _logger.LogWarning("Cant find a good angle to shoot projectile");
+
+            _logger.LogWarning("Can't find a good angle to shoot projectile");
             return defaults;
         }
     }

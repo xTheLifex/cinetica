@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using UnityEditor.Overlays;
 using UnityEngine;
 using UnityEngine.UIElements;
 using static Cinetica.Utility.Utils; 
@@ -95,6 +96,11 @@ namespace Cinetica.UI
         private void QuitButton()
         {
             CloseAllWindows();
+            GameManager.SavePlayerData();
+            Application.Quit();
+            #if UNITY_EDITOR
+            UnityEditor.EditorApplication.isPlaying = false;
+            #endif
         }
 
         // ==================== TUTORIAL ===========================================================
@@ -153,7 +159,6 @@ namespace Cinetica.UI
         {
             var from = window.style.top.value.value;
             var to = state ? 5f : 105f;
-            Debug.Log(from);
             
             if (time <= 0f)
             {

@@ -31,17 +31,24 @@ namespace Cinetica.Gameplay
 
         private Building selectedBuilding;
         private Building targetedBuilding;
+
+        private VisualElement _controls,
+            _infoPanel,
+            _endScreen,
+            _confirmQuitMenu;
         
         private Button _selectPrevious,
             _selectNext,
             _selectConfirm,
             _fireWeapon,
-            _cancelTarget;
+            _cancelTarget,
+            _quitButton,
+            _endScreenQuit,
+            _confirmQuit,
+            _confirmQuitCancel;
 
         private TextElement _turnText, _subText;
 
-        private VisualElement _controls, 
-            _infoPanel;
 
         private SliderInt _velocitySlider, 
             _angleSlider;
@@ -50,30 +57,51 @@ namespace Cinetica.Gameplay
         {
             cam = Camera.main;
             _document = GetComponent<UIDocument>();
-            _infoPanel = _document.rootVisualElement.Q<VisualElement>("Infopanel");
-            _controls = _document.rootVisualElement.Q<VisualElement>("Controls");
             
+            // QUIT BUTTON ON CORNER
+            _quitButton = _document.rootVisualElement.Q<Button>("QuitButton");
+            _quitButton.clicked += AttemptQuit;
+            
+            // PARAMETER PANEL
+            _infoPanel = _document.rootVisualElement.Q<VisualElement>("Infopanel");
+            _velocitySlider = _document.rootVisualElement.Q<SliderInt>("VelocitySlider");
+            _angleSlider = _document.rootVisualElement.Q<SliderInt>("AngleSlider");
+            
+            // CONTROL BAR
+            _controls = _document.rootVisualElement.Q<VisualElement>("Controls");
             _selectPrevious = _document.rootVisualElement.Q<Button>("Previous");
             _selectNext = _document.rootVisualElement.Q<Button>("Next");
             _selectConfirm = _document.rootVisualElement.Q<Button>("Select");
             _cancelTarget = _document.rootVisualElement.Q<Button>("CancelTarget");
-
+            _selectNext.clicked += SelectNext;
+            _selectPrevious.clicked += SelectPrevious;
+            _selectConfirm.clicked += SelectConfirm;
+            _cancelTarget.clicked += CancelTarget;
+            
+            // TURN INFO
             _turnText = _document.rootVisualElement.Q<TextElement>("TurnText");
             _subText = _document.rootVisualElement.Q<TextElement>("SubText");
+            
+            // END SCREEN 
+            _endScreen = _document.rootVisualElement.Q<VisualElement>("EndScreen");
+            _endScreenQuit = _document.rootVisualElement.Q<Button>("EndScreenQuit");
+            _endScreenQuit.clicked += QuitToMenu;
+            ToggleEndScreen(false, true);
+            
+            // QUIT CONFIRMATION
+            _confirmQuitMenu = _document.rootVisualElement.Q<VisualElement>("ConfirmQuitMenu");
+            _confirmQuit = _document.rootVisualElement.Q<Button>("ConfirmQuit");
+            _confirmQuitCancel = _document.rootVisualElement.Q<Button>("ConfirmQuitCancel");
+            _confirmQuit.clicked += QuitToMenu;
+            _confirmQuitCancel.clicked += ContinuePlaying;
+            ToggleConfirmQuitWindow(false, true);
 
-            _velocitySlider = _document.rootVisualElement.Q<SliderInt>("VelocitySlider");
-            _angleSlider = _document.rootVisualElement.Q<SliderInt>("AngleSlider");
-
+            // OTHER
             friendlyBuildings = Building.GetAliveBuildings(Side.Player);
             enemyBuildings = Building.GetAliveBuildings(Side.Enemy);
             
             RoundManager.OnTurnStart.AddListener(OnMoveStart);
             RoundManager.OnTurnEnd.AddListener(OnTurnEnd);;
-
-            _selectNext.clicked += SelectNext;
-            _selectPrevious.clicked += SelectPrevious;
-            _selectConfirm.clicked += SelectConfirm;
-            _cancelTarget.clicked += CancelTarget;
         }
 
         public void Update()
@@ -195,6 +223,7 @@ namespace Cinetica.Gameplay
         {
             if (RoundManager.roundState != RoundState.Playing)
             {
+                _quitButton.visible = false;
                 _subText.visible = false;
                 _infoPanel.visible = false;
                 _controls.visible = false;
@@ -310,6 +339,60 @@ namespace Cinetica.Gameplay
                 _selectPrevious.SetEnabled(false);
             }
         }
+
+        public void ToggleConfirmQuitWindow(bool state, bool instant = false)
+        {
+            if (LeanTween.isTweening(gameObject)) return;
+            var from = _confirmQuitMenu.style.bottom.value.value;
+            var to = state ? 20f : -100f;
+
+            if (instant)
+                Set(to);
+
+            Set(from);
+
+            LeanTween.value(gameObject, from, to, 0.5f)
+                .setOnUpdate(Set)
+                .setEaseSpring();
+
+            void Set(float x)
+            {
+                _confirmQuitMenu.style.bottom = new StyleLength(new Length(x, LengthUnit.Percent));
+            }
+        }
+
+        public void ToggleEndScreen(bool state, bool instant = false)
+        {
+            if (LeanTween.isTweening(gameObject)) return;
+            var from = _endScreen.style.bottom.value.value;
+            var to = state ? 20f : -100f;
+
+            if (instant)
+                Set(to);
+
+            Set(from);
+
+            LeanTween.value(gameObject, from, to, 0.5f)
+                .setOnUpdate(Set)
+                .setEaseSpring();
+                
+
+            void Set(float x)
+            {
+                _endScreen.style.bottom = new StyleLength(new Length(x, LengthUnit.Percent));
+            }
+        }
+
+        public void QuitToMenu()
+        {
+            _confirmQuit.SetEnabled(false);
+            _endScreenQuit.SetEnabled(false);
+            GameManager.Instance.LoadLevel("Menu");
+        }
+
+        public void ContinuePlaying() => ToggleConfirmQuitWindow(false);
+        public void AttemptQuit() => ToggleConfirmQuitWindow(true);
+
         #endregion
         // ==================== CAMERA ============================================================
         #region Camera

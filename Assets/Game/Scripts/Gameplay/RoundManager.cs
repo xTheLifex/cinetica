@@ -67,12 +67,16 @@ namespace Cinetica.Gameplay
                 // CHECK FOR WIN OR LOSS
                 if (!ValidGame(Side.Player))
                 {
+                    var player = GetPlayer();
+                    player.ToggleEndScreen(true);
                     roundState = RoundState.Defeat;
                     break;
                 }
 
                 if (!ValidGame(Side.Enemy))
                 {
+                    var player = GetPlayer();
+                    player.ToggleEndScreen(true);
                     roundState = RoundState.Victory;
                     break;
                 }

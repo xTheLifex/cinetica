@@ -1,9 +1,6 @@
-using System;
-using System.Collections.Generic;
-using UnityEditor.Overlays;
 using UnityEngine;
 using UnityEngine.UIElements;
-using static Cinetica.Utility.Utils; 
+
 namespace Cinetica.UI
 {
     public class UIControllerMainMenu : UIController

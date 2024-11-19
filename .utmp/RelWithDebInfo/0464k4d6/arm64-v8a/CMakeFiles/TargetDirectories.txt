@@ -1,0 +1,8 @@
+/home/thelife/Desktop/TheLife/Development/Unity/Cinetica/.utmp/RelWithDebInfo/0464k4d6/arm64-v8a/CMakeFiles/edit_cache.dir
+/home/thelife/Desktop/TheLife/Development/Unity/Cinetica/.utmp/RelWithDebInfo/0464k4d6/arm64-v8a/CMakeFiles/rebuild_cache.dir
+/home/thelife/Desktop/TheLife/Development/Unity/Cinetica/.utmp/RelWithDebInfo/0464k4d6/arm64-v8a/GameActivity/CMakeFiles/game.dir
+/home/thelife/Desktop/TheLife/Development/Unity/Cinetica/.utmp/RelWithDebInfo/0464k4d6/arm64-v8a/GameActivity/CMakeFiles/edit_cache.dir
+/home/thelife/Desktop/TheLife/Development/Unity/Cinetica/.utmp/RelWithDebInfo/0464k4d6/arm64-v8a/GameActivity/CMakeFiles/rebuild_cache.dir
+/home/thelife/Desktop/TheLife/Development/Unity/Cinetica/.utmp/RelWithDebInfo/0464k4d6/arm64-v8a/FramePacing/CMakeFiles/swappywrapper.dir
+/home/thelife/Desktop/TheLife/Development/Unity/Cinetica/.utmp/RelWithDebInfo/0464k4d6/arm64-v8a/FramePacing/CMakeFiles/edit_cache.dir
+/home/thelife/Desktop/TheLife/Development/Unity/Cinetica/.utmp/RelWithDebInfo/0464k4d6/arm64-v8a/FramePacing/CMakeFiles/rebuild_cache.dir

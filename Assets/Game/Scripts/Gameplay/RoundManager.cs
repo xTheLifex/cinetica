@@ -1,11 +1,8 @@
 using System;
 using System.Collections;
 using System.Linq;
-using Cinetica.Utility;
-using PlasticGui;
 using UnityEngine;
 using UnityEngine.Events;
-using UnityEngine.Serialization;
 using Logger = Cinetica.Utility.Logger;
 
 namespace Cinetica.Gameplay

@@ -239,14 +239,17 @@ namespace Cinetica.Gameplay
                     _controls.visible = false;
                     _subText.visible = false;
                     _turnText.visible = false;
+                    cameraAimModePos = null;
                     break;
                 case TurnState.SelectBuilding:
                     _infoPanel.visible = false;
                     _controls.visible = true;
+                    cameraAimModePos = null;
                     break;
                 case TurnState.SelectTarget:
                     _infoPanel.visible = false;
                     _controls.visible = true;
+                    cameraAimModePos = null;
                     if (targetedBuilding && RoundManager.IsPlayerTurn())
                         SetTrackingTransform(targetedBuilding.transform);
                     break;
@@ -267,6 +270,7 @@ namespace Cinetica.Gameplay
                     _controls.visible = false;
                     _subText.visible = false;
                     _turnText.visible = false;
+                    cameraAimModePos = null;
                     break;
                 default:
                     throw new ArgumentOutOfRangeException();

@@ -650,6 +650,7 @@ GameObject:
   - component: {fileID: 4083923103581466112}
   - component: {fileID: 4953934262363638157}
   - component: {fileID: 6684174573540153720}
+  - component: {fileID: 6643630749226262505}
   m_Layer: 6
   m_Name: Turret
   m_TagString: Building
@@ -751,6 +752,7 @@ MonoBehaviour:
   activeCoreMaterial: {fileID: 0}
   deadCoreMaterial: {fileID: 0}
   fireSound: {fileID: 8300000, guid: d57fffd0b44528026ab8ad949eb31213, type: 3}
+  explodeSound: {fileID: 8300000, guid: 37a3897ea3bfdf6409d153cfa726d245, type: 3}
 --- !u!82 &6684174573540153720
 AudioSource:
   m_ObjectHideFlags: 0
@@ -848,6 +850,28 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!95 &6643630749226262505
+Animator:
+  serializedVersion: 7
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3029158755361090159}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: f5e8eabbcd7e88b8ab1d9ed1683e4dd6, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_AnimatePhysics: 1
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!1 &3346302714643134995
 GameObject:
   m_ObjectHideFlags: 0

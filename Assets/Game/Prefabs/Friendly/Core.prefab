@@ -897,6 +897,7 @@ MonoBehaviour:
   activeCoreMaterial: {fileID: 2100000, guid: 637414f118398489ebf448c39b0dc851, type: 2}
   deadCoreMaterial: {fileID: 2100000, guid: a365735c01626885f899b9443e74a763, type: 2}
   fireSound: {fileID: 8300000, guid: 8a10646d3a109c9e9a4d5d41cb035310, type: 3}
+  explodeSound: {fileID: 8300000, guid: e21804277708dcbd38fd04f83224140b, type: 3}
 --- !u!82 &7980311594729223065
 AudioSource:
   m_ObjectHideFlags: 0

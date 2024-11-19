@@ -8,6 +8,7 @@ namespace Cinetica.Gameplay
 {
     [RequireComponent(typeof(Damageable))]
     [RequireComponent(typeof(AudioSource))]
+    [RequireComponent((typeof(Animator)))]
     public class Building : MonoBehaviour
     {
         public Side side = Side.Player;
@@ -36,14 +37,16 @@ namespace Cinetica.Gameplay
         public Material deadCoreMaterial;
         
         private AudioSource audioSource;
+        private Animator animator;
         private bool wasDamaged = false; // Was damaged this turn?
         private bool wasDestroyed = false; // Was destroyed this turn?
         
         public AudioClip fireSound; // If it's the core, this is the damage sound instead.
-        
+        public AudioClip explodeSound; // Sound when destroyed
         private void Awake()
         {
             audioSource = GetComponent<AudioSource>();
+            animator = GetComponent<Animator>();
             damageableComponent = GetComponent<Damageable>();
             RoundManager.OnTurnStart.AddListener(TurnStart);
             RoundManager.OnTurnEnd.AddListener(TurnEnd);
@@ -180,6 +183,15 @@ namespace Cinetica.Gameplay
                     yield return new WaitForSeconds(fireSound.length);
                 }
                 
+            }
+
+            if (wasDestroyed)
+            {
+                if (explodeSound) audioSource.PlayOneShot(explodeSound);
+                if (buildingType is BuildingType.Core) animator.Play("Core Explode");
+                if (buildingType is BuildingType.Turret) animator.Play("Turret Explode");
+                if (buildingType is BuildingType.Railgun) animator.Play("Railgun Explode");
+                yield return new WaitForSeconds(1.5f);
             }
 
             yield return null;

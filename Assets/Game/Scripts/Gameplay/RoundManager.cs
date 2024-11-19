@@ -66,6 +66,7 @@ namespace Cinetica.Gameplay
             }
             
             _logger.Log("Starting Round...");
+            roundState = RoundState.Playing;
             yield return null;
             
             while (roundState == RoundState.Playing)

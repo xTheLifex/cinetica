@@ -97,7 +97,7 @@ namespace Cinetica
             loading.allowSceneActivation = false;
             while (!loading.isDone)
             {
-                if (loading.progress >= 0.9f)
+                if (loading.progress >= 0.9f && loading.allowSceneActivation != true)
                 {
                     _logger.Log("Scene appears to be loaded. Enabling scene activation and continuing.");
                     loading.allowSceneActivation = true;

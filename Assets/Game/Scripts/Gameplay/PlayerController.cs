@@ -232,6 +232,8 @@ namespace Cinetica.Gameplay
                 return;
             }
 
+            _quitButton.visible = true;
+
             switch (RoundManager.turnState)
             {
                 case TurnState.PreTurn:

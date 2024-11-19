@@ -68,9 +68,10 @@ MonoBehaviour:
   cameraSpeed: 5
   hardFollow: 0
   subTextOverride: 
-  force: 0
+  velocity: 0
   angle: 0
   cameraTarget: {fileID: 0}
+  cameraAimModePos: {fileID: 0}
   cameraTransformOverride: {fileID: 0}
   stageTransform: {fileID: 0}
 --- !u!1 &8618197455536288751
@@ -140,7 +141,7 @@ Camera:
     height: 1
   near clip plane: 0.3
   far clip plane: 1000
-  field of view: 68.156
+  field of view: 77.524826
   orthographic: 0
   orthographic size: 5
   m_Depth: 0
@@ -189,7 +190,7 @@ MonoBehaviour:
     m_Bits: 1
   m_VolumeTrigger: {fileID: 0}
   m_VolumeFrameworkUpdateModeOption: 2
-  m_RenderPostProcessing: 0
+  m_RenderPostProcessing: 1
   m_Antialiasing: 0
   m_AntialiasingQuality: 2
   m_StopNaN: 0

@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using Cinetica.Utility;
-using UnityEngine;
 using static Cinetica.Utility.Utils; 
 
 namespace Cinetica
@@ -11,10 +10,10 @@ namespace Cinetica
         private static readonly List<LevelEntry> _levelEntries = new List<LevelEntry>()
         {
             new LevelEntry("2Fort", "Fácil - 2 Fortes"),
-            //new LevelEntry("Unimatrix", "Fácil - Unimatrix", new string[] {"2Fort"}),
+            new LevelEntry("2FortChallenge", "Desafio - 2 Fortes", new string[] {"2Fort"}),
             //new LevelEntry("Under", "Médio - Em Desvantagem", new string[] {"Unimatrix"}),
             //new LevelEntry("UnimatrixChallege", "Difícil - Unimatrix II", new string[] {"Under"}),
-            new LevelEntry("Testing", "Extra - Mapa Original", new string[] {"2Fort"}),
+            //new LevelEntry("Testing", "Extra - Mapa Original", new string[] {"2Fort"}),
         };
         public static List<LevelEntry> GetLevelEntries() => _levelEntries;
     }

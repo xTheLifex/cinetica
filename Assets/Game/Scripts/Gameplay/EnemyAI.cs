@@ -1,4 +1,3 @@
-using System;
 using System.Collections;
 using System.Linq;
 using UnityEngine;
@@ -140,9 +139,9 @@ namespace Cinetica.Gameplay
 
             var expireTime = projectile.expiryTime;
 
-            for (var angle = maxAngle; angle > minAngle; angle -= 1f)
+            for (var angle = maxAngle; angle > minAngle; angle -= 0.5f)
             {
-                for (var velocity = maxVelocity; velocity > minVelocity; velocity -= 5f)
+                for (var velocity = maxVelocity; velocity > minVelocity; velocity -= 1f)
                 {
                     weapon.angle = angle;
                     weapon.velocity = velocity;

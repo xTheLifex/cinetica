@@ -1,9 +1,7 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using Cinetica.Utility;
 using UnityEngine;
-using UnityEngine.Serialization;
 using UnityEngine.UIElements;
 
 namespace Cinetica.Gameplay
@@ -233,7 +231,7 @@ namespace Cinetica.Gameplay
             }
 
             _quitButton.visible = true;
-
+    
             switch (RoundManager.turnState)
             {
                 case TurnState.PreTurn:

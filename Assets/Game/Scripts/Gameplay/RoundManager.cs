@@ -67,6 +67,8 @@ namespace Cinetica.Gameplay
             
             _logger.Log("Starting Round...");
             roundState = RoundState.Playing;
+            turnState = TurnState.PreTurn;
+            turn = Turn.Player;
             yield return null;
             
             while (roundState == RoundState.Playing)
@@ -113,6 +115,7 @@ namespace Cinetica.Gameplay
 
                 // ====== WAIT FOR HIT
                 _logger.Log("Waiting for effects...");
+                yield return new WaitForSeconds(1f);
                 yield return IWaitForEffects();
                 
                 // ====== END TURN
@@ -175,6 +178,10 @@ namespace Cinetica.Gameplay
             var initialVelocity = fireRotation * Vector3.back * velocity;
             projectile.Initialize(initialVelocity, selectedBuilding);
 
+            var audioSource = selectedBuilding.GetComponent<AudioSource>();
+            if (selectedBuilding.fireSound)
+                audioSource.PlayOneShot(selectedBuilding.fireSound);
+            
             var player = GetPlayer();
             var stage = GetClosestStageTransform(obj.transform.position);
             player.SetStageCamera(obj.transform, stage);
@@ -186,7 +193,10 @@ namespace Cinetica.Gameplay
         
         private IEnumerator IWaitForEffects()
         {
-            yield break;
+            foreach (var building in Building.GetAllBuildings())
+            {
+                yield return building.IDisplayEffects();
+            }
         }
     }
 }

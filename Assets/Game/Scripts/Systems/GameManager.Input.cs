@@ -1,7 +1,6 @@
 using Cinetica.Utility;
 using UnityEngine;
 using UnityEngine.Events;
-using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.EnhancedTouch;
 using EnhancedTouch = UnityEngine.InputSystem.EnhancedTouch;
 

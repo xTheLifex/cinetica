@@ -1,22 +1,28 @@
-using System;
 using Cinetica;
 using Cinetica.Gameplay;
 using UnityEngine;
-using UnityEngine.Serialization;
 
+[RequireComponent(typeof(AudioSource))]
 public class Projectile : MonoBehaviour
 {
     public Vector3 velocity; // Initial velocity
     public float expiryTime = 10f; // Time before the projectile expires
     public Building owner; // The building that fired this projectile
     public float radius = 0.25f; // Radius of collision detection
+    public AudioClip impactSound; // The impact sound effect.
     
     private int damage = 1;
     private bool launched = false; // Whether the projectile has been launched
     private float time = 0f; // Elapsed time since launch
 
-    
+    private AudioSource audSrc;
     private Vector3 initialPosition;
+
+    private void Awake()
+    {
+        audSrc = GetComponent<AudioSource>();
+    }
+
     public void Initialize(Vector3 initialVelocity, Building owner)
     {
         velocity = initialVelocity;
@@ -100,6 +106,7 @@ public class Projectile : MonoBehaviour
     private void Explode()
     {
         // TODO: Effects
+        if (impactSound) audSrc.PlayOneShot(impactSound);
         Destroy(gameObject);
     }
     

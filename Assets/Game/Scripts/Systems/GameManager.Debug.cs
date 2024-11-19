@@ -1,8 +1,6 @@
 #if UNITY_EDITOR || DEVEL
-using System;
 using Cinetica.Utility;
 using UnityEngine;
-using UnityEngine.InputSystem.EnhancedTouch;
 
 namespace Cinetica
 {

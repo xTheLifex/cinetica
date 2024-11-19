@@ -1,14 +1,13 @@
-using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using Cinetica.Utility;
 using UnityEngine;
 using UnityEngine.Serialization;
 
 namespace Cinetica.Gameplay
 {
     [RequireComponent(typeof(Damageable))]
+    [RequireComponent(typeof(AudioSource))]
     public class Building : MonoBehaviour
     {
         public Side side = Side.Player;
@@ -32,24 +31,52 @@ namespace Cinetica.Gameplay
         public int damage = 1;
 
         public GameObject shield;
+
+        public Material activeCoreMaterial;
+        public Material deadCoreMaterial;
+        
+        private AudioSource audioSource;
+        private bool wasDamaged = false; // Was damaged this turn?
+        private bool wasDestroyed = false; // Was destroyed this turn?
+        
+        public AudioClip fireSound; // If it's the core, this is the damage sound instead.
         
         private void Awake()
         {
+            audioSource = GetComponent<AudioSource>();
             damageableComponent = GetComponent<Damageable>();
             RoundManager.OnTurnStart.AddListener(TurnStart);
             RoundManager.OnTurnEnd.AddListener(TurnEnd);
+            damageableComponent.OnTakeDamage.AddListener(TakeDamage);
+            damageableComponent.OnZero.AddListener(Destroyed);
         }
+
+        private void TakeDamage(int amount, int newHP)
+        {
+            wasDamaged = true;
+        }
+
+        private void Destroyed()
+        {
+            wasDestroyed = true;
+        }
+        
 
         private void OnDestroy()
         {
             RoundManager.OnTurnEnd.RemoveListener(TurnEnd);
             RoundManager.OnTurnStart.RemoveListener(TurnStart);
+            if (!damageableComponent) return;
+            damageableComponent.OnTakeDamage.RemoveListener(TakeDamage);
+            damageableComponent.OnZero.RemoveListener(Destroyed);
         }
 
         private void TurnStart()
         {
-            if (!shield) return;
+            wasDamaged = false;
             
+            // Shield stuff
+            if (!shield) return;
             if (buildingType == BuildingType.ShieldGenerator)
             {
                 if (shieldCharge > 0)
@@ -114,10 +141,48 @@ namespace Cinetica.Gameplay
         public IEnumerator IDisplayEffects()
         {
             var player = RoundManager.GetPlayer();
-            player.SetTrackingTransform(gameObject.transform);
-            yield return new WaitForSeconds(1f);
-            // TODO: Show effects for stuff like recharging
-            yield return new WaitForSeconds(0.5f);
+            
+            if (wasDamaged && buildingType is BuildingType.Core)
+            {
+                if (!activeCoreMaterial || !activeCoreMaterial) yield break;
+                
+                var hp = damageableComponent.health;
+                if (hp >= 3) yield break;
+                
+                var blockout = transform.Find("Blockout");
+                if (!blockout) yield break;
+
+                var life1 = blockout.Find("Life 1");
+                var life2 = blockout.Find("Life 2");
+                if (!life1 || !life2) yield break;
+
+                var life1mr = life1.GetComponent<MeshRenderer>();
+                var life2mr = life2.GetComponent<MeshRenderer>();
+                if (!life1mr || !life2mr) yield break;
+                
+                player.SetTrackingTransform(gameObject.transform);
+                yield return new WaitForSeconds(1f);
+                
+                if (hp == 2)
+                {
+                    life1mr.material = deadCoreMaterial;
+                    life2mr.material = activeCoreMaterial;
+                }
+                if (hp <= 1)
+                {
+                    life1mr.material = deadCoreMaterial;
+                    life2mr.material = deadCoreMaterial;
+                }
+                
+                if (fireSound)
+                {
+                    audioSource.PlayOneShot(fireSound);
+                    yield return new WaitForSeconds(fireSound.length);
+                }
+                
+            }
+
+            yield return null;
         }
         
         /// <summary>

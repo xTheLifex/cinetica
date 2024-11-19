@@ -1,9 +1,6 @@
-using System;
 using System.Collections;
 using UnityEngine;
 using UnityEngine.UIElements;
-using static LeanTween;
-using Logger = Cinetica.Utility.Logger;
 
 namespace Cinetica.UI
 {

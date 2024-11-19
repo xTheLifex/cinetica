@@ -9,11 +9,11 @@ EditorBuildSettings:
     path: Assets/Game/Scenes/Menu.unity
     guid: 99c9720ab356a0642a771bea13969a05
   - enabled: 1
-    path: Assets/Game/Scenes/Testing.unity
-    guid: a5b1dfe408d6d4da5a583df6e37d8c30
-  - enabled: 1
     path: Assets/Game/Scenes/2Fort.unity
     guid: 9b09a5caf7c58ed798766993c58ffe1c
+  - enabled: 1
+    path: Assets/Game/Scenes/2FortChallenge.unity
+    guid: 36a8449916f6135ce9000dab70e6af0c
   m_configObjects:
     com.unity.adaptiveperformance.google.android.provider_settings: {fileID: 11400000, guid: 7023766e56959fb718b94df7eb252fb5, type: 2}
     com.unity.adaptiveperformance.loader_settings: {fileID: 11400000, guid: 8cf4ae4972769a5e98aab2ac5b0296e8, type: 2}

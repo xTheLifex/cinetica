@@ -56,6 +56,14 @@ PrefabInstance:
       propertyPath: side
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 2040404747333295405, guid: 1eceba62c8e90209e96cf94a0c97da31, type: 3}
+      propertyPath: deadCoreMaterial
+      value: 
+      objectReference: {fileID: 2100000, guid: 5300d7eb06b7fce5eb9f63e97b426fb8, type: 2}
+    - target: {fileID: 2040404747333295405, guid: 1eceba62c8e90209e96cf94a0c97da31, type: 3}
+      propertyPath: activeCoreMaterial
+      value: 
+      objectReference: {fileID: 2100000, guid: 85fb1a9ff66dc584d9f6679cfdb7cd28, type: 2}
     - target: {fileID: 2238484086456959777, guid: 1eceba62c8e90209e96cf94a0c97da31, type: 3}
       propertyPath: 'm_Materials.Array.data[0]'
       value: 

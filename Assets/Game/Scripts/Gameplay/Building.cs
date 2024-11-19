@@ -77,6 +77,7 @@ namespace Cinetica.Gameplay
         private void TurnStart()
         {
             wasDamaged = false;
+            wasDestroyed = false;
             
             // Shield stuff
             if (!shield) return;
@@ -187,11 +188,15 @@ namespace Cinetica.Gameplay
 
             if (wasDestroyed)
             {
+                animator.enabled = true;
+                player.SetTrackingTransform(gameObject.transform);
+                yield return new WaitForSeconds(0.5f);
                 if (explodeSound) audioSource.PlayOneShot(explodeSound);
                 if (buildingType is BuildingType.Core) animator.Play("Core Explode");
                 if (buildingType is BuildingType.Turret) animator.Play("Turret Explode");
                 if (buildingType is BuildingType.Railgun) animator.Play("Railgun Explode");
                 yield return new WaitForSeconds(1.5f);
+                //animator.enabled = false;
             }
 
             yield return null;

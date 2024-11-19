@@ -10,6 +10,7 @@ public class Projectile : MonoBehaviour
     public Building owner; // The building that fired this projectile
     public float radius = 0.25f; // Radius of collision detection
     public AudioClip impactSound; // The impact sound effect.
+    public GameObject explosionPrefab; // The explosion prefab
     
     private int damage = 1;
     private bool launched = false; // Whether the projectile has been launched
@@ -105,8 +106,8 @@ public class Projectile : MonoBehaviour
 
     private void Explode()
     {
-        // TODO: Effects
         if (impactSound) audSrc.PlayOneShot(impactSound);
+        if (explosionPrefab) Instantiate(explosionPrefab, transform.position, Quaternion.identity);
         Destroy(gameObject);
     }
     

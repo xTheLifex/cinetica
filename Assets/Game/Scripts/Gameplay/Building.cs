@@ -195,6 +195,16 @@ namespace Cinetica.Gameplay
                 if (buildingType is BuildingType.Core) animator.Play("Core Explode");
                 if (buildingType is BuildingType.Turret) animator.Play("Turret Explode");
                 if (buildingType is BuildingType.Railgun) animator.Play("Railgun Explode");
+                if (horizontalAxis)
+                {
+                    var explosion = horizontalAxis.Find("Explosion");
+                    var fire = horizontalAxis.Find("Fire");
+                    if (explosion)
+                        explosion.gameObject.SetActive(true);
+                    if (fire)
+                        fire.gameObject.SetActive(true);
+                }
+                
                 yield return new WaitForSeconds(1.5f);
                 //animator.enabled = false;
             }

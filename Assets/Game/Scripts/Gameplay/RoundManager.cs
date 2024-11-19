@@ -133,7 +133,7 @@ namespace Cinetica.Gameplay
             }
         }
 
-        private Transform GetClosestStageTransform(Vector3 pos) => stageTransforms.GetComponentsInChildren<Transform>()
+        private Transform GetClosestStageTransform(Vector3 pos) => stageTransforms.GetComponentsInChildren<Transform>().Where(x => x != stageTransforms)
             .OrderBy(t => Vector3.Distance(t.position, pos))
             .FirstOrDefault();
 

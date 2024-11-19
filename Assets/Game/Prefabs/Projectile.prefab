@@ -106,6 +106,7 @@ MonoBehaviour:
   owner: {fileID: 0}
   radius: 0.5
   impactSound: {fileID: 8300000, guid: 4fcee76c472070170937638ffe66cd24, type: 3}
+  explosionPrefab: {fileID: 3542661613553293818, guid: 60819e2588222210c9657a9472c385b7, type: 3}
 --- !u!82 &4607605222871938858
 AudioSource:
   m_ObjectHideFlags: 0
@@ -118,7 +119,7 @@ AudioSource:
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 0}
   m_Resource: {fileID: 0}
-  m_PlayOnAwake: 1
+  m_PlayOnAwake: 0
   m_Volume: 1
   m_Pitch: 1
   Loop: 0
@@ -131,9 +132,9 @@ AudioSource:
   MaxDistance: 500
   Pan2D: 0
   rolloffMode: 0
-  BypassEffects: 0
-  BypassListenerEffects: 0
-  BypassReverbZones: 0
+  BypassEffects: 1
+  BypassListenerEffects: 1
+  BypassReverbZones: 1
   rolloffCustomCurve:
     serializedVersion: 2
     m_Curve:
@@ -213,7 +214,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 2613462060424995206, guid: 101a8868c1adc5b40bdaf7526f47b7b5, type: 3}
       propertyPath: m_Name
-      value: VFX_Trail_Fire
+      value: Fire Trail
       objectReference: {fileID: 0}
     - target: {fileID: 3866923782500440147, guid: 101a8868c1adc5b40bdaf7526f47b7b5, type: 3}
       propertyPath: m_LocalPosition.x

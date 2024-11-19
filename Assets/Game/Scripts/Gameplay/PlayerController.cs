@@ -116,15 +116,11 @@ namespace Cinetica.Gameplay
         #endregion
         // ==================== METHODS ===========================================================
         #region Methods
-        public void OnMoveStart()
-        {
-            // Update the selectables
-            friendlyBuildings = Building.GetSelectableBuildings(Side.Player);
-            enemyBuildings = Building.GetAliveBuildings(Side.Enemy);
-            
-            selectedBuilding = friendlyBuildings[0];
-            targetedBuilding = enemyBuildings[0];
 
+        public void SetSliders()
+        {
+            if (!selectedBuilding) return;
+            
             var minAngle = selectedBuilding.minAngle;
             var maxAngle = selectedBuilding.maxAngle;
             var minVelocity = selectedBuilding.minVelocity;
@@ -139,7 +135,18 @@ namespace Cinetica.Gameplay
             _velocitySlider.lowValue = (int)minVelocity;
             
             _angleSlider.value = (int)angle;
-            _velocitySlider.value = (int)velocity;
+            _velocitySlider.value = (int)velocity;            
+        }
+        public void OnMoveStart()
+        {
+            // Update the selectables
+            friendlyBuildings = Building.GetSelectableBuildings(Side.Player);
+            enemyBuildings = Building.GetAliveBuildings(Side.Enemy);
+            
+            selectedBuilding = friendlyBuildings[0];
+            targetedBuilding = enemyBuildings[0];
+
+            SetSliders();
             
             ResetCamera();
             cameraTarget = selectedBuilding.transform;
@@ -197,6 +204,7 @@ namespace Cinetica.Gameplay
                     RoundManager.targetBuilding = targetedBuilding;
                     RoundManager.turnState = TurnState.InputParameters;
                     ResetCamera();
+                    SetSliders();
                     return;
                 case TurnState.InputParameters:
                     // Fire weapon
